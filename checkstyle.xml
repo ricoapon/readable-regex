@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<module name="Checker">
+    <!-- Make sure no tabs are used in the entire code base. If they are used in output, use '\t' instead. -->
+    <module name="FileTabCharacter">
+        <property name="eachLine" value="true"/>
+    </module>
+
+    <module name="TreeWalker">
+        <!-- Indentation must be in blocks of 4 spaces. -->
+        <module name="Indentation"/>
+
+        <!-- Always use empty lines after imports, packages and methods. No multiple empty lines allowed. -->
+        <module name="EmptyLineSeparator">
+            <property name="tokens" value="IMPORT, PACKAGE_DEF, METHOD_DEF, CTOR_DEF"/>
+            <property name="allowMultipleEmptyLines" value="false"/>
+            <property name="allowMultipleEmptyLinesInsideClassMembers" value="false"/>
+        </module>
+
+        <!-- All annotations must be after the javadoc and before the method. -->
+        <module name="AnnotationLocation"/>
+
+        <!-- Avoid importing all classes from a package. -->
+        <module name="AvoidStarImport">
+            <!-- Mockito, Hamcrest and Spring related functions are commonly imported using star in test files. -->
+            <property name="excludes" value="
+                org.mockito.Mockito,
+                org.hamcrest.Matchers,
+                org.springframework.test.web.servlet.result.MockMvcResultMatchers"/>
+        </module>
+
+        <!-- All static final fields should be capitalized and using underscores as separation.
+             The only exception is the log variable. -->
+        <module name="ConstantName">
+            <property name="format" value="^log?$|^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$"/>
+        </module>
+
+        <!-- All variables must be declared on the top of the class, then the constructor, then methods. -->
+        <module name="DeclarationOrder">
+            <property name="ignoreModifiers" value="true"/>
+        </module>
+
+        <!-- Indentations of comments must be the same as the code after it. -->
+        <module name="CommentsIndentation"/>
+
+        <!-- Blocks must always have a statement in them. -->
+        <module name="EmptyBlock"/>
+
+        <!-- Always override both equals and hashCode (or none). -->
+        <module name="EqualsHashCode"/>
+
+        <!-- Only use a space after the comma in generic declaration. -->
+        <module name="GenericWhitespace"/>
+
+        <!-- Javadoc should always start at the second line, or be a one-liner. -->
+        <module name="JavadocContentLocationCheck"/>
+
+        <!-- Use whitespaces after tokens. For example: "if(true){" is a violation, it should be "if (true) {" -->
+        <module name="WhitespaceAfter"/>
+        <module name="WhitespaceAround"/>
+    </module>
+</module>

@@ -5,8 +5,10 @@ All additional plugins to check the code base should run when calling the follow
 ```
 gradle checks
 ```
-This will trigger [SpotBugs](https://spotbugs.github.io/). If you want to run this individually (because this is faster), you can use:
+This will trigger [SpotBugs](https://spotbugs.github.io/) and [Checkstyle](https://checkstyle.sourceforge.io/).
+If you want to run this individually (because this is faster), you can use:
 ````
 gradle spotbugs
+gradle checkstyle
 ````
-The HTML reports are located in a subdirectory in `build/reports`.
+All the HTML reports can be viewed in `build/reports`.
