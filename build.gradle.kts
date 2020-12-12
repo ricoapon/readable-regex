@@ -2,6 +2,7 @@ plugins {
     `java-library`
     id("com.github.spotbugs") version "4.5.0"
     id("checkstyle")
+    id("jacoco")
 }
 
 java {
@@ -58,4 +59,33 @@ tasks.withType<Checkstyle>().configureEach {
 tasks.register("checkstyle") {
     dependsOn(tasks.checkstyleMain)
     dependsOn(tasks.checkstyleTest)
+}
+
+// ================
+// JaCoCo
+// ================
+jacoco {
+    // Experimental support for Java 15 has only been added to 0.8.6.
+    // Release version 0.8.7 will officially support Java 15.
+    toolVersion = "0.8.6"
+}
+tasks.check {
+    // Reports are always generated after running the checks.
+    finalizedBy(tasks.jacocoTestReport)
+}
+tasks.jacocoTestReport {
+    // Tests are required before generating the report.
+    dependsOn(tasks.test)
+}
+tasks.jacocoTestReport {
+    reports {
+        // Codecov.io depends on xml format report.
+        xml.isEnabled = true
+        // Add HTML report readable by humans.
+        html.isEnabled = true
+    }
+}
+tasks.register("jacoco") {
+    dependsOn(tasks.jacocoTestCoverageVerification)
+    dependsOn(tasks.jacocoTestReport)
 }
