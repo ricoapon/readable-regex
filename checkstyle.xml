@@ -23,11 +23,10 @@
 
         <!-- Avoid importing all classes from a package. -->
         <module name="AvoidStarImport">
-            <!-- Mockito, Hamcrest and Spring related functions are commonly imported using star in test files. -->
+            <!-- Hamcrest and Constants are commonly imported using star in test files. -->
             <property name="excludes" value="
-                org.mockito.Mockito,
                 org.hamcrest.Matchers,
-                org.springframework.test.web.servlet.result.MockMvcResultMatchers"/>
+                com.apon.readableregex.Constants"/>
         </module>
 
         <!-- All static final fields should be capitalized and using underscores as separation.

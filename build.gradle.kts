@@ -8,6 +8,7 @@ plugins {
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+    withSourcesJar()
 }
 
 repositories {
@@ -18,6 +19,7 @@ repositories {
 dependencies {
     implementation("com.github.spotbugs:spotbugs-annotations:4.1.1")
 
+    testImplementation("org.hamcrest:hamcrest:2.2")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
 }
