@@ -10,6 +10,7 @@ import static com.apon.readableregex.matchers.PatternMatchMatcher.doesntMatchAny
 import static com.apon.readableregex.matchers.PatternMatchMatcher.matchesExactly;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.not;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests related to methods that are inside {@link StandaloneBlockBuilder}.
@@ -43,6 +44,11 @@ class StandaloneBlockTests {
 
     @Nested
     class Literals {
+        @Test
+        void nullThrowsNpe() {
+            assertThrows(NullPointerException.class, () -> ReadableRegex.regex().literal(null));
+        }
+
         @Test
         void literalCharactersAreEscaped() {
             ReadableRegexPattern pattern = ReadableRegex.regex()

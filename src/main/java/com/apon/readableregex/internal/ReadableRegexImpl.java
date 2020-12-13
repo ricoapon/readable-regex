@@ -29,6 +29,7 @@ public class ReadableRegexImpl implements ReadableRegex {
 
     @Override
     public ReadableRegex literal(String literalValue) {
+        Objects.requireNonNull(literalValue);
         checkAndSetForStandaloneBlockExpression();
         // Surround input with \Q\E to make sure that all the meta characters are escaped.
         // Surround it with (?:) to make sure that
