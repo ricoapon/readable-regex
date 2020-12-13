@@ -17,7 +17,6 @@ import static org.hamcrest.Matchers.not;
 @SuppressFBWarnings(value = "SIC_INNER_SHOULD_BE_STATIC", justification = "@Nested classes should be non-static, but SpotBugs wants them static." +
         "See https://github.com/spotbugs/spotbugs/issues/560 for the bug (open since 2018).")
 class StandaloneBlockTests {
-
     @Nested
     class Digits {
         @Test
@@ -31,6 +30,14 @@ class StandaloneBlockTests {
             assertThat(pattern, doesntMatchAnythingFrom(WORD_CHARACTERS));
             assertThat(pattern, doesntMatchAnythingFrom(NON_LETTERS));
             assertThat(pattern, doesntMatchAnythingFrom(WHITESPACES));
+        }
+
+        @Test
+        void digitsAreStandaloneBlocks() {
+            ReadableRegexPattern pattern = ReadableRegex.regex().literal("a").digit().oneOrMore().build();
+
+            assertThat(pattern, matchesExactly("a" + DIGITS));
+            assertThat(pattern, not(matchesExactly("a1a1")));
         }
     }
 
@@ -55,12 +62,20 @@ class StandaloneBlockTests {
             assertThat(pattern, matchesExactly(".2\t*"));
             assertThat(pattern, not(matchesExactly("a1 *")));
         }
+
+        @Test
+        void literalsAreStandaloneBlocks() {
+            ReadableRegexPattern pattern = ReadableRegex.regex().digit().literal("a").oneOrMore().build();
+
+            assertThat(pattern, matchesExactly("1aaaa"));
+            assertThat(pattern, not(matchesExactly("1a1a")));
+        }
     }
 
     @Nested
     class Whitespaces {
         @Test
-        void digitOnlyMatchesDigits() {
+        void whitespacesOnlyMatchWhitespaces() {
             ReadableRegexPattern pattern = ReadableRegex.regex().whitespace().build();
 
             // Matches exactly every character inside WHITESPACES.
@@ -71,6 +86,14 @@ class StandaloneBlockTests {
             assertThat(pattern, doesntMatchAnythingFrom(WORD_CHARACTERS));
             assertThat(pattern, doesntMatchAnythingFrom(NON_LETTERS));
             assertThat(pattern, doesntMatchAnythingFrom(DIGITS));
+        }
+
+        @Test
+        void whitespacesAreStandaloneBlocks() {
+            ReadableRegexPattern pattern = ReadableRegex.regex().literal("a").whitespace().oneOrMore().build();
+
+            assertThat(pattern, matchesExactly("a" + WHITESPACES));
+            assertThat(pattern, not(matchesExactly("a a ")));
         }
     }
 }
