@@ -4,6 +4,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import static com.apon.readableregex.ReadableRegex.regex;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -16,14 +17,14 @@ class FailConstructionTests {
     class Quantifiers {
         @Test
         void cannotStartWithQuantifier() {
-            assertThrows(IncorrectConstructionException.class, () -> ReadableRegex.regex().oneOrMore());
-            assertThrows(IncorrectConstructionException.class, () -> ReadableRegex.regex().optional());
+            assertThrows(IncorrectConstructionException.class, () -> regex().oneOrMore());
+            assertThrows(IncorrectConstructionException.class, () -> regex().optional());
         }
 
         @Test
         void cannotUseQualifierAfterQualifier() {
-            assertThrows(IncorrectConstructionException.class, () -> ReadableRegex.regex().digit().oneOrMore().optional());
-            assertThrows(IncorrectConstructionException.class, () -> ReadableRegex.regex().digit().optional().oneOrMore());
+            assertThrows(IncorrectConstructionException.class, () -> regex().digit().oneOrMore().optional());
+            assertThrows(IncorrectConstructionException.class, () -> regex().digit().optional().oneOrMore());
         }
     }
 }

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.apon.readableregex.Constants.*;
 import static com.apon.readableregex.Constants.WHITESPACES;
+import static com.apon.readableregex.ReadableRegex.regex;
 import static com.apon.readableregex.matchers.PatternMatchMatcher.doesntMatchAnythingFrom;
 import static com.apon.readableregex.matchers.PatternMatchMatcher.matchesExactly;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -22,7 +23,7 @@ class StandaloneBlockTests {
     class Digits {
         @Test
         void digitOnlyMatchesDigits() {
-            ReadableRegexPattern pattern = ReadableRegex.regex().digit().build();
+            ReadableRegexPattern pattern = regex().digit().build();
 
             // Matches exactly every character inside DIGITS.
             for (String digit : DIGITS.split("")) {
@@ -35,7 +36,7 @@ class StandaloneBlockTests {
 
         @Test
         void digitsAreStandaloneBlocks() {
-            ReadableRegexPattern pattern = ReadableRegex.regex().literal("a").digit().oneOrMore().build();
+            ReadableRegexPattern pattern = regex().literal("a").digit().oneOrMore().build();
 
             assertThat(pattern, matchesExactly("a" + DIGITS));
             assertThat(pattern, not(matchesExactly("a1a1")));
@@ -46,12 +47,12 @@ class StandaloneBlockTests {
     class Literals {
         @Test
         void nullThrowsNpe() {
-            assertThrows(NullPointerException.class, () -> ReadableRegex.regex().literal(null));
+            assertThrows(NullPointerException.class, () -> regex().literal(null));
         }
 
         @Test
         void literalCharactersAreEscaped() {
-            ReadableRegexPattern pattern = ReadableRegex.regex()
+            ReadableRegexPattern pattern = regex()
                     .literal("a.()[]\\/|?.+*")
                     .build();
 
@@ -60,7 +61,7 @@ class StandaloneBlockTests {
 
         @Test
         void literalCanBeCombinedWithMetaCharacters() {
-            ReadableRegexPattern pattern = ReadableRegex.regex()
+            ReadableRegexPattern pattern = regex()
                     .literal(".").digit().whitespace().literal("*")
                     .build();
 
@@ -71,7 +72,7 @@ class StandaloneBlockTests {
 
         @Test
         void literalsAreStandaloneBlocks() {
-            ReadableRegexPattern pattern = ReadableRegex.regex().digit().literal("a").oneOrMore().build();
+            ReadableRegexPattern pattern = regex().digit().literal("a").oneOrMore().build();
 
             assertThat(pattern, matchesExactly("1aaaa"));
             assertThat(pattern, not(matchesExactly("1a1a")));
@@ -82,7 +83,7 @@ class StandaloneBlockTests {
     class Whitespaces {
         @Test
         void whitespacesOnlyMatchWhitespaces() {
-            ReadableRegexPattern pattern = ReadableRegex.regex().whitespace().build();
+            ReadableRegexPattern pattern = regex().whitespace().build();
 
             // Matches exactly every character inside WHITESPACES.
             for (String digit : WHITESPACES.split("")) {
@@ -96,7 +97,7 @@ class StandaloneBlockTests {
 
         @Test
         void whitespacesAreStandaloneBlocks() {
-            ReadableRegexPattern pattern = ReadableRegex.regex().literal("a").whitespace().oneOrMore().build();
+            ReadableRegexPattern pattern = regex().literal("a").whitespace().oneOrMore().build();
 
             assertThat(pattern, matchesExactly("a" + WHITESPACES));
             assertThat(pattern, not(matchesExactly("a a ")));

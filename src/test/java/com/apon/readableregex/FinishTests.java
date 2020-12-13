@@ -2,6 +2,7 @@ package com.apon.readableregex;
 
 import org.junit.jupiter.api.Test;
 
+import static com.apon.readableregex.ReadableRegex.regex;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -11,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 class FinishTests {
     private final static String REGEX = "a1?";
-    private final ReadableRegex readableRegex = ReadableRegex.regex().regexFromString(REGEX);
+    private final ReadableRegex readableRegex = regex().regexFromString(REGEX);
 
     @Test
     void underlyingPatternIsExposed() {
