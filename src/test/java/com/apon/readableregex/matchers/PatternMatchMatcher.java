@@ -22,7 +22,7 @@ public class PatternMatchMatcher extends TypeSafeMatcher<ReadableRegexPattern> {
         return new PatternMatchMatcher(textToMatch, true);
     }
 
-    public static PatternMatchMatcher doesntMatch(String textToMatch) {
+    public static PatternMatchMatcher doesntMatchAnythingFrom(String textToMatch) {
         return new PatternMatchMatcher(textToMatch, false);
     }
 
