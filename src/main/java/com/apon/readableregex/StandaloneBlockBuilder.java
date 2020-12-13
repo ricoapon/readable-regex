@@ -13,7 +13,7 @@ public interface StandaloneBlockBuilder extends FinishBuilder {
      * This should only be used as a last resort when other methods cannot satisfy the expression you are looking for.
      * To avoid issues with other methods, make sure to encapsulate your regex with an unnamed group.
      * @param regex The regular expression.
-     * @return This builder.
+     * @return This builder.asdfasdfads
      */
     QuantifierBuilder regexFromString(String regex);
 
