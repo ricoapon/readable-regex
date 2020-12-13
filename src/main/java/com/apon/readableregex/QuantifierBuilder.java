@@ -9,4 +9,10 @@ public interface QuantifierBuilder extends StandaloneBlockBuilder {
      * @return This builder.
      */
     StandaloneBlockBuilder oneOrMore();
+
+    /**
+     * Makes the previous block optional (greedy). This is the same as adding {@code ?}.
+     * @return This builder.
+     */
+    StandaloneBlockBuilder optional();
 }

@@ -46,4 +46,9 @@ public class ReadableRegexImpl implements ReadableRegex, QuantifierBuilder {
     public StandaloneBlockBuilder oneOrMore() {
         return regexFromString("+");
     }
+
+    @Override
+    public StandaloneBlockBuilder optional() {
+        return regexFromString("?");
+    }
 }

@@ -18,4 +18,13 @@ class QuantifierTests {
         assertThat(pattern, matchesExactly(DIGITS));
         assertThat(pattern, not(matchesExactly("")));
     }
+
+    @Test
+    void optionalMatchesCorrectly() {
+        ReadableRegexPattern pattern = ReadableRegex.regex().literal("a").digit().optional().build();
+
+        assertThat(pattern, matchesExactly("a1"));
+        assertThat(pattern, matchesExactly("a"));
+        assertThat(pattern, not(matchesExactly("")));
+    }
 }
