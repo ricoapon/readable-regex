@@ -19,4 +19,13 @@ public interface ReadableRegex extends StandaloneBlockBuilder, QuantifierBuilder
     static ReadableRegex regex() {
         return new ReadableRegexImpl();
     }
+
+    /**
+     * Syntactic sugar for {@code regex().regexFromString(regex)}.
+     * @param regex The regular expression.
+     * @return Instance of the builder initialized with the given regular expression.
+     */
+    static ReadableRegex regex(String regex) {
+        return regex().regexFromString(regex);
+    }
 }

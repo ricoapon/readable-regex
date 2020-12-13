@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 class FinishTests {
     private final static String REGEX = "a1?";
-    private final ReadableRegex readableRegex = regex().regexFromString(REGEX);
+    private final ReadableRegex readableRegex = regex(REGEX);
 
     @Test
     void underlyingPatternIsExposed() {
