@@ -3,6 +3,7 @@ package com.apon.readableregex.internal;
 import com.apon.readableregex.QuantifierBuilder;
 import com.apon.readableregex.ReadableRegex;
 import com.apon.readableregex.ReadableRegexPattern;
+import com.apon.readableregex.StandaloneBlockBuilder;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -39,5 +40,10 @@ public class ReadableRegexImpl implements ReadableRegex, QuantifierBuilder {
     @Override
     public QuantifierBuilder whitespace() {
         return regexFromString("\\s");
+    }
+
+    @Override
+    public StandaloneBlockBuilder oneOrMore() {
+        return regexFromString("+");
     }
 }
