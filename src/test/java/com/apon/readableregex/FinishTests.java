@@ -7,9 +7,9 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * Class with all the tests that are not related to creating the regular expressions themselves.
+ * Tests related to methods that are inside {@link FinishBuilder}.
  */
-class NotRegexRelatedTests {
+class FinishTests {
     @Test
     void underlyingPatternIsExposed() {
         assertThat(ReadableRegex.regex().buildJdkPattern().toString(), equalTo(""));
