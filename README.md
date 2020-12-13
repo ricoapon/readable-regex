@@ -2,6 +2,16 @@
 
 With this library, you can create regular expressions in a readable way!
 
+# Readability over performance
+This library is focussed fully on readability and correctness. Regular expressions can be tricky with performance.
+There is a lot of information online on how to make your regular expressions perform. Changing the builder to get
+good performing regular expressions may not be readable. If you are reliant on good performing expressions, it may not
+be the best choice to use this library.
+
+# Regular expression engine
+This library uses the engine implemented in the JDK. All the details and specifics of the engine can be found in the JavaDoc
+of the class [Pattern](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html).
+
 # Replacement of JavaVerbalExpressions
 [JavaVerbalExpressions](https://github.com/VerbalExpressions/JavaVerbalExpressions) is another library created for Java to construct regular expressions using a Builder pattern.
 I liked this library, but there were a few caveats:
