@@ -6,7 +6,7 @@ package com.apon.readableregex;
  * {@code (?:\Qa.c\E)}. Incorrect is {@code ab}, since adding the optional quantifier {@code ?} for example, would make
  * the regex {@code ab?} which is different from {@code (?:ab)?}).
  */
-public interface StandaloneBlockBuilder extends FinishBuilder {
+public interface StandaloneBlockBuilder {
     /**
      * Appends the regex. The value is not changed or sanitized in any way.
      * <p>
@@ -15,24 +15,24 @@ public interface StandaloneBlockBuilder extends FinishBuilder {
      * @param regex The regular expression.
      * @return This builder.
      */
-    QuantifierBuilder regexFromString(String regex);
+    ReadableRegex regexFromString(String regex);
 
     /**
      * Appends a literal expression. All metacharacters are escaped.
      * @param literalValue The value to add.
      * @return This builder.
      */
-    QuantifierBuilder literal(String literalValue);
+    ReadableRegex literal(String literalValue);
 
     /**
      * Adds a digit. This is the same as {@code [0-9]}.
      * @return This builder.
      */
-    QuantifierBuilder digit();
+    ReadableRegex digit();
 
     /**
      * Adds a whitespace. This is the same as {@code \s}.
      * @return This builder.
      */
-    QuantifierBuilder whitespace();
+    ReadableRegex whitespace();
 }

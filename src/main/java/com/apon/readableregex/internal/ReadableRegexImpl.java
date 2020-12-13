@@ -1,14 +1,12 @@
 package com.apon.readableregex.internal;
 
-import com.apon.readableregex.QuantifierBuilder;
 import com.apon.readableregex.ReadableRegex;
 import com.apon.readableregex.ReadableRegexPattern;
-import com.apon.readableregex.StandaloneBlockBuilder;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public class ReadableRegexImpl implements ReadableRegex, QuantifierBuilder {
+public class ReadableRegexImpl implements ReadableRegex {
     /** The internal regular expression. This field should only be modified using the {@link #regexFromString(String)} method. */
     private final StringBuilder regexBuilder = new StringBuilder();
 
@@ -19,36 +17,36 @@ public class ReadableRegexImpl implements ReadableRegex, QuantifierBuilder {
     }
 
     @Override
-    public QuantifierBuilder regexFromString(String regex) {
+    public ReadableRegex regexFromString(String regex) {
         Objects.requireNonNull(regex);
         regexBuilder.append(regex);
         return this;
     }
 
     @Override
-    public QuantifierBuilder literal(String literalValue) {
+    public ReadableRegex literal(String literalValue) {
         // Surround input with \Q\E to make sure that all the meta characters are escaped.
         // Surround it with (?:) to make sure that
         return regexFromString("(?:\\Q" + literalValue + "\\E)");
     }
 
     @Override
-    public QuantifierBuilder digit() {
+    public ReadableRegex digit() {
         return regexFromString("\\d");
     }
 
     @Override
-    public QuantifierBuilder whitespace() {
+    public ReadableRegex whitespace() {
         return regexFromString("\\s");
     }
 
     @Override
-    public StandaloneBlockBuilder oneOrMore() {
+    public ReadableRegex oneOrMore() {
         return regexFromString("+");
     }
 
     @Override
-    public StandaloneBlockBuilder optional() {
+    public ReadableRegex optional() {
         return regexFromString("?");
     }
 }
