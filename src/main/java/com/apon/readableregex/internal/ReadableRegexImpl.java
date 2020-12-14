@@ -32,7 +32,7 @@ public class ReadableRegexImpl implements ReadableRegex {
         Objects.requireNonNull(literalValue);
         checkAndSetForStandaloneBlockExpression();
         // Surround input with \Q\E to make sure that all the meta characters are escaped.
-        // Surround it with (?:) to make sure that
+        // Wrap in an unnamed group, to make sure that quantifiers work on the entire block.
         return regexFromString("(?:\\Q" + literalValue + "\\E)");
     }
 
