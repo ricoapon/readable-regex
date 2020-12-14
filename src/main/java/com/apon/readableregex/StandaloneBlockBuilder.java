@@ -18,6 +18,13 @@ public interface StandaloneBlockBuilder {
     ReadableRegex regexFromString(String regex);
 
     /**
+     * Appends the regular expression created using another builder instance to this builder.
+     * @param regexBuilder The other builder instance.
+     * @return This builder.
+     */
+    ReadableRegex add(ReadableRegex regexBuilder);
+
+    /**
      * Appends a literal expression. All metacharacters are escaped.
      * @param literalValue The value to add.
      * @return This builder.

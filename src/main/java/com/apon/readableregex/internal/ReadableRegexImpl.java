@@ -28,6 +28,15 @@ public class ReadableRegexImpl implements ReadableRegex {
     }
 
     @Override
+    public ReadableRegex add(ReadableRegex regexBuilder) {
+        Objects.requireNonNull(regexBuilder);
+        String regexToInclude = regexBuilder.build().toString();
+
+        // Wrap in an unnamed group, to make sure that quantifiers work on the entire block.
+        return regexFromString("(?:" + regexToInclude + ")");
+    }
+
+    @Override
     public ReadableRegex literal(String literalValue) {
         Objects.requireNonNull(literalValue);
         checkAndSetForStandaloneBlockExpression();
