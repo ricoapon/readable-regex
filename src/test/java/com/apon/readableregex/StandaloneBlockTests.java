@@ -46,7 +46,7 @@ class StandaloneBlockTests {
     @Nested
     class Literals {
         @Test
-        void nullThrowsNpe() {
+        void nullAsArgumentThrowsNpe() {
             assertThrows(NullPointerException.class, () -> regex().literal(null));
         }
 
