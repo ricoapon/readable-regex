@@ -8,11 +8,11 @@ import static com.apon.readableregex.ReadableRegex.regex;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * Tests related to constructions that are invalid and should throw an exception.
+ * Tests related to check whether order of methods are viable or not.
  */
 @SuppressFBWarnings(value = "SIC_INNER_SHOULD_BE_STATIC", justification = "@Nested classes should be non-static, but SpotBugs wants them static." +
         "See https://github.com/spotbugs/spotbugs/issues/560 for the bug (open since 2018).")
-class FailConstructionTests {
+class OrderCheckerTests {
     @Nested
     class Quantifiers {
         @Test

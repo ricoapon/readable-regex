@@ -6,7 +6,7 @@ import com.apon.readableregex.ReadableRegexPattern;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public class ReadableRegexImpl implements ReadableRegex {
+public abstract class ReadableRegexImpl implements ReadableRegex {
     /** The internal regular expression. This field should only be modified using the {@link #_addRegex(String)} method. */
     private final StringBuilder regexBuilder = new StringBuilder();
 
