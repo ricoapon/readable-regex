@@ -1,6 +1,5 @@
 package com.apon.readableregex.internal;
 
-import com.apon.readableregex.IncorrectConstructionException;
 import com.apon.readableregex.ReadableRegex;
 import com.apon.readableregex.ReadableRegexPattern;
 
@@ -8,11 +7,8 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class ReadableRegexImpl implements ReadableRegex {
-    /** The internal regular expression. This field should only be modified using the {@link #regexFromString(String)} method. */
+    /** The internal regular expression. This field should only be modified using the {@link #_addRegex(String)} method. */
     private final StringBuilder regexBuilder = new StringBuilder();
-
-    /** Indicates if the previous expression was a quantifier. Start with true, because you cannot start with a quantifier. */
-    private boolean previousExpressionWasQuantifier = true;
 
     @Override
     public ReadableRegexPattern build() {
@@ -20,71 +16,56 @@ public class ReadableRegexImpl implements ReadableRegex {
         return new ReadableRegexPatternImpl(pattern);
     }
 
-    @Override
-    public ReadableRegex regexFromString(String regex) {
+    /**
+     * Adds the regular expression to {@link #regexBuilder}.
+     * @param regex The regular expression.
+     * @return This builder.
+     */
+    private ReadableRegex _addRegex(String regex) {
         Objects.requireNonNull(regex);
         regexBuilder.append(regex);
         return this;
     }
 
     @Override
+    public ReadableRegex regexFromString(String regex) {
+        return _addRegex(regex);
+    }
+
+    @Override
     public ReadableRegex add(ReadableRegex regexBuilder) {
         Objects.requireNonNull(regexBuilder);
-        checkAndSetForStandaloneBlockExpression();
         String regexToInclude = regexBuilder.build().toString();
 
         // Wrap in an unnamed group, to make sure that quantifiers work on the entire block.
-        return regexFromString("(?:" + regexToInclude + ")");
+        return _addRegex("(?:" + regexToInclude + ")");
     }
 
     @Override
     public ReadableRegex literal(String literalValue) {
         Objects.requireNonNull(literalValue);
-        checkAndSetForStandaloneBlockExpression();
         // Surround input with \Q\E to make sure that all the meta characters are escaped.
         // Wrap in an unnamed group, to make sure that quantifiers work on the entire block.
-        return regexFromString("(?:\\Q" + literalValue + "\\E)");
+        return _addRegex("(?:\\Q" + literalValue + "\\E)");
     }
 
     @Override
     public ReadableRegex digit() {
-        checkAndSetForStandaloneBlockExpression();
-        return regexFromString("\\d");
+        return _addRegex("\\d");
     }
 
     @Override
     public ReadableRegex whitespace() {
-        checkAndSetForStandaloneBlockExpression();
-        return regexFromString("\\s");
+        return _addRegex("\\s");
     }
 
     @Override
     public ReadableRegex oneOrMore() {
-        checkAndSetQuantifierExpression();
-        return regexFromString("+");
+        return _addRegex("+");
     }
 
     @Override
     public ReadableRegex optional() {
-        checkAndSetQuantifierExpression();
-        return regexFromString("?");
-    }
-
-    /**
-     * Do the needed checks for quantifier expression and indicate that the last executed expression is a quantifier expression.
-     */
-    private void checkAndSetQuantifierExpression() {
-        if (previousExpressionWasQuantifier) {
-            throw new IncorrectConstructionException("You cannot add a quantifier after a quantifier. Remove one of the incorrect quantifiers. " +
-                    "Or, if you haven't done anything yet, you started with a quantifier. That is not possible.");
-        }
-        previousExpressionWasQuantifier = true;
-    }
-
-    /**
-     * Do the needed checks for standalone block expression and indicate that the last executed expression is a standalone block expression.
-     */
-    private void checkAndSetForStandaloneBlockExpression() {
-        previousExpressionWasQuantifier = false;
+        return _addRegex("?");
     }
 }
