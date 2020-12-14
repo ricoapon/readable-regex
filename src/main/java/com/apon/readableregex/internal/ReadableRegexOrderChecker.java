@@ -5,10 +5,10 @@ import com.apon.readableregex.ReadableRegex;
 import com.apon.readableregex.ReadableRegexPattern;
 
 /**
- * Subclass of {@link ReadableRegexImpl} to check whether methods are called in the right order. If any order constraint is
- * violated, an {@link IncorrectConstructionException} is thrown. If no violations are detected, the method is deligated to {@link ReadableRegexImpl}.
+ * Subclass of {@link ReadableRegexBuilder} to check whether methods are called in the right order. If any order constraint is
+ * violated, an {@link IncorrectConstructionException} is thrown. If no violations are detected, the method is deligated to {@link ReadableRegexBuilder}.
  */
-public class ReadableRegexOrderChecker extends ReadableRegexImpl {
+public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     /** Indicates if the previous expression was a quantifier. Start with true, because you cannot start with a quantifier. */
     private boolean previousExpressionWasQuantifier = true;
 
