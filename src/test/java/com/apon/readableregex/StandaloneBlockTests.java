@@ -20,6 +20,20 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
         "See https://github.com/spotbugs/spotbugs/issues/560 for the bug (open since 2018).")
 class StandaloneBlockTests {
     @Nested
+    class RegexFromString {
+        @Test
+        void nullAsArgumentThrowsNpe() {
+            assertThrows(NullPointerException.class, () -> regex().regexFromString(null));
+        }
+
+        @Test
+        void quantifierIsPossibleAfter() {
+            ReadableRegexPattern pattern = regex().digit().oneOrMore().regexFromString("\\s+").oneOrMore().digit().build();
+
+            assertThat(pattern, matchesExactly("111   2"));
+        }
+    }
+    @Nested
     class Add {
         @Test
         void nullAsArgumentThrowsNpe() {
@@ -100,6 +114,13 @@ class StandaloneBlockTests {
             assertThat(pattern, matchesExactly("1aaaa"));
             assertThat(pattern, not(matchesExactly("1a1a")));
         }
+
+        @Test
+        void quantifierIsPossibleAfterLiteral() {
+            ReadableRegexPattern pattern = regex().digit().oneOrMore().literal("abc").oneOrMore().build();
+
+            assertThat(pattern, matchesExactly("111abcabc"));
+        }
     }
 
     @Nested
@@ -124,6 +145,13 @@ class StandaloneBlockTests {
 
             assertThat(pattern, matchesExactly("a" + WHITESPACES));
             assertThat(pattern, not(matchesExactly("a a ")));
+        }
+
+        @Test
+        void quantifierIsPossibleAfterWhitespace() {
+            ReadableRegexPattern pattern = regex().digit().oneOrMore().whitespace().oneOrMore().build();
+
+            assertThat(pattern, matchesExactly("111   "));
         }
     }
 }
