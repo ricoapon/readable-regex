@@ -20,6 +20,29 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
         "See https://github.com/spotbugs/spotbugs/issues/560 for the bug (open since 2018).")
 class StandaloneBlockTests {
     @Nested
+    class Add {
+        @Test
+        void nullAsArgumentThrowsNpe() {
+            assertThrows(NullPointerException.class, () -> regex().add(null));
+        }
+
+        @Test
+        void otherBuildersAreAddedAsStandaloneBlock() {
+            ReadableRegexPattern pattern = regex().digit().add(regex().whitespace()).oneOrMore().digit().build();
+
+            assertThat(pattern, matchesExactly("1   2"));
+            assertThat(pattern, not(matchesExactly("1 1 2")));
+        }
+
+        @Test
+        void quantifierIsPossibleAfterBuilder() {
+            ReadableRegexPattern pattern = regex().digit().oneOrMore().add(regex().whitespace()).oneOrMore().build();
+
+            assertThat(pattern, matchesExactly("111   "));
+        }
+    }
+
+    @Nested
     class Digits {
         @Test
         void digitOnlyMatchesDigits() {
@@ -46,7 +69,7 @@ class StandaloneBlockTests {
     @Nested
     class Literals {
         @Test
-        void nullThrowsNpe() {
+        void nullAsArgumentThrowsNpe() {
             assertThrows(NullPointerException.class, () -> regex().literal(null));
         }
 
