@@ -33,6 +33,13 @@ class StandaloneBlockTests {
             assertThat(pattern, matchesExactly("1   2"));
             assertThat(pattern, not(matchesExactly("1 1 2")));
         }
+
+        @Test
+        void quantifierIsPossibleAfterBuilder() {
+            ReadableRegexPattern pattern = regex().digit().oneOrMore().add(regex().whitespace()).oneOrMore().build();
+
+            assertThat(pattern, matchesExactly("111   "));
+        }
     }
 
     @Nested

@@ -30,6 +30,7 @@ public class ReadableRegexImpl implements ReadableRegex {
     @Override
     public ReadableRegex add(ReadableRegex regexBuilder) {
         Objects.requireNonNull(regexBuilder);
+        checkAndSetForStandaloneBlockExpression();
         String regexToInclude = regexBuilder.build().toString();
 
         // Wrap in an unnamed group, to make sure that quantifiers work on the entire block.
