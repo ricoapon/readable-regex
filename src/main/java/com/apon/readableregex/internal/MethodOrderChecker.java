@@ -33,12 +33,16 @@ public class MethodOrderChecker {
      * @param method The method to execute.
      */
     public void checkCallingMethod(Method method) {
-        switch (method) {
-            case STANDALONE_BLOCK: standaloneBlock(); break;
-            case QUANTIFIER: quantifier(); break;
-            case FINISH: finish(); break;
-            case START_GROUP: startGroup(); break;
-            case END_GROUP: endGroup(); break;
+        if (method == Method.STANDALONE_BLOCK) {
+            standaloneBlock();
+        } else if (method == Method.QUANTIFIER) {
+            quantifier();
+        } else if (method == Method.FINISH) {
+            finish();
+        } else if (method == Method.START_GROUP) {
+            startGroup();
+        } else if (method == Method.END_GROUP) {
+            endGroup();
         }
     }
 

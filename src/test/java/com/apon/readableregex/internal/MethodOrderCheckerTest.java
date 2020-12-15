@@ -16,6 +16,14 @@ class MethodOrderCheckerTest {
     }
 
     @Test
+    void testFor100PercentCodeCoverage() {
+        // We know there are a fixed number of enums. This means that the if-statements will never reach the branch
+        // false-false...-false. However, if we input null, we do reach this case. Ugly way to achieve this, but it works.
+        // Also note that we cannot use a switch statement anymore, since that doesn't allow null.
+        methodOrderChecker.checkCallingMethod(null);
+    }
+
+    @Test
     void quantifierCanNotBeDoneAtTheStart() {
         assertThrows(IncorrectConstructionException.class, () -> methodOrderChecker.checkCallingMethod(QUANTIFIER));
     }
