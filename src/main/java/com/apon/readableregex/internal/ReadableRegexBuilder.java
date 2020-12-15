@@ -68,4 +68,35 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     public ReadableRegex optional() {
         return _addRegex("?");
     }
+
+    @Override
+    public ReadableRegex startGroup() {
+        return _addRegex("(");
+    }
+
+    @Override
+    public ReadableRegex startGroup(String groupName) {
+        Objects.requireNonNull(groupName);
+        if (!Pattern.matches("[a-zA-Z][a-zA-Z0-9]*", groupName)) {
+            throw new IllegalArgumentException("The group name '" + groupName + "' is not valid: it should start with a letter " +
+                    "and only contain letters and digits.");
+        }
+
+        return _addRegex("(?<" + groupName + ">");
+    }
+
+    @Override
+    public ReadableRegex endGroup() {
+        return _addRegex(")");
+    }
+
+    @Override
+    public ReadableRegex group(ReadableRegex regexBuilder) {
+        return startGroup().add(regexBuilder).endGroup();
+    }
+
+    @Override
+    public ReadableRegex group(String groupName, ReadableRegex regexBuilder) {
+        return startGroup(groupName).add(regexBuilder).endGroup();
+    }
 }

@@ -63,4 +63,29 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
         methodOrderChecker.checkCallingMethod(MethodOrderChecker.Method.QUANTIFIER);
         return super.optional();
     }
+
+    @Override
+    public ReadableRegex startGroup() {
+        return super.startGroup();
+    }
+
+    @Override
+    public ReadableRegex startGroup(String groupName) {
+        return super.startGroup(groupName);
+    }
+
+    @Override
+    public ReadableRegex endGroup() {
+        return super.endGroup();
+    }
+
+    @Override
+    public ReadableRegex group(ReadableRegex regexBuilder) {
+        return super.group(regexBuilder);
+    }
+
+    @Override
+    public ReadableRegex group(String groupName, ReadableRegex regexBuilder) {
+        return super.group(groupName, regexBuilder);
+    }
 }
