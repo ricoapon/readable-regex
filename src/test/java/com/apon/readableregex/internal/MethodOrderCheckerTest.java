@@ -4,6 +4,7 @@ import com.apon.readableregex.IncorrectConstructionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static com.apon.readableregex.internal.MethodOrderChecker.Method.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MethodOrderCheckerTest {
@@ -16,13 +17,38 @@ class MethodOrderCheckerTest {
 
     @Test
     void quantifierCanNotBeDoneAtTheStart() {
-        assertThrows(IncorrectConstructionException.class, () -> methodOrderChecker.checkCallingMethod(MethodOrderChecker.Method.QUANTIFIER));
+        assertThrows(IncorrectConstructionException.class, () -> methodOrderChecker.checkCallingMethod(QUANTIFIER));
     }
 
     @Test
     void quantifierIsPossibleAfterStandaloneBlockButNotAfterQualifier() {
-        methodOrderChecker.checkCallingMethod(MethodOrderChecker.Method.STANDALONE_BLOCK);
-        methodOrderChecker.checkCallingMethod(MethodOrderChecker.Method.QUANTIFIER);
-        assertThrows(IncorrectConstructionException.class, () -> methodOrderChecker.checkCallingMethod(MethodOrderChecker.Method.QUANTIFIER));
+        methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
+        methodOrderChecker.checkCallingMethod(QUANTIFIER);
+        assertThrows(IncorrectConstructionException.class, () -> methodOrderChecker.checkCallingMethod(QUANTIFIER));
+    }
+
+    @Test
+    void cannotCloseGroupIfNoneStarted() {
+        assertThrows(IncorrectConstructionException.class, () -> methodOrderChecker.checkCallingMethod(END_GROUP));
+    }
+
+    @Test
+    void cannotFinishWhenGroupsAreOpen() {
+        methodOrderChecker.checkCallingMethod(START_GROUP);
+        assertThrows(IncorrectConstructionException.class, () -> methodOrderChecker.checkCallingMethod(FINISH));
+    }
+
+    @Test
+    void quantifierIsNotPossibleAfterStartingGroup() {
+        methodOrderChecker.checkCallingMethod(START_GROUP);
+        assertThrows(IncorrectConstructionException.class, () -> methodOrderChecker.checkCallingMethod(QUANTIFIER));
+    }
+
+    @Test
+    void quantifierIsPossibleAfterEndingGroup() {
+        methodOrderChecker.checkCallingMethod(START_GROUP);
+        methodOrderChecker.checkCallingMethod(END_GROUP);
+        methodOrderChecker.checkCallingMethod(QUANTIFIER);
+        // Test will fail automatically if no exception is thrown.
     }
 }

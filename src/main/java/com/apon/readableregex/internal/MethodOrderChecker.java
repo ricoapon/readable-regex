@@ -1,5 +1,6 @@
 package com.apon.readableregex.internal;
 
+import com.apon.readableregex.GroupBuilder;
 import com.apon.readableregex.IncorrectConstructionException;
 
 /**
@@ -12,11 +13,20 @@ public class MethodOrderChecker {
         /** Methods from the interface {@link com.apon.readableregex.StandaloneBlockBuilder}. */
         STANDALONE_BLOCK,
         /** Methods from the interface {@link com.apon.readableregex.QuantifierBuilder}. */
-        QUANTIFIER
+        QUANTIFIER,
+        /** Methods from the interface {@link com.apon.readableregex.FinishBuilder}. */
+        FINISH,
+        /** Starting a group with a method from the interface {@link GroupBuilder}. */
+        START_GROUP,
+        /** Ending a group with the method {@link GroupBuilder#endGroup()}. */
+        END_GROUP,
     }
 
-    /** Indicates if the previous expression was a quantifier. Start with true, because you cannot start with a quantifier. */
-    private boolean previousExpressionWasQuantifier = true;
+    /** Indicates if a quantifier is allowed as the next method. Start with {@code false}, because you cannot start with a quantifier. */
+    private boolean isQuantifierPossibleAfterThisMethod = false;
+
+    /** Counts how many groups are started and are still left open. These must be closed before finishing. */
+    private int nrOfGroupsStarted = 0;
 
     /**
      * Checks if a method can be called. If not, it will throw an {@link IncorrectConstructionException}.
@@ -26,18 +36,42 @@ public class MethodOrderChecker {
         switch (method) {
             case STANDALONE_BLOCK: standaloneBlock(); break;
             case QUANTIFIER: quantifier(); break;
+            case FINISH: finish(); break;
+            case START_GROUP: startGroup(); break;
+            case END_GROUP: endGroup(); break;
         }
     }
 
     private void quantifier() {
-        if (previousExpressionWasQuantifier) {
+        if (!isQuantifierPossibleAfterThisMethod) {
             throw new IncorrectConstructionException("You cannot add a quantifier after a quantifier. Remove one of the incorrect quantifiers. " +
                     "Or, if you haven't done anything yet, you started with a quantifier. That is not possible.");
         }
-        previousExpressionWasQuantifier = true;
+
+        isQuantifierPossibleAfterThisMethod = false;
     }
 
     private void standaloneBlock() {
-        previousExpressionWasQuantifier = false;
+        isQuantifierPossibleAfterThisMethod = true;
+    }
+
+    private void finish() {
+        if (nrOfGroupsStarted != 0) {
+            throw new IncorrectConstructionException("You forgot to close all the groups that have started. Please close them all using the endGroup() method.");
+        }
+    }
+
+    private void startGroup() {
+        nrOfGroupsStarted++;
+        isQuantifierPossibleAfterThisMethod = false;
+    }
+
+    private void endGroup() {
+        if (nrOfGroupsStarted == 0) {
+            throw new IncorrectConstructionException("You cannot close a group, since none have started. " +
+                    "Remove this method call or start a group.");
+        }
+        nrOfGroupsStarted--;
+        isQuantifierPossibleAfterThisMethod = true;
     }
 }
