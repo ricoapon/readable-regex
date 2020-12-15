@@ -1,33 +1,18 @@
 package com.apon.readableregex.internal;
 
-import com.apon.readableregex.IncorrectConstructionException;
 import com.apon.readableregex.ReadableRegex;
 import com.apon.readableregex.ReadableRegexPattern;
 
 /**
- * Subclass of {@link ReadableRegexBuilder} to check whether methods are called in the right order. If any order constraint is
- * violated, an {@link IncorrectConstructionException} is thrown. If no violations are detected, the method is delegated to {@link ReadableRegexBuilder}.
+ * Subclass of {@link ReadableRegexBuilder} to check whether methods are called in the right order using an instance
+ * of {@link MethodOrderChecker}.
  */
 public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
-    /** Indicates if the previous expression was a quantifier. Start with true, because you cannot start with a quantifier. */
-    private boolean previousExpressionWasQuantifier = true;
+    /** Object for maintaining the status of calling methods. */
+    private final MethodOrderChecker methodOrderChecker;
 
-    /**
-     * The method that is executed adds a quantifier.
-     */
-    private void quantifier() {
-        if (previousExpressionWasQuantifier) {
-            throw new IncorrectConstructionException("You cannot add a quantifier after a quantifier. Remove one of the incorrect quantifiers. " +
-                    "Or, if you haven't done anything yet, you started with a quantifier. That is not possible.");
-        }
-        previousExpressionWasQuantifier = true;
-    }
-
-    /**
-     * The method that is executed adds a standalone block.
-     */
-    private void standaloneBlock() {
-        previousExpressionWasQuantifier = false;
+    public ReadableRegexOrderChecker(MethodOrderChecker methodOrderChecker) {
+        this.methodOrderChecker = methodOrderChecker;
     }
 
     @Override
@@ -39,43 +24,43 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     public ReadableRegex regexFromString(String regex) {
         // We are not actually sure that the regex is a standalone block. If we don't do this however, it is never possible
         // to add a quantifier after this block. I leave the user responsible for the outcome.
-        standaloneBlock();
+        methodOrderChecker.checkCallingMethod(MethodOrderChecker.Method.STANDALONE_BLOCK);
         return super.regexFromString(regex);
     }
 
     @Override
     public ReadableRegex add(ReadableRegex regexBuilder) {
-        standaloneBlock();
+        methodOrderChecker.checkCallingMethod(MethodOrderChecker.Method.STANDALONE_BLOCK);
         return super.add(regexBuilder);
     }
 
     @Override
     public ReadableRegex literal(String literalValue) {
-        standaloneBlock();
+        methodOrderChecker.checkCallingMethod(MethodOrderChecker.Method.STANDALONE_BLOCK);
         return super.literal(literalValue);
     }
 
     @Override
     public ReadableRegex digit() {
-        standaloneBlock();
+        methodOrderChecker.checkCallingMethod(MethodOrderChecker.Method.STANDALONE_BLOCK);
         return super.digit();
     }
 
     @Override
     public ReadableRegex whitespace() {
-        standaloneBlock();
+        methodOrderChecker.checkCallingMethod(MethodOrderChecker.Method.STANDALONE_BLOCK);
         return super.whitespace();
     }
 
     @Override
     public ReadableRegex oneOrMore() {
-        quantifier();
+        methodOrderChecker.checkCallingMethod(MethodOrderChecker.Method.QUANTIFIER);
         return super.oneOrMore();
     }
 
     @Override
     public ReadableRegex optional() {
-        quantifier();
+        methodOrderChecker.checkCallingMethod(MethodOrderChecker.Method.QUANTIFIER);
         return super.optional();
     }
 }

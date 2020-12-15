@@ -1,5 +1,6 @@
 package com.apon.readableregex;
 
+import com.apon.readableregex.internal.MethodOrderChecker;
 import com.apon.readableregex.internal.ReadableRegexOrderChecker;
 
 import java.util.regex.Matcher;
@@ -17,7 +18,7 @@ public interface ReadableRegex extends StandaloneBlockBuilder, QuantifierBuilder
      * @return Instance of the builder.
      */
     static ReadableRegex regex() {
-        return new ReadableRegexOrderChecker();
+        return new ReadableRegexOrderChecker(new MethodOrderChecker());
     }
 
     /**
