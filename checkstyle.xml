@@ -23,10 +23,11 @@
 
         <!-- Avoid importing all classes from a package. -->
         <module name="AvoidStarImport">
-            <!-- Hamcrest and Constants are commonly imported using star in test files. -->
+            <!-- Hamcrest, Constants and Methods are commonly imported using star in test files. -->
             <property name="excludes" value="
                 org.hamcrest.Matchers,
-                com.apon.readableregex.Constants"/>
+                com.apon.readableregex.Constants,
+                com.apon.readableregex.internal.MethodOrderChecker.Method"/>
         </module>
 
         <!-- All static final fields should be capitalized and using underscores as separation.
