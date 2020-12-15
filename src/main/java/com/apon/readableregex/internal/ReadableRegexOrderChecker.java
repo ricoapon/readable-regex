@@ -19,6 +19,7 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
 
     @Override
     public ReadableRegexPattern build() {
+        methodOrderChecker.checkCallingMethod(FINISH);
         return super.build();
     }
 
@@ -68,26 +69,31 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
 
     @Override
     public ReadableRegex startGroup() {
+        methodOrderChecker.checkCallingMethod(START_GROUP);
         return super.startGroup();
     }
 
     @Override
     public ReadableRegex startGroup(String groupName) {
+        methodOrderChecker.checkCallingMethod(START_GROUP);
         return super.startGroup(groupName);
     }
 
     @Override
     public ReadableRegex endGroup() {
+        methodOrderChecker.checkCallingMethod(END_GROUP);
         return super.endGroup();
     }
 
     @Override
     public ReadableRegex group(ReadableRegex regexBuilder) {
+        // Implementation calls other methods. The order is checked in those methods.
         return super.group(regexBuilder);
     }
 
     @Override
     public ReadableRegex group(String groupName, ReadableRegex regexBuilder) {
+        // Implementation calls other methods. The order is checked in those methods.
         return super.group(groupName, regexBuilder);
     }
 }
