@@ -18,7 +18,8 @@ public interface StandaloneBlockBuilder {
     ReadableRegex regexFromString(String regex);
 
     /**
-     * Appends the regular expression created using another builder instance to this builder.
+     * Appends the regular expression created using another builder instance to this builder. The regular expression
+     * is surrounded in a non-capturing group {@code (?: ... )}.
      * @param regexBuilder The other builder instance.
      * @return This builder.
      */

@@ -6,7 +6,7 @@ import com.apon.readableregex.ReadableRegexPattern;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public abstract class ReadableRegexImpl implements ReadableRegex {
+public abstract class ReadableRegexBuilder implements ReadableRegex {
     /** The internal regular expression. This field should only be modified using the {@link #_addRegex(String)} method. */
     private final StringBuilder regexBuilder = new StringBuilder();
 
@@ -67,5 +67,36 @@ public abstract class ReadableRegexImpl implements ReadableRegex {
     @Override
     public ReadableRegex optional() {
         return _addRegex("?");
+    }
+
+    @Override
+    public ReadableRegex startGroup() {
+        return _addRegex("(");
+    }
+
+    @Override
+    public ReadableRegex startGroup(String groupName) {
+        Objects.requireNonNull(groupName);
+        if (!Pattern.matches("[a-zA-Z][a-zA-Z0-9]*", groupName)) {
+            throw new IllegalArgumentException("The group name '" + groupName + "' is not valid: it should start with a letter " +
+                    "and only contain letters and digits.");
+        }
+
+        return _addRegex("(?<" + groupName + ">");
+    }
+
+    @Override
+    public ReadableRegex endGroup() {
+        return _addRegex(")");
+    }
+
+    @Override
+    public ReadableRegex group(ReadableRegex regexBuilder) {
+        return startGroup().add(regexBuilder).endGroup();
+    }
+
+    @Override
+    public ReadableRegex group(String groupName, ReadableRegex regexBuilder) {
+        return startGroup(groupName).add(regexBuilder).endGroup();
     }
 }
