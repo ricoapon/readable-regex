@@ -14,12 +14,16 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     /** The internal regular expression. This field should only be modified using the {@link #_addRegex(String)} method. */
     private final StringBuilder regexBuilder = new StringBuilder();
 
+    @SuppressWarnings("MagicConstant")
     @Override
     public ReadableRegexPattern buildWithFlags(PatternFlag... patternFlags) {
-        int flags = Arrays.stream(patternFlags).map(PatternFlag::getJdkPatternFlagCode).reduce(0, (integer, integer2) -> integer | integer2);
-        //noinspection MagicConstant
+        // Collect them in a set first. If somebody gives the same flag twice, we don't want the flag to cancel itself out.
+        Set<PatternFlag> enabledFlags = Arrays.stream(patternFlags).collect(Collectors.toSet());
+
+        int flags = enabledFlags.stream().map(PatternFlag::getJdkPatternFlagCode)
+                .reduce(0, (integer, integer2) -> integer | integer2);
         Pattern pattern = Pattern.compile(regexBuilder.toString(), flags);
-        return new ReadableRegexPatternImpl(pattern);
+        return new ReadableRegexPatternImpl(pattern, enabledFlags);
     }
 
     /**

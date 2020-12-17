@@ -6,12 +6,20 @@ import static com.apon.readableregex.ReadableRegex.regex;
 import static com.apon.readableregex.matchers.PatternMatchMatcher.doesntMatchAnythingFrom;
 import static com.apon.readableregex.matchers.PatternMatchMatcher.matchesExactly;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.not;
 
 /**
  * Tests related to enabling specific pattern flags.
  */
 public class PatternFlagTests {
+    @Test
+    void enabledFlagsAreReturned() {
+        ReadableRegexPattern pattern = regex().regexFromString(".*").buildWithFlags(PatternFlag.CASE_INSENSITIVE, PatternFlag.DOT_ALL);
+
+        assertThat(pattern.enabledFlags(), containsInAnyOrder(PatternFlag.CASE_INSENSITIVE, PatternFlag.DOT_ALL));
+    }
+
     @Test
     void caseInsensitiveWorks() {
         // No flag means case sensitive matches.

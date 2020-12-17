@@ -1,5 +1,6 @@
 package com.apon.readableregex;
 
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +15,11 @@ public interface ReadableRegexPattern {
      * @return {@link Matcher}
      */
     Matcher matches(String text);
+
+    /**
+     * @return All the {@link PatternFlag}s that are enabled on this pattern.
+     */
+    Set<PatternFlag> enabledFlags();
 
     /**
      * @return The wrapped {@link Pattern} object.
