@@ -3,20 +3,17 @@ package com.apon.readableregex.internal;
 import com.apon.readableregex.PatternFlag;
 import com.apon.readableregex.ReadableRegexPattern;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class ReadableRegexPatternImpl implements ReadableRegexPattern {
     private final Pattern pattern;
-    private final Set<PatternFlag> patternFlags;
 
-    ReadableRegexPatternImpl(Pattern pattern, Set<PatternFlag> patternFlags) {
+    ReadableRegexPatternImpl(Pattern pattern) {
         this.pattern = pattern;
-        this.patternFlags = Collections.unmodifiableSet(patternFlags);
     }
 
     @Override
@@ -26,7 +23,9 @@ public class ReadableRegexPatternImpl implements ReadableRegexPattern {
 
     @Override
     public Set<PatternFlag> enabledFlags() {
-        return patternFlags;
+        return Arrays.stream(PatternFlag.values())
+                .filter(flag -> (pattern.flags() & flag.getJdkPatternFlagCode()) != 0)
+                .collect(Collectors.toSet());
     }
 
     @Override
