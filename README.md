@@ -27,11 +27,14 @@ All additional plugins to check the code base should run when calling the follow
 gradle checks
 ```
 This will trigger [SpotBugs](https://spotbugs.github.io/), [Checkstyle](https://checkstyle.sourceforge.io/), [JaCoCo](https://www.jacoco.org/jacoco/) and [Pitest](https://pitest.org/).
-If you want to run this individually (because this is faster), you can use:
+If the checks succeed, the test coverage is printed. Of course, the test coverage should be 100%.
+
+If you want to run one of the components individually (because this could be faster), you can use:
 ````
 gradle spotbugs
 gradle checkstyle
 gradle jacoco
 gradle pitest
+gradle printTestPercentages
 ````
-All the HTML reports can be viewed in `build/reports`.
+The reports are available in HTML form and are located in `build/reports`.
