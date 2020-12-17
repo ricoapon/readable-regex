@@ -9,7 +9,15 @@ public interface FinishBuilder {
     /**
      * @return Compiled regular expression into {@link ReadableRegexPattern} object.
      */
-    ReadableRegexPattern build();
+    default ReadableRegexPattern build() {
+        return buildWithFlags();
+    }
+
+    /**
+     * @param patternFlags The flags that are enabled for the regular expression.
+     * @return Compiled regular expression into {@link ReadableRegexPattern} object.
+     */
+    ReadableRegexPattern buildWithFlags(PatternFlag... patternFlags);
 
     /**
      * @return Compiled regular expression into {@link Pattern} object.

@@ -1,5 +1,6 @@
 package com.apon.readableregex.internal;
 
+import com.apon.readableregex.PatternFlag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +34,12 @@ class ReadableRegexOrderCheckerTest {
     @Test
     void build_Finish() {
         readableRegexOrderChecker.build();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(FINISH));
+    }
+
+    @Test
+    void buildWithFlags_Finish() {
+        readableRegexOrderChecker.buildWithFlags(PatternFlag.CASE_INSENSITIVE, PatternFlag.MULTILINE);
         assertThat(dummyOrderChecker.calledMethod, equalTo(FINISH));
     }
 

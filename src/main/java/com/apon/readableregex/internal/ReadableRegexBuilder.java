@@ -1,18 +1,24 @@
 package com.apon.readableregex.internal;
 
+import com.apon.readableregex.PatternFlag;
 import com.apon.readableregex.ReadableRegex;
 import com.apon.readableregex.ReadableRegexPattern;
 
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public abstract class ReadableRegexBuilder implements ReadableRegex {
     /** The internal regular expression. This field should only be modified using the {@link #_addRegex(String)} method. */
     private final StringBuilder regexBuilder = new StringBuilder();
 
     @Override
-    public ReadableRegexPattern build() {
-        Pattern pattern = Pattern.compile(regexBuilder.toString());
+    public ReadableRegexPattern buildWithFlags(PatternFlag... patternFlags) {
+        int flags = Arrays.stream(patternFlags).map(PatternFlag::getJdkPatternFlagCode).reduce(0, (integer, integer2) -> integer | integer2);
+        //noinspection MagicConstant
+        Pattern pattern = Pattern.compile(regexBuilder.toString(), flags);
         return new ReadableRegexPatternImpl(pattern);
     }
 
