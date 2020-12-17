@@ -1,5 +1,6 @@
 package com.apon.readableregex.internal;
 
+import com.apon.readableregex.PatternFlag;
 import com.apon.readableregex.ReadableRegex;
 import com.apon.readableregex.ReadableRegexPattern;
 
@@ -18,9 +19,9 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     }
 
     @Override
-    public ReadableRegexPattern build() {
+    public ReadableRegexPattern buildWithFlags(PatternFlag... patternFlags) {
         methodOrderChecker.checkCallingMethod(FINISH);
-        return super.build();
+        return super.buildWithFlags(patternFlags);
     }
 
     @Override
