@@ -31,6 +31,18 @@ public interface GroupBuilder {
     ReadableRegex startNegativeLookbehind();
 
     /**
+     * Starts a non-capturing group for positive lookahead. This is the same as {@code (?=}.
+     * @return This builder.
+     */
+    ReadableRegex startPositiveLookahead();
+
+    /**
+     * Starts a non-capturing group for negative lookahead. This is the same as {@code (?!}.
+     * @return This builder.
+     */
+    ReadableRegex startNegativeLookahead();
+
+    /**
      * Ends the last group that started, this includes lookbehind. This is the same as {@code )}. This method cannot be
      * used before starting a group.
      * @return This builder.
@@ -68,5 +80,23 @@ public interface GroupBuilder {
      */
     default ReadableRegex negativeLookbehind(ReadableRegex regexBuilder) {
         return startNegativeLookbehind().add(regexBuilder).endGroup();
+    }
+
+    /**
+     * Syntactic sugar for {@code .startPositiveLookahead().add(regexBuilder).endGroup()}.
+     * @param regexBuilder The regular expression.
+     * @return This builder.
+     */
+    default ReadableRegex positiveLookahead(ReadableRegex regexBuilder) {
+        return startPositiveLookahead().add(regexBuilder).endGroup();
+    }
+
+    /**
+     * Syntactic sugar for {@code .startNegativeLookahead().add(regexBuilder).endGroup()}.
+     * @param regexBuilder The regular expression.
+     * @return This builder.
+     */
+    default ReadableRegex negativeLookahead(ReadableRegex regexBuilder) {
+        return startNegativeLookahead().add(regexBuilder).endGroup();
     }
 }

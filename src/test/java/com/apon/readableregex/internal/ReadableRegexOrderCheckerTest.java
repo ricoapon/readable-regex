@@ -101,6 +101,12 @@ class ReadableRegexOrderCheckerTest {
 
         readableRegexOrderChecker.startNegativeLookbehind();
         assertThat(dummyOrderChecker.calledMethod, equalTo(START_GROUP));
+
+        readableRegexOrderChecker.startPositiveLookahead();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(START_GROUP));
+
+        readableRegexOrderChecker.startNegativeLookahead();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(START_GROUP));
     }
 
     @Test

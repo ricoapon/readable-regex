@@ -101,6 +101,16 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     }
 
     @Override
+    public ReadableRegex startPositiveLookahead() {
+        return _addRegex("(?=");
+    }
+
+    @Override
+    public ReadableRegex startNegativeLookahead() {
+        return _addRegex("(?!");
+    }
+
+    @Override
     public ReadableRegex endGroup() {
         return _addRegex(")");
     }

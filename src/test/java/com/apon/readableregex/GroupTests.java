@@ -85,4 +85,27 @@ class GroupTests {
         assertThat(pattern, doesntMatchAnythingFrom("1 "));
         assertThat(pattern, matchesSomethingFrom(" "));
     }
+
+    @Test
+    void lookaheadsWork() {
+        // Test using start/end syntax.
+        ReadableRegexPattern pattern = regex().whitespace().startPositiveLookahead().digit().endGroup().build();
+        assertThat(pattern, matchesSomethingFrom(" 1"));
+        assertThat(pattern, doesntMatchAnythingFrom(" "));
+
+        // Test using positiveLookahead(regexBuilder) syntax.
+        pattern = regex().whitespace().positiveLookahead(regex().digit()).build();
+        assertThat(pattern, matchesSomethingFrom(" 1"));
+        assertThat(pattern, doesntMatchAnythingFrom(" "));
+
+        // Test using start/end syntax.
+        pattern = regex().whitespace().startNegativeLookahead().digit().endGroup().build();
+        assertThat(pattern, doesntMatchAnythingFrom(" 1"));
+        assertThat(pattern, matchesSomethingFrom(" "));
+
+        // Test using negativeLookahead(regexBuilder) syntax.
+        pattern = regex().whitespace().negativeLookahead(regex().digit()).build();
+        assertThat(pattern, doesntMatchAnythingFrom(" 1"));
+        assertThat(pattern, matchesSomethingFrom(" "));
+    }
 }

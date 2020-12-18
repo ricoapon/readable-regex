@@ -93,6 +93,18 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     }
 
     @Override
+    public ReadableRegex startPositiveLookahead() {
+        methodOrderChecker.checkCallingMethod(START_GROUP);
+        return super.startPositiveLookahead();
+    }
+
+    @Override
+    public ReadableRegex startNegativeLookahead() {
+        methodOrderChecker.checkCallingMethod(START_GROUP);
+        return super.startNegativeLookahead();
+    }
+
+    @Override
     public ReadableRegex endGroup() {
         methodOrderChecker.checkCallingMethod(END_GROUP);
         return super.endGroup();
