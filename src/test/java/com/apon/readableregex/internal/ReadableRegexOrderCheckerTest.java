@@ -95,6 +95,21 @@ class ReadableRegexOrderCheckerTest {
     }
 
     @Test
+    void startLook_StartGroup() {
+        readableRegexOrderChecker.startPositiveLookbehind();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(START_GROUP));
+
+        readableRegexOrderChecker.startNegativeLookbehind();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(START_GROUP));
+
+        readableRegexOrderChecker.startPositiveLookahead();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(START_GROUP));
+
+        readableRegexOrderChecker.startNegativeLookahead();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(START_GROUP));
+    }
+
+    @Test
     void endGroup_EndGroup() {
         readableRegexOrderChecker.startGroup().endGroup();
         assertThat(dummyOrderChecker.calledMethod, equalTo(END_GROUP));

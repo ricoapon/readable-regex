@@ -3,11 +3,9 @@ package com.apon.readableregex;
 import org.junit.jupiter.api.Test;
 
 import static com.apon.readableregex.ReadableRegex.regex;
-import static com.apon.readableregex.matchers.PatternMatchMatcher.doesntMatchAnythingFrom;
-import static com.apon.readableregex.matchers.PatternMatchMatcher.matchesExactly;
+import static com.apon.readableregex.matchers.PatternMatchMatcher.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.not;
 
 /**
  * Tests related to enabling specific pattern flags.
@@ -36,7 +34,7 @@ public class PatternFlagTests {
     void dotAllWorks() {
         // No flag means .* does not match new line symbols.
         ReadableRegexPattern pattern = regex().regexFromString(".*").build();
-        assertThat(pattern, not(matchesExactly("a\na")));
+        assertThat(pattern, doesntMatchExactly("a\na"));
 
         pattern = regex().regexFromString(".*").buildWithFlags(PatternFlag.DOT_ALL);
         assertThat(pattern, matchesExactly("a\na"));
@@ -49,7 +47,6 @@ public class PatternFlagTests {
         assertThat(pattern, doesntMatchAnythingFrom("\na"));
 
         pattern = regex().regexFromString("^a").buildWithFlags(PatternFlag.MULTILINE);
-        // Not 'doesntMatchAnything' means that there is some match, but not the full string.
-        assertThat(pattern, not(doesntMatchAnythingFrom("\na")));
+        assertThat(pattern, matchesSomethingFrom("\na"));
     }
 }

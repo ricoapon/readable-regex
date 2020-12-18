@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static com.apon.readableregex.Constants.DIGITS;
 import static com.apon.readableregex.ReadableRegex.regex;
+import static com.apon.readableregex.matchers.PatternMatchMatcher.doesntMatchExactly;
 import static com.apon.readableregex.matchers.PatternMatchMatcher.matchesExactly;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.not;
 
 /**
  * Tests related to methods that are inside {@link QuantifierBuilder}.
@@ -17,7 +17,7 @@ class QuantifierTests {
         ReadableRegexPattern pattern = regex().digit().oneOrMore().build();
 
         assertThat(pattern, matchesExactly(DIGITS));
-        assertThat(pattern, not(matchesExactly("")));
+        assertThat(pattern, doesntMatchExactly(""));
     }
 
     @Test
@@ -26,6 +26,6 @@ class QuantifierTests {
 
         assertThat(pattern, matchesExactly("a1"));
         assertThat(pattern, matchesExactly("a"));
-        assertThat(pattern, not(matchesExactly("")));
+        assertThat(pattern, doesntMatchExactly(""));
     }
 }

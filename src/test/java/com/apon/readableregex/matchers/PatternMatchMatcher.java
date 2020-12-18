@@ -10,31 +10,47 @@ import java.util.regex.Matcher;
  * Hamcrest matcher for checking whether the {@link ReadableRegexPattern} matches a given {@link String}.
  */
 public class PatternMatchMatcher extends TypeSafeMatcher<ReadableRegexPattern> {
+    enum MatchStrategy {
+        MATCH_EXACTLY, NOT_MATCH_EXACTLY, MATCH_SOMETHING, NOT_MATCH_ANYTHING
+    }
     private final String textToMatch;
-    private final boolean mustMatchExactly;
+    private final MatchStrategy matchStrategy;
 
-    public PatternMatchMatcher(String textToMatch, boolean mustMatchExactly) {
+    public PatternMatchMatcher(String textToMatch, MatchStrategy matchStrategy) {
         this.textToMatch = textToMatch;
-        this.mustMatchExactly = mustMatchExactly;
+        this.matchStrategy = matchStrategy;
     }
 
     public static PatternMatchMatcher matchesExactly(String textToMatch) {
-        return new PatternMatchMatcher(textToMatch, true);
+        return new PatternMatchMatcher(textToMatch, MatchStrategy.MATCH_EXACTLY);
+    }
+
+    public static PatternMatchMatcher doesntMatchExactly(String textToMatch) {
+        return new PatternMatchMatcher(textToMatch, MatchStrategy.NOT_MATCH_EXACTLY);
     }
 
     public static PatternMatchMatcher doesntMatchAnythingFrom(String textToMatch) {
-        return new PatternMatchMatcher(textToMatch, false);
+        return new PatternMatchMatcher(textToMatch, MatchStrategy.NOT_MATCH_ANYTHING);
+    }
+
+    public static PatternMatchMatcher matchesSomethingFrom(String textToMatch) {
+        return new PatternMatchMatcher(textToMatch, MatchStrategy.MATCH_SOMETHING);
     }
 
     @Override
     protected boolean matchesSafely(ReadableRegexPattern item) {
         Matcher matcher = item.matches(textToMatch);
-        if (mustMatchExactly) {
+        if (MatchStrategy.MATCH_EXACTLY.equals(matchStrategy)) {
             return matcher.matches();
+        } else if (MatchStrategy.NOT_MATCH_EXACTLY.equals(matchStrategy)) {
+            return !matcher.matches();
+        } else if (MatchStrategy.MATCH_SOMETHING.equals(matchStrategy)) {
+            return matcher.find();
+        } else if (MatchStrategy.NOT_MATCH_ANYTHING.equals(matchStrategy)) {
+            return !matcher.find();
         }
 
-        // For the doesntMatch method, we reverse the outcome.
-        return !matcher.find();
+        throw new RuntimeException("Match strategy was not set correctly. Fix the static construction methods.");
     }
 
     @Override
