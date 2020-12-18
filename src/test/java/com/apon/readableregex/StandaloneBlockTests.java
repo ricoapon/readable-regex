@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 import static com.apon.readableregex.Constants.*;
 import static com.apon.readableregex.ReadableRegex.regex;
 import static com.apon.readableregex.matchers.PatternMatchMatcher.doesntMatchAnythingFrom;
+import static com.apon.readableregex.matchers.PatternMatchMatcher.doesntMatchExactly;
 import static com.apon.readableregex.matchers.PatternMatchMatcher.matchesExactly;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -32,6 +32,7 @@ class StandaloneBlockTests {
             assertThat(pattern, matchesExactly("111   2"));
         }
     }
+
     @Nested
     class Add {
         @Test
@@ -44,7 +45,7 @@ class StandaloneBlockTests {
             ReadableRegexPattern pattern = regex().digit().add(regex().whitespace()).oneOrMore().digit().build();
 
             assertThat(pattern, matchesExactly("1   2"));
-            assertThat(pattern, not(matchesExactly("1 1 2")));
+            assertThat(pattern, doesntMatchExactly("1 1 2"));
         }
 
         @Test
@@ -75,7 +76,7 @@ class StandaloneBlockTests {
             ReadableRegexPattern pattern = regex().literal("a").digit().oneOrMore().build();
 
             assertThat(pattern, matchesExactly("a" + DIGITS));
-            assertThat(pattern, not(matchesExactly("a1a1")));
+            assertThat(pattern, doesntMatchExactly("a1a1"));
         }
     }
 
@@ -103,7 +104,7 @@ class StandaloneBlockTests {
 
             assertThat(pattern, matchesExactly(".1 *"));
             assertThat(pattern, matchesExactly(".2\t*"));
-            assertThat(pattern, not(matchesExactly("a1 *")));
+            assertThat(pattern, doesntMatchExactly("a1 *"));
         }
 
         @Test
@@ -111,7 +112,7 @@ class StandaloneBlockTests {
             ReadableRegexPattern pattern = regex().digit().literal("a").oneOrMore().build();
 
             assertThat(pattern, matchesExactly("1aaaa"));
-            assertThat(pattern, not(matchesExactly("1a1a")));
+            assertThat(pattern, doesntMatchExactly("1a1a"));
         }
 
         @Test
@@ -143,7 +144,7 @@ class StandaloneBlockTests {
             ReadableRegexPattern pattern = regex().literal("a").whitespace().oneOrMore().build();
 
             assertThat(pattern, matchesExactly("a" + WHITESPACES));
-            assertThat(pattern, not(matchesExactly("a a ")));
+            assertThat(pattern, doesntMatchExactly("a a "));
         }
 
         @Test
