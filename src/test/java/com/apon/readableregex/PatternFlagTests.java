@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import static com.apon.readableregex.ReadableRegex.regex;
 import static com.apon.readableregex.matchers.PatternMatchMatcher.doesntMatchAnythingFrom;
 import static com.apon.readableregex.matchers.PatternMatchMatcher.matchesExactly;
+import static com.apon.readableregex.matchers.PatternMatchMatcher.matchesSomethingFrom;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.not;
@@ -49,7 +50,6 @@ public class PatternFlagTests {
         assertThat(pattern, doesntMatchAnythingFrom("\na"));
 
         pattern = regex().regexFromString("^a").buildWithFlags(PatternFlag.MULTILINE);
-        // Not 'doesntMatchAnything' means that there is some match, but not the full string.
-        assertThat(pattern, not(doesntMatchAnythingFrom("\na")));
+        assertThat(pattern, matchesSomethingFrom("\na"));
     }
 }
