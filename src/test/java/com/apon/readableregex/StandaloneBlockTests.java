@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static com.apon.readableregex.Constants.*;
-import static com.apon.readableregex.Constants.WHITESPACES;
 import static com.apon.readableregex.ReadableRegex.regex;
 import static com.apon.readableregex.matchers.PatternMatchMatcher.doesntMatchAnythingFrom;
 import static com.apon.readableregex.matchers.PatternMatchMatcher.matchesExactly;
