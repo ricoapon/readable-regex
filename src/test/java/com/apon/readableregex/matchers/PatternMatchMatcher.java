@@ -11,7 +11,7 @@ import java.util.regex.Matcher;
  */
 public class PatternMatchMatcher extends TypeSafeMatcher<ReadableRegexPattern> {
     enum MatchStrategy {
-        MATCH_EXACTLY, MATCH_SOMETHING, NOT_MATCH_ANYTHING
+        MATCH_EXACTLY, NOT_MATCH_EXACTLY, MATCH_SOMETHING, NOT_MATCH_ANYTHING
     }
     private final String textToMatch;
     private final MatchStrategy matchStrategy;
@@ -23,6 +23,10 @@ public class PatternMatchMatcher extends TypeSafeMatcher<ReadableRegexPattern> {
 
     public static PatternMatchMatcher matchesExactly(String textToMatch) {
         return new PatternMatchMatcher(textToMatch, MatchStrategy.MATCH_EXACTLY);
+    }
+
+    public static PatternMatchMatcher doesntMatchExactly(String textToMatch) {
+        return new PatternMatchMatcher(textToMatch, MatchStrategy.NOT_MATCH_EXACTLY);
     }
 
     public static PatternMatchMatcher doesntMatchAnythingFrom(String textToMatch) {
@@ -38,6 +42,8 @@ public class PatternMatchMatcher extends TypeSafeMatcher<ReadableRegexPattern> {
         Matcher matcher = item.matches(textToMatch);
         if (MatchStrategy.MATCH_EXACTLY.equals(matchStrategy)) {
             return matcher.matches();
+        } else if (MatchStrategy.NOT_MATCH_EXACTLY.equals(matchStrategy)) {
+            return !matcher.matches();
         } else if (MatchStrategy.MATCH_SOMETHING.equals(matchStrategy)) {
             return matcher.find();
         } else if (MatchStrategy.NOT_MATCH_ANYTHING.equals(matchStrategy)) {
