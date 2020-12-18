@@ -7,6 +7,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.regex.Matcher;
 
 import static com.apon.readableregex.ReadableRegex.regex;
+import static com.apon.readableregex.matchers.PatternMatchMatcher.doesntMatchAnythingFrom;
+import static com.apon.readableregex.matchers.PatternMatchMatcher.matchesSomethingFrom;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -61,4 +63,26 @@ class GroupTests {
         assertThrows(IllegalArgumentException.class, () -> regex().startGroup(groupName));
     }
 
+    @Test
+    void lookbehindsWork() {
+        // Test using start/end syntax.
+        ReadableRegexPattern pattern = regex().startPositiveLookbehind().digit().endGroup().whitespace().build();
+        assertThat(pattern, matchesSomethingFrom("1 "));
+        assertThat(pattern, doesntMatchAnythingFrom(" "));
+
+        // Test using positiveLookbehind(regexBuilder) syntax.
+        pattern = regex().positiveLookbehind(regex().digit()).whitespace().build();
+        assertThat(pattern, matchesSomethingFrom("1 "));
+        assertThat(pattern, doesntMatchAnythingFrom(" "));
+
+        // Test using start/end syntax.
+        pattern = regex().startNegativeLookbehind().digit().endGroup().whitespace().build();
+        assertThat(pattern, doesntMatchAnythingFrom("1 "));
+        assertThat(pattern, matchesSomethingFrom(" "));
+
+        // Test using negativeLookbehind(regexBuilder) syntax.
+        pattern = regex().negativeLookbehind(regex().digit()).whitespace().build();
+        assertThat(pattern, doesntMatchAnythingFrom("1 "));
+        assertThat(pattern, matchesSomethingFrom(" "));
+    }
 }
