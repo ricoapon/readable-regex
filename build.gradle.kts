@@ -7,7 +7,11 @@ plugins {
 }
 
 group = "com.apon"
-version = "0.0.1-SNAPSHOT"
+version = when {
+    project.hasProperty("customVersion") -> project.property("customVersion").toString()
+    else -> "head-SNAPSHOT"
+}
+println("Using version $version")
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
