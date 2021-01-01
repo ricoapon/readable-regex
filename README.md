@@ -1,4 +1,4 @@
-# Readable Regex [![Build Status](https://travis-ci.com/ricoapon/readable-regex.svg?branch=master)](https://travis-ci.com/ricoapon/readable-regex) [![codecov](https://codecov.io/gh/ricoapon/readable-regex/branch/master/graph/badge.svg?token=O236UO0ZNZ)](https://codecov.io/gh/ricoapon/readable-regex)
+# Readable Regex [![Maven Central](https://img.shields.io/maven-central/v/io.github.ricoapon/readable-regex)](https://search.maven.org/artifact/io.github.ricoapon/readable-regex) [![Build Status](https://travis-ci.com/ricoapon/readable-regex.svg?branch=master)](https://travis-ci.com/ricoapon/readable-regex) [![codecov](https://codecov.io/gh/ricoapon/readable-regex/branch/master/graph/badge.svg?token=O236UO0ZNZ)](https://codecov.io/gh/ricoapon/readable-regex)
 
 With this library, you can create regular expressions in a readable way!
 
