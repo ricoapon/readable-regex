@@ -57,6 +57,5 @@ class MethodOrderCheckerTest {
         methodOrderChecker.checkCallingMethod(START_GROUP);
         methodOrderChecker.checkCallingMethod(END_GROUP);
         methodOrderChecker.checkCallingMethod(QUANTIFIER);
-        // Test will fail automatically if no exception is thrown.
     }
 }
