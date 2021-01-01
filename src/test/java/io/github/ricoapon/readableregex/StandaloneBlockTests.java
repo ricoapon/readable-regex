@@ -47,13 +47,6 @@ class StandaloneBlockTests {
             assertThat(pattern, matchesExactly("1   2"));
             assertThat(pattern, doesntMatchExactly("1 1 2"));
         }
-
-        @Test
-        void quantifierIsPossibleAfterBuilder() {
-            ReadableRegexPattern pattern = regex().digit().oneOrMore().add(regex().whitespace()).oneOrMore().build();
-
-            assertThat(pattern, matchesExactly("111   "));
-        }
     }
 
     @Nested
@@ -114,13 +107,6 @@ class StandaloneBlockTests {
             assertThat(pattern, matchesExactly("1aaaa"));
             assertThat(pattern, doesntMatchExactly("1a1a"));
         }
-
-        @Test
-        void quantifierIsPossibleAfterLiteral() {
-            ReadableRegexPattern pattern = regex().digit().oneOrMore().literal("abc").oneOrMore().build();
-
-            assertThat(pattern, matchesExactly("111abcabc"));
-        }
     }
 
     @Nested
@@ -145,13 +131,6 @@ class StandaloneBlockTests {
 
             assertThat(pattern, matchesExactly("a" + WHITESPACES));
             assertThat(pattern, doesntMatchExactly("a a "));
-        }
-
-        @Test
-        void quantifierIsPossibleAfterWhitespace() {
-            ReadableRegexPattern pattern = regex().digit().oneOrMore().whitespace().oneOrMore().build();
-
-            assertThat(pattern, matchesExactly("111   "));
         }
     }
 

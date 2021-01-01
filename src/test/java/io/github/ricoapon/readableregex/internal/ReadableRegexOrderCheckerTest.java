@@ -28,7 +28,7 @@ class ReadableRegexOrderCheckerTest {
         dummyOrderChecker = new DummyOrderChecker();
 
         // Call digit, so that quantifiers can be called directly after. Does not matter for others.
-        readableRegexOrderChecker = (ReadableRegexOrderChecker) new ReadableRegexOrderChecker(dummyOrderChecker).digit();
+        readableRegexOrderChecker = new ReadableRegexOrderChecker(dummyOrderChecker);
     }
 
     @Test
@@ -81,13 +81,13 @@ class ReadableRegexOrderCheckerTest {
 
     @Test
     void oneOrMore_Quantifier() {
-        readableRegexOrderChecker.oneOrMore();
+        readableRegexOrderChecker.digit().oneOrMore();
         assertThat(dummyOrderChecker.calledMethod, equalTo(QUANTIFIER));
     }
 
     @Test
     void optional_Quantifier() {
-        readableRegexOrderChecker.optional();
+        readableRegexOrderChecker.digit().optional();
         assertThat(dummyOrderChecker.calledMethod, equalTo(QUANTIFIER));
     }
 
