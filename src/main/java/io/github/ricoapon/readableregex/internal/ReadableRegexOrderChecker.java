@@ -1,10 +1,10 @@
-package com.apon.readableregex.internal;
+package io.github.ricoapon.readableregex.internal;
 
-import com.apon.readableregex.PatternFlag;
-import com.apon.readableregex.ReadableRegex;
-import com.apon.readableregex.ReadableRegexPattern;
+import io.github.ricoapon.readableregex.PatternFlag;
+import io.github.ricoapon.readableregex.ReadableRegex;
+import io.github.ricoapon.readableregex.ReadableRegexPattern;
 
-import static com.apon.readableregex.internal.MethodOrderChecker.Method.*;
+import static io.github.ricoapon.readableregex.internal.MethodOrderChecker.Method.*;
 
 /**
  * Subclass of {@link ReadableRegexBuilder} to check whether methods are called in the right order using an instance

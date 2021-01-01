@@ -1,14 +1,14 @@
-package com.apon.readableregex;
+package io.github.ricoapon.readableregex;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static com.apon.readableregex.Constants.*;
-import static com.apon.readableregex.ReadableRegex.regex;
-import static com.apon.readableregex.matchers.PatternMatchMatcher.doesntMatchAnythingFrom;
-import static com.apon.readableregex.matchers.PatternMatchMatcher.doesntMatchExactly;
-import static com.apon.readableregex.matchers.PatternMatchMatcher.matchesExactly;
+import static io.github.ricoapon.readableregex.Constants.*;
+import static io.github.ricoapon.readableregex.ReadableRegex.regex;
+import static io.github.ricoapon.readableregex.matchers.PatternMatchMatcher.doesntMatchAnythingFrom;
+import static io.github.ricoapon.readableregex.matchers.PatternMatchMatcher.doesntMatchExactly;
+import static io.github.ricoapon.readableregex.matchers.PatternMatchMatcher.matchesExactly;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

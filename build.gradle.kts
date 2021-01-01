@@ -6,7 +6,7 @@ plugins {
     id("info.solidsoft.pitest") version "1.5.1"
 }
 
-group = "com.apon"
+group = "io.github.ricoapon"
 version = when {
     project.hasProperty("customVersion") -> project.property("customVersion").toString()
     else -> "head-SNAPSHOT"

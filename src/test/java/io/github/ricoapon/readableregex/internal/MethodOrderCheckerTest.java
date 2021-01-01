@@ -1,10 +1,10 @@
-package com.apon.readableregex.internal;
+package io.github.ricoapon.readableregex.internal;
 
-import com.apon.readableregex.IncorrectConstructionException;
+import io.github.ricoapon.readableregex.IncorrectConstructionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.apon.readableregex.internal.MethodOrderChecker.Method.*;
+import static io.github.ricoapon.readableregex.internal.MethodOrderChecker.Method.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MethodOrderCheckerTest {

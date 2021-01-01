@@ -1,8 +1,8 @@
-package com.apon.readableregex;
+package io.github.ricoapon.readableregex;
 
 import org.junit.jupiter.api.Test;
 
-import static com.apon.readableregex.ReadableRegex.regex;
+import static io.github.ricoapon.readableregex.ReadableRegex.regex;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;

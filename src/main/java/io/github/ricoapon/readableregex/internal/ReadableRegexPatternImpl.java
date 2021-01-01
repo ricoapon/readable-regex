@@ -1,7 +1,7 @@
-package com.apon.readableregex.internal;
+package io.github.ricoapon.readableregex.internal;
 
-import com.apon.readableregex.PatternFlag;
-import com.apon.readableregex.ReadableRegexPattern;
+import io.github.ricoapon.readableregex.PatternFlag;
+import io.github.ricoapon.readableregex.ReadableRegexPattern;
 
 import java.util.Arrays;
 import java.util.Set;

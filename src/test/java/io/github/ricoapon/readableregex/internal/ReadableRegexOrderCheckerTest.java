@@ -1,11 +1,11 @@
-package com.apon.readableregex.internal;
+package io.github.ricoapon.readableregex.internal;
 
-import com.apon.readableregex.PatternFlag;
+import io.github.ricoapon.readableregex.PatternFlag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.apon.readableregex.ReadableRegex.regex;
-import static com.apon.readableregex.internal.MethodOrderChecker.Method.*;
+import static io.github.ricoapon.readableregex.ReadableRegex.regex;
+import static io.github.ricoapon.readableregex.internal.MethodOrderChecker.Method.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 

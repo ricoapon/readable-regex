@@ -26,9 +26,9 @@
             <!-- Some constants and methods are commonly imported using star in test files. -->
             <property name="excludes" value="
                 org.hamcrest.Matchers,
-                com.apon.readableregex.Constants,
-                com.apon.readableregex.internal.MethodOrderChecker.Method,
-                com.apon.readableregex.matchers.PatternMatchMatcher"/>
+                io.github.ricoapon.readableregex.Constants,
+                io.github.ricoapon.readableregex.internal.MethodOrderChecker.Method,
+                io.github.ricoapon.readableregex.matchers.PatternMatchMatcher"/>
         </module>
 
         <!-- All static final fields should be capitalized and using underscores as separation.

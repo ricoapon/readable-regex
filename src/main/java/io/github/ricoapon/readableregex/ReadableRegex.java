@@ -1,7 +1,7 @@
-package com.apon.readableregex;
+package io.github.ricoapon.readableregex;
 
-import com.apon.readableregex.internal.MethodOrderChecker;
-import com.apon.readableregex.internal.ReadableRegexOrderChecker;
+import io.github.ricoapon.readableregex.internal.MethodOrderChecker;
+import io.github.ricoapon.readableregex.internal.ReadableRegexOrderChecker;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
