@@ -38,3 +38,13 @@ gradle pitest
 gradle printTestPercentages
 ````
 The reports are available in HTML form and are located in `build/reports`.
+
+## Publishing new releases
+Every release should correspond to a tag in git. This tag should be manually added.
+Uploading new releases to Maven Central can be done using the following command:
+````
+gradle publish -PcustomVersion=X
+````
+If no version is supplied, the default `head-SNAPSHOT` is used.
+
+Note that at this time, only the creator of this library (Rico Apon) can upload new releases.
