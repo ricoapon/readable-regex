@@ -1,4 +1,4 @@
-package com.apon.readableregex;
+package io.github.ricoapon.readableregex;
 
 /**
  * Class with useful constants that can be used in test cases.

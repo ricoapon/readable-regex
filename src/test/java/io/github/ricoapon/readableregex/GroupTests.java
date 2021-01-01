@@ -1,4 +1,4 @@
-package com.apon.readableregex;
+package io.github.ricoapon.readableregex;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -6,9 +6,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.regex.Matcher;
 
-import static com.apon.readableregex.ReadableRegex.regex;
-import static com.apon.readableregex.matchers.PatternMatchMatcher.doesntMatchAnythingFrom;
-import static com.apon.readableregex.matchers.PatternMatchMatcher.matchesSomethingFrom;
+import static io.github.ricoapon.readableregex.ReadableRegex.regex;
+import static io.github.ricoapon.readableregex.matchers.PatternMatchMatcher.doesntMatchAnythingFrom;
+import static io.github.ricoapon.readableregex.matchers.PatternMatchMatcher.matchesSomethingFrom;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;

@@ -1,4 +1,4 @@
-package com.apon.readableregex;
+package io.github.ricoapon.readableregex;
 
 import java.util.Set;
 import java.util.regex.Matcher;

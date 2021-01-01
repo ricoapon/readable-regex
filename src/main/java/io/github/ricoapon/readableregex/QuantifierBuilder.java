@@ -1,4 +1,4 @@
-package com.apon.readableregex;
+package io.github.ricoapon.readableregex;
 
 /**
  * Builder interface with all the methods that adds quantifiers to standalone blocks.

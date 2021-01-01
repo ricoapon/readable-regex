@@ -1,11 +1,11 @@
-package com.apon.readableregex;
+package io.github.ricoapon.readableregex;
 
 import org.junit.jupiter.api.Test;
 
-import static com.apon.readableregex.Constants.DIGITS;
-import static com.apon.readableregex.ReadableRegex.regex;
-import static com.apon.readableregex.matchers.PatternMatchMatcher.doesntMatchExactly;
-import static com.apon.readableregex.matchers.PatternMatchMatcher.matchesExactly;
+import static io.github.ricoapon.readableregex.Constants.DIGITS;
+import static io.github.ricoapon.readableregex.ReadableRegex.regex;
+import static io.github.ricoapon.readableregex.matchers.PatternMatchMatcher.doesntMatchExactly;
+import static io.github.ricoapon.readableregex.matchers.PatternMatchMatcher.matchesExactly;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**

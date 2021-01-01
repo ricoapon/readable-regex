@@ -1,6 +1,6 @@
-package com.apon.readableregex.matchers;
+package io.github.ricoapon.readableregex.matchers;
 
-import com.apon.readableregex.ReadableRegexPattern;
+import io.github.ricoapon.readableregex.ReadableRegexPattern;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 

@@ -1,4 +1,4 @@
-package com.apon.readableregex;
+package io.github.ricoapon.readableregex;
 
 /**
  * Exception that will be thrown when the builder methods are called in incorrect order or at the wrong time.

@@ -1,20 +1,24 @@
-package com.apon.readableregex.internal;
+package io.github.ricoapon.readableregex.internal;
 
-import com.apon.readableregex.GroupBuilder;
-import com.apon.readableregex.IncorrectConstructionException;
+import io.github.ricoapon.readableregex.FinishBuilder;
+import io.github.ricoapon.readableregex.GroupBuilder;
+import io.github.ricoapon.readableregex.IncorrectConstructionException;
+import io.github.ricoapon.readableregex.QuantifierBuilder;
+import io.github.ricoapon.readableregex.ReadableRegex;
+import io.github.ricoapon.readableregex.StandaloneBlockBuilder;
 
 /**
  * Class for maintaining the status of a building a regular expression and checking whether executing methods of
- * {@link com.apon.readableregex.ReadableRegex} is valid.
+ * {@link ReadableRegex} is valid.
  */
 public class MethodOrderChecker {
-    /** The types of methods that can be executed by {@link com.apon.readableregex.ReadableRegex}. */
+    /** The types of methods that can be executed by {@link ReadableRegex}. */
     enum Method {
-        /** Methods from the interface {@link com.apon.readableregex.StandaloneBlockBuilder}. */
+        /** Methods from the interface {@link StandaloneBlockBuilder}. */
         STANDALONE_BLOCK,
-        /** Methods from the interface {@link com.apon.readableregex.QuantifierBuilder}. */
+        /** Methods from the interface {@link QuantifierBuilder}. */
         QUANTIFIER,
-        /** Methods from the interface {@link com.apon.readableregex.FinishBuilder}. */
+        /** Methods from the interface {@link FinishBuilder}. */
         FINISH,
         /** Starting a group with a method from the interface {@link GroupBuilder}. */
         START_GROUP,
