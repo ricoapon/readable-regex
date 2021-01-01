@@ -47,13 +47,6 @@ class StandaloneBlockTests {
             assertThat(pattern, matchesExactly("1   2"));
             assertThat(pattern, doesntMatchExactly("1 1 2"));
         }
-
-        @Test
-        void quantifierIsPossibleAfterBuilder() {
-            ReadableRegexPattern pattern = regex().digit().oneOrMore().add(regex().whitespace()).oneOrMore().build();
-
-            assertThat(pattern, matchesExactly("111   "));
-        }
     }
 
     @Nested
@@ -114,13 +107,6 @@ class StandaloneBlockTests {
             assertThat(pattern, matchesExactly("1aaaa"));
             assertThat(pattern, doesntMatchExactly("1a1a"));
         }
-
-        @Test
-        void quantifierIsPossibleAfterLiteral() {
-            ReadableRegexPattern pattern = regex().digit().oneOrMore().literal("abc").oneOrMore().build();
-
-            assertThat(pattern, matchesExactly("111abcabc"));
-        }
     }
 
     @Nested
@@ -146,12 +132,33 @@ class StandaloneBlockTests {
             assertThat(pattern, matchesExactly("a" + WHITESPACES));
             assertThat(pattern, doesntMatchExactly("a a "));
         }
+    }
+
+    @Nested
+    class OneOf {
+        @Test
+        void oneOfCanBeUsedWithZeroOrOneArguments() {
+            ReadableRegexPattern pattern = regex().oneOf().oneOf(regex().literal("b")).build();
+
+            assertThat(pattern, matchesExactly("b"));
+        }
 
         @Test
-        void quantifierIsPossibleAfterWhitespace() {
-            ReadableRegexPattern pattern = regex().digit().oneOrMore().whitespace().oneOrMore().build();
+        void oneOfCanBeUsedWithMultipleArguments() {
+            ReadableRegexPattern pattern = regex().oneOf(regex().literal("b"), regex().literal("c")).build();
 
-            assertThat(pattern, matchesExactly("111   "));
+            assertThat(pattern, matchesExactly("b"));
+            assertThat(pattern, matchesExactly("c"));
+            assertThat(pattern, doesntMatchAnythingFrom(""));
+        }
+
+        @Test
+        void oneOfAreStandaloneBlocks() {
+            ReadableRegexPattern pattern = regex().literal("a").oneOf(regex().literal("b")).optional().build();
+
+            assertThat(pattern, matchesExactly("a"));
+            assertThat(pattern, matchesExactly("ab"));
+            assertThat(pattern, doesntMatchAnythingFrom(""));
         }
     }
 }

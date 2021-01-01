@@ -23,7 +23,7 @@ public class MethodOrderChecker {
         /** Starting a group with a method from the interface {@link GroupBuilder}. */
         START_GROUP,
         /** Ending a group with the method {@link GroupBuilder#endGroup()}. */
-        END_GROUP,
+        END_GROUP
     }
 
     /** Indicates if a quantifier is allowed as the next method. Start with {@code false}, because you cannot start with a quantifier. */
