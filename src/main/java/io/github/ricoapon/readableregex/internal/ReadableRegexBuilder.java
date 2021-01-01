@@ -7,6 +7,7 @@ import io.github.ricoapon.readableregex.ReadableRegexPattern;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public abstract class ReadableRegexBuilder implements ReadableRegex {
     /** The internal regular expression. This field should only be modified using the {@link #_addRegex(String)} method. */
@@ -62,6 +63,18 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     @Override
     public ReadableRegex whitespace() {
         return _addRegex("\\s");
+    }
+
+    @Override
+    public ReadableRegex oneOf(ReadableRegex... regexBuilders) {
+        String middlePart = Arrays.stream(regexBuilders)
+                .map(ReadableRegex::build)
+                .map(ReadableRegexPattern::toString)
+                .collect(Collectors.joining("|"));
+
+        _addRegex("(?:");
+        _addRegex(middlePart);
+        return _addRegex(")");
     }
 
     @Override

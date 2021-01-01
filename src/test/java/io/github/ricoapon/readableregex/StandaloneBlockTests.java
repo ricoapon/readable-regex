@@ -154,4 +154,32 @@ class StandaloneBlockTests {
             assertThat(pattern, matchesExactly("111   "));
         }
     }
+
+    @Nested
+    class OneOf {
+        @Test
+        void oneOfCanBeUsedWithZeroOrOneArguments() {
+            ReadableRegexPattern pattern = regex().oneOf().oneOf(regex().literal("b")).build();
+
+            assertThat(pattern, matchesExactly("b"));
+        }
+
+        @Test
+        void oneOfCanBeUsedWithMultipleArguments() {
+            ReadableRegexPattern pattern = regex().oneOf(regex().literal("b"), regex().literal("c")).build();
+
+            assertThat(pattern, matchesExactly("b"));
+            assertThat(pattern, matchesExactly("c"));
+            assertThat(pattern, doesntMatchAnythingFrom(""));
+        }
+
+        @Test
+        void oneOfAreStandaloneBlocks() {
+            ReadableRegexPattern pattern = regex().literal("a").oneOf(regex().literal("b")).optional().build();
+
+            assertThat(pattern, matchesExactly("a"));
+            assertThat(pattern, matchesExactly("ab"));
+            assertThat(pattern, doesntMatchAnythingFrom(""));
+        }
+    }
 }

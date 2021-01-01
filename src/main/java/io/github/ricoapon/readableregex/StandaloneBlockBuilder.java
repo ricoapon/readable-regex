@@ -43,4 +43,11 @@ public interface StandaloneBlockBuilder {
      * @return This builder.
      */
     ReadableRegex whitespace();
+
+    /**
+     * Adds either or group. This is the same as {@code (?:X|Y)}, where {@code X} and {@code Y} are given regular expressions.
+     * @param regexBuilders Regular expressions for which one needs to match.
+     * @return This builder.
+     */
+    ReadableRegex oneOf(ReadableRegex... regexBuilders);
 }

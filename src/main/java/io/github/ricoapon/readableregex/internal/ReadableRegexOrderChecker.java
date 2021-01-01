@@ -57,6 +57,12 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     }
 
     @Override
+    public ReadableRegex oneOf(ReadableRegex... regexBuilders) {
+        methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
+        return super.oneOf(regexBuilders);
+    }
+
+    @Override
     public ReadableRegex oneOrMore() {
         methodOrderChecker.checkCallingMethod(QUANTIFIER);
         return super.oneOrMore();
