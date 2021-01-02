@@ -1,11 +1,11 @@
 plugins {
     `java-library`
-    id("com.github.spotbugs") version "4.5.0"
-    id("checkstyle")
-    id("jacoco")
-    id("info.solidsoft.pitest") version "1.5.1"
-    `maven-publish`
-    signing
+    `my-checkstyle`
+    `my-jacoco`
+    `my-spotbugs`
+    `my-pitest`
+    `my-test-percentage-printer`
+    `my-artifact-publisher` apply false // We can only apply the plugin after the version has been determined.
 }
 
 group = "io.github.ricoapon"
@@ -14,6 +14,7 @@ version = when {
     else -> "head-SNAPSHOT"
 }
 println("Using version $version")
+plugins.apply("my-artifact-publisher")
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -27,7 +28,6 @@ repositories {
 }
 
 dependencies {
-    testImplementation("com.github.spotbugs:spotbugs-annotations:4.1.1")
     testImplementation("org.hamcrest:hamcrest:2.2")
 
     val junitVersion = "5.6.2"
@@ -38,196 +38,4 @@ dependencies {
 
 val test by tasks.getting(Test::class) {
     useJUnitPlatform()
-}
-
-// ================
-// SpotBugs
-// ================
-spotbugs {
-    // Display final report as HTML.
-    // Use different HTML template (stylesheet) that is prettier.
-    tasks.spotbugsMain {
-        reports.create("html") {
-            isEnabled = true
-            setStylesheet("fancy-hist.xsl")
-        }
-    }
-    tasks.spotbugsTest {
-        reports.create("html") {
-            isEnabled = true
-            setStylesheet("fancy-hist.xsl")
-        }
-    }
-}
-tasks.register("spotbugs") {
-    dependsOn(tasks.spotbugsMain)
-    dependsOn(tasks.spotbugsTest)
-}
-
-// ================
-// Checkstyle
-// ================
-tasks.withType<Checkstyle>().configureEach {
-    configFile = File("checkstyle.xml")
-}
-tasks.register("checkstyle") {
-    dependsOn(tasks.checkstyleMain)
-    dependsOn(tasks.checkstyleTest)
-}
-
-// ================
-// JaCoCo
-// ================
-jacoco {
-    // Experimental support for Java 15 has only been added to 0.8.6.
-    // Release version 0.8.7 will officially support Java 15.
-    toolVersion = "0.8.6"
-}
-tasks.check {
-    // Reports are always generated after running the checks.
-    finalizedBy(tasks.jacocoTestReport)
-}
-tasks.jacocoTestReport {
-    // Tests are required before generating the report.
-    dependsOn(tasks.test)
-}
-tasks.jacocoTestReport {
-    reports {
-        // Codecov.io depends on xml format report.
-        xml.isEnabled = true
-        // Add HTML report readable by humans.
-        html.isEnabled = true
-    }
-}
-
-tasks.register("jacoco") {
-    dependsOn(tasks.jacocoTestCoverageVerification)
-    dependsOn(tasks.jacocoTestReport)
-}
-
-// ================
-// Pitest
-// ================
-pitest {
-    junit5PluginVersion.set("0.12")
-    outputFormats.set(listOf("HTML"))
-    timestampedReports.set(false)
-    threads.set(4)
-}
-tasks.check {
-    finalizedBy(tasks.pitest)
-}
-
-// ================
-// Print test percentages
-// ================
-tasks.register("printTestPercentages") {
-    // Don't add the input files to the task. The percentages should always show, also if the task has already been executed.
-    doLast {
-        printTestPercentages()
-    }
-    dependsOn("jacoco", "pitest")
-}
-tasks.check {
-    finalizedBy("printTestPercentages")
-}
-
-fun printTestPercentages() {
-    var resultString = "Coverage Summary:\n"
-    readTestPercentageFromJacocoReport().forEach { resultString += createLine(it) }
-    readTestPercentagesFromPitestReport().forEach { resultString += createLine(it) }
-    println(resultString)
-}
-
-fun createLine(result: Map.Entry<String, Pair<Int, Int>>): String =
-        "${result.key.padEnd(18)}: ${Math.floorDiv(result.value.first * 100, result.value.second).toString().padStart(3)}% " +
-                "(${result.value.first.toString().padStart(4)} / ${result.value.second.toString().padStart(4)})\n"
-
-fun readTestPercentageFromJacocoReport(): Map<String, Pair<Int, Int>> {
-    val reportFileContent = File(project.buildDir.resolve("reports/jacoco/test/jacocoTestReport.xml").toURI()).readText()
-
-    val pattern = Regex("<\\/package><counter type=\"INSTRUCTION\" missed=\"(\\d+)\" covered=\"(\\d+)\"\\/>" +
-            "<counter type=\"BRANCH\" missed=\"(\\d+)\" covered=\"(\\d+)\"\\/>" +
-            "<counter type=\"LINE\" missed=\"(\\d+)\" covered=\"(\\d+)\"\\/>")
-    val (instructionMissed, instructionTotal, branchMissed, branchTotal, lineMissed, lineTotal) = pattern.find(reportFileContent)!!.destructured
-
-    return mapOf("JACOCO_INSTRUCTION" to Pair(Integer.parseInt(instructionTotal) - Integer.parseInt(instructionMissed), Integer.parseInt(instructionTotal)),
-            "JACOCO_BRANCH" to Pair(Integer.parseInt(branchTotal) - Integer.parseInt(branchMissed), Integer.parseInt(branchTotal)),
-            "JACOCO_LINE" to Pair(Integer.parseInt(lineTotal) - Integer.parseInt(lineMissed), Integer.parseInt(lineTotal)))
-}
-
-fun readTestPercentagesFromPitestReport(): Map<String, Pair<Int, Int>> {
-    val reportFileContent = File(project.buildDir.resolve("reports/pitest/index.html").toURI()).readText()
-
-    val pattern = Regex("<td>\\d+% <div class=\"coverage_bar\"><div class=\"coverage_complete width-\\d+\"></div><div class=\"coverage_legend\">(\\d+)/(\\d+)</div></div></td>.*\\r?\\n?" +
-            "\\s+<td>\\d+% <div class=\"coverage_bar\"><div class=\"coverage_complete width-\\d+\"></div><div class=\"coverage_legend\">(\\d+)/(\\d+)</div></div></td>")
-    val (lineCoverageHit, lineCoverageTotal, mutationCoverageHit, mutationCoverageTotal) = pattern.find(reportFileContent)!!.destructured
-
-    return mapOf("PITEST_LINE" to Pair(Integer.parseInt(lineCoverageHit), Integer.parseInt(lineCoverageTotal)),
-            "PITEST_MUTATION" to Pair(Integer.parseInt(mutationCoverageHit), Integer.parseInt(mutationCoverageTotal)))
-}
-
-// ================
-// Publishing artifacts to Maven Central
-// ================
-publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
-            artifactId = "readable-regex"
-            from(components["java"])
-            pom {
-                name.set("Readable Regex")
-                description.set("Regular expressions made readable in Java")
-                url.set("https://github.com/ricoapon/readable-regex")
-                inceptionYear.set("2020")
-
-                licenses {
-                    license {
-                        name.set("MIT License")
-                        url.set("https://github.com/ricoapon/readable-regex/blob/master/LICENSE")
-                    }
-                }
-
-                developers {
-                    developer {
-                        id.set("ricoapon")
-                        name.set("Rico Apon")
-                    }
-                }
-
-                scm {
-                    url.set("https://github.com/ricoapon/readable-regex")
-                    connection.set("scm:https://github.com/ricoapon/readable-regex.git")
-                    developerConnection.set("scm:git@github.com:ricoapon/readable-regex.git")
-                }
-            }
-        }
-    }
-
-    repositories {
-        maven {
-            val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-            val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
-            url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
-
-            credentials {
-                username = project.findProperty("ossrhUsername") as String?
-                password = project.findProperty("ossrhPassword") as String?
-            }
-        }
-    }
-}
-signing {
-    sign(publishing.publications["mavenJava"])
-}
-tasks.javadoc {
-    if (JavaVersion.current().isJava9Compatible) {
-        (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
-    }
-}
-
-// Make sure that we can only publish if all checks have been completed successfully.
-// Don't add this to the task "publish", because this can go wrong with parallel execution.
-tasks.withType<PublishToMavenRepository> {
-    dependsOn("check")
 }
