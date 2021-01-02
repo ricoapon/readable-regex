@@ -1,10 +1,10 @@
 plugins {
     `java-library`
-    id("info.solidsoft.pitest") version "1.5.1"
 
     `my-checkstyle`
     `my-jacoco`
     `my-spotbugs`
+    `my-pitest`
 
     `maven-publish`
     signing
@@ -39,19 +39,6 @@ dependencies {
 
 val test by tasks.getting(Test::class) {
     useJUnitPlatform()
-}
-
-// ================
-// Pitest
-// ================
-pitest {
-    junit5PluginVersion.set("0.12")
-    outputFormats.set(listOf("HTML"))
-    timestampedReports.set(false)
-    threads.set(4)
-}
-tasks.check {
-    finalizedBy(tasks.pitest)
 }
 
 // ================
