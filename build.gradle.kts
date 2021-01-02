@@ -1,9 +1,9 @@
 plugins {
     `java-library`
     id("com.github.spotbugs") version "4.5.0"
-    id("checkstyle")
     id("jacoco")
     id("info.solidsoft.pitest") version "1.5.1"
+    `my-checkstyle`
     `maven-publish`
     signing
 }
@@ -62,17 +62,6 @@ spotbugs {
 tasks.register("spotbugs") {
     dependsOn(tasks.spotbugsMain)
     dependsOn(tasks.spotbugsTest)
-}
-
-// ================
-// Checkstyle
-// ================
-tasks.withType<Checkstyle>().configureEach {
-    configFile = File("checkstyle.xml")
-}
-tasks.register("checkstyle") {
-    dependsOn(tasks.checkstyleMain)
-    dependsOn(tasks.checkstyleTest)
 }
 
 // ================
