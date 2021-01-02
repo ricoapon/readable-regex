@@ -22,7 +22,7 @@ fun printTestPercentages() {
     var resultString = "Coverage Summary:\n"
     readTestPercentageFromJacocoReport().forEach { resultString += createLine(it) }
     readTestPercentagesFromPitestReport().forEach { resultString += createLine(it) }
-    println(resultString)
+    print(resultString)
 }
 
 fun createLine(result: Map.Entry<String, Pair<Int, Int>>): String =
