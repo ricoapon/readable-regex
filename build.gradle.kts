@@ -27,8 +27,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.spotbugs:spotbugs-annotations:4.1.1")
-
+    testImplementation("com.github.spotbugs:spotbugs-annotations:4.1.1")
     testImplementation("org.hamcrest:hamcrest:2.2")
 
     val junitVersion = "5.6.2"
