@@ -78,6 +78,64 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     }
 
     @Override
+    public ReadableRegex range(char... boundaries) {
+        if (boundaries.length % 2 != 0) {
+            throw new IllegalArgumentException("You have to supply an even amount of boundaries.");
+        } else if (boundaries.length == 0) {
+            throw new IllegalArgumentException("An empty range is pointless. Please supply boundaries!");
+        }
+
+        StringBuilder expression = new StringBuilder("[");
+        for (int i = 0; i < boundaries.length; i += 2) {
+            expression.append(boundaries[i])
+                    .append('-')
+                    .append(boundaries[i + 1]);
+        }
+        expression.append("]");
+
+        return _addRegex(expression.toString());
+    }
+
+    @Override
+    public ReadableRegex notInRange(char... boundaries) {
+        if (boundaries.length % 2 != 0) {
+            throw new IllegalArgumentException("You have to supply an even amount of boundaries.");
+        } else if (boundaries.length == 0) {
+            throw new IllegalArgumentException("An empty range is pointless. Please supply boundaries!");
+        }
+
+        StringBuilder expression = new StringBuilder("[^");
+        for (int i = 0; i < boundaries.length; i += 2) {
+            expression.append(boundaries[i])
+                    .append('-')
+                    .append(boundaries[i + 1]);
+        }
+        expression.append("]");
+
+        return _addRegex(expression.toString());
+    }
+
+    @Override
+    public ReadableRegex anyCharacterOf(String characters) {
+        Objects.requireNonNull(characters);
+        if (characters.length() == 0) {
+            throw new IllegalArgumentException("An empty range is pointless. Please supply boundaries!");
+        }
+
+        return _addRegex("[" + characters + "]");
+    }
+
+    @Override
+    public ReadableRegex anyCharacterExcept(String characters) {
+        Objects.requireNonNull(characters);
+        if (characters.length() == 0) {
+            throw new IllegalArgumentException("An empty range is pointless. Please supply boundaries!");
+        }
+
+        return _addRegex("[^" + characters + "]");
+    }
+
+    @Override
     public ReadableRegex oneOrMore() {
         return _addRegex("+");
     }

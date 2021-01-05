@@ -14,6 +14,7 @@ class ReadableRegexOrderCheckerTest {
     /** Dummy implementation of {@link MethodOrderChecker} to check {@link MethodOrderChecker#checkCallingMethod(Method)}. */
     private static class DummyOrderChecker extends MethodOrderChecker {
         public Method calledMethod;
+
         @Override
         public void checkCallingMethod(Method method) {
             calledMethod = method;
@@ -76,6 +77,30 @@ class ReadableRegexOrderCheckerTest {
     @Test
     void oneOf_StandaloneBlock() {
         readableRegexOrderChecker.oneOf();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));
+    }
+
+    @Test
+    void range_StandaloneBlock() {
+        readableRegexOrderChecker.range('a', 'b');
+        assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));
+    }
+
+    @Test
+    void notInRange_StandaloneBlock() {
+        readableRegexOrderChecker.notInRange('a', 'b');
+        assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));
+    }
+
+    @Test
+    void anyCharacterOf_StandaloneBlock() {
+        readableRegexOrderChecker.anyCharacterOf("abc");
+        assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));
+    }
+
+    @Test
+    void anyCharacterExcept_StandaloneBlock() {
+        readableRegexOrderChecker.anyCharacterExcept("abc");
         assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));
     }
 

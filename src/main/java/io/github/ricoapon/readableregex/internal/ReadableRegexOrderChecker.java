@@ -63,6 +63,30 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     }
 
     @Override
+    public ReadableRegex range(char... boundaries) {
+        methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
+        return super.range(boundaries);
+    }
+
+    @Override
+    public ReadableRegex notInRange(char... boundaries) {
+        methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
+        return super.notInRange(boundaries);
+    }
+
+    @Override
+    public ReadableRegex anyCharacterOf(String characters) {
+        methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
+        return super.anyCharacterOf(characters);
+    }
+
+    @Override
+    public ReadableRegex anyCharacterExcept(String characters) {
+        methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
+        return super.anyCharacterExcept(characters);
+    }
+
+    @Override
     public ReadableRegex oneOrMore() {
         methodOrderChecker.checkCallingMethod(QUANTIFIER);
         return super.oneOrMore();
