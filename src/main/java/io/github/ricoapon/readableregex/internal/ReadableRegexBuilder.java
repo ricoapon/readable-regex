@@ -205,6 +205,16 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     }
 
     @Override
+    public ReadableRegex reluctant() {
+        return _addRegex("?");
+    }
+
+    @Override
+    public ReadableRegex possessive() {
+        return _addRegex("+");
+    }
+
+    @Override
     public ReadableRegex startGroup() {
         return _addRegex("(");
     }

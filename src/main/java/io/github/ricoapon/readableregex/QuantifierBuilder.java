@@ -52,4 +52,16 @@ public interface QuantifierBuilder {
     default ReadableRegex atMostNTimes(int n) {
         return betweenNAndMTimes(0, n);
     }
+
+    /**
+     * Makes the previous quantifier reluctant. This is the same as adding {@code ?}.
+     * @return This builder.
+     */
+    ReadableRegex reluctant();
+
+    /**
+     * Makes the previous quantifier possessive. This is the same as adding {@code +}.
+     * @return This builder.
+     */
+    ReadableRegex possessive();
 }

@@ -153,6 +153,18 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     }
 
     @Override
+    public ReadableRegex reluctant() {
+        methodOrderChecker.checkCallingMethod(RELUCTANT_OR_POSSESSIVE);
+        return super.reluctant();
+    }
+
+    @Override
+    public ReadableRegex possessive() {
+        methodOrderChecker.checkCallingMethod(RELUCTANT_OR_POSSESSIVE);
+        return super.possessive();
+    }
+
+    @Override
     public ReadableRegex startGroup() {
         methodOrderChecker.checkCallingMethod(START_GROUP);
         return super.startGroup();

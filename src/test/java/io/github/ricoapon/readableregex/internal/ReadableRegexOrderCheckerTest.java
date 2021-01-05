@@ -177,6 +177,18 @@ class ReadableRegexOrderCheckerTest {
     }
 
     @Test
+    void reluctant_ReluctantOrPossessive() {
+        readableRegexOrderChecker.digit().atMostNTimes(2).reluctant();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(RELUCTANT_OR_POSSESSIVE));
+    }
+
+    @Test
+    void possessive_ReluctantOrPossessive() {
+        readableRegexOrderChecker.digit().atMostNTimes(2).possessive();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(RELUCTANT_OR_POSSESSIVE));
+    }
+
+    @Test
     void startGroup_StartGroup() {
         readableRegexOrderChecker.startGroup();
         assertThat(dummyOrderChecker.calledMethod, equalTo(START_GROUP));

@@ -2,11 +2,14 @@ package io.github.ricoapon.readableregex;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.regex.Matcher;
+
 import static io.github.ricoapon.readableregex.Constants.DIGITS;
 import static io.github.ricoapon.readableregex.ReadableRegex.regex;
 import static io.github.ricoapon.readableregex.matchers.PatternMatchMatcher.doesntMatchExactly;
 import static io.github.ricoapon.readableregex.matchers.PatternMatchMatcher.matchesExactly;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -77,5 +80,23 @@ class QuantifierTests {
         assertThrows(IllegalArgumentException.class, () -> regex().digit().atMostNTimes(-1));
         assertThrows(IllegalArgumentException.class, () -> regex().digit().atMostNTimes(0));
         regex().digit().atMostNTimes(1);
+    }
+
+    @Test
+    void greedyReluctantPossessiveWorksCorrectly() {
+        ReadableRegexPattern patternGreedy = regex().anything().literal("foo").build();
+        ReadableRegexPattern patternReluctant = regex().anything().reluctant().literal("foo").build();
+        ReadableRegexPattern patternPossessive = regex().anything().possessive().literal("foo").build();
+
+        String text = "xfooxxxxxxfoo";
+        assertThat(patternGreedy, matchesExactly(text));
+
+        Matcher matcher = patternReluctant.matches(text);
+        assertThat(matcher.find(), equalTo(true));
+        assertThat(matcher.group(), equalTo("xfoo"));
+        assertThat(matcher.find(), equalTo(true));
+        assertThat(matcher.group(), equalTo("xxxxxxfoo"));
+
+        assertThat(patternPossessive, doesntMatchExactly(text));
     }
 }
