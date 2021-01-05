@@ -156,6 +156,11 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     }
 
     @Override
+    public ReadableRegex anyCharacter() {
+        return _addRegex(".");
+    }
+
+    @Override
     public ReadableRegex oneOrMore() {
         return _addRegex("+");
     }

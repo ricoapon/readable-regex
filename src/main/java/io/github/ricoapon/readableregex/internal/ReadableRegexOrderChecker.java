@@ -111,6 +111,12 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     }
 
     @Override
+    public ReadableRegex anyCharacter() {
+        methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
+        return super.anyCharacter();
+    }
+
+    @Override
     public ReadableRegex oneOrMore() {
         methodOrderChecker.checkCallingMethod(QUANTIFIER);
         return super.oneOrMore();

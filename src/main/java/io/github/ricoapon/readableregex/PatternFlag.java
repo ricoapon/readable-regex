@@ -4,6 +4,7 @@ import java.util.regex.Pattern;
 
 /**
  * Enum representing all the possible flags of {@link java.util.regex.Pattern} that are useful for this library.
+ * Flags can be enabled using the method {@link FinishBuilder#buildWithFlags(PatternFlag...)}.
  */
 public enum PatternFlag {
     /** See {@link Pattern#CASE_INSENSITIVE}. */

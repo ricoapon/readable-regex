@@ -129,6 +129,12 @@ class ReadableRegexOrderCheckerTest {
     }
 
     @Test
+    void anyCharacter_StandaloneBlock() {
+        readableRegexOrderChecker.anyCharacter();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));
+    }
+
+    @Test
     void oneOrMore_Quantifier() {
         readableRegexOrderChecker.digit().oneOrMore();
         assertThat(dummyOrderChecker.calledMethod, equalTo(QUANTIFIER));

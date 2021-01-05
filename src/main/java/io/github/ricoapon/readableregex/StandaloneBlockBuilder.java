@@ -110,4 +110,12 @@ public interface StandaloneBlockBuilder {
      * @return This builder.
      */
     ReadableRegex nonWordBoundary();
+
+    /**
+     * Adds any character. This is the same as {@code .}.
+     * <p>
+     * Note that you have to enable {@link PatternFlag#DOT_ALL} to match line terminators.
+     * @return This builder.
+     */
+    ReadableRegex anyCharacter();
 }
