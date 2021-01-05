@@ -12,6 +12,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
   Also, added the method `word()` which searches for words.
 - All greedy quantifiers are now available.
 - Added methods using dot (`.`): `anyCharacter()` and `anything()`.
+- It is now possible to make existing quantifiers reluctant or possessive by appending the method `reluctant()` or `possessive()`
+  after the quantifier.
 
 ### Changed
 - Spotbugs annotations is removed as dependency.
