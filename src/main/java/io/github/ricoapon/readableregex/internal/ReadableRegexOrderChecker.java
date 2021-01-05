@@ -123,6 +123,30 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     }
 
     @Override
+    public ReadableRegex zeroOrMore() {
+        methodOrderChecker.checkCallingMethod(QUANTIFIER);
+        return super.zeroOrMore();
+    }
+
+    @Override
+    public ReadableRegex exactlyNTimes(int n) {
+        methodOrderChecker.checkCallingMethod(QUANTIFIER);
+        return super.exactlyNTimes(n);
+    }
+
+    @Override
+    public ReadableRegex atLeastNTimes(int n) {
+        methodOrderChecker.checkCallingMethod(QUANTIFIER);
+        return super.atLeastNTimes(n);
+    }
+
+    @Override
+    public ReadableRegex betweenNAndMTimes(int n, int m) {
+        methodOrderChecker.checkCallingMethod(QUANTIFIER);
+        return super.betweenNAndMTimes(n, m);
+    }
+
+    @Override
     public ReadableRegex startGroup() {
         methodOrderChecker.checkCallingMethod(START_GROUP);
         return super.startGroup();

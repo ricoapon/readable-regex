@@ -166,6 +166,40 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     }
 
     @Override
+    public ReadableRegex zeroOrMore() {
+        return _addRegex("*");
+    }
+
+    private ReadableRegex _countRange(int n, Integer m) {
+        if (n < 0 || m <= 0) {
+            throw new IllegalArgumentException("The number of times the block should repeat must be larger than zero.");
+        } else if (n > m) {
+            throw new IllegalArgumentException("The ranges of the repeating block must be valid. Please make n smaller than m.");
+        }
+
+        if (Integer.MAX_VALUE == m) {
+            return _addRegex("{" + n + ",}");
+        }
+
+        return _addRegex("{" + n + "," + m + "}");
+    }
+
+    @Override
+    public ReadableRegex exactlyNTimes(int n) {
+        return _countRange(n, n);
+    }
+
+    @Override
+    public ReadableRegex atLeastNTimes(int n) {
+        return _countRange(n, Integer.MAX_VALUE);
+    }
+
+    @Override
+    public ReadableRegex betweenNAndMTimes(int n, int m) {
+        return _countRange(n, m);
+    }
+
+    @Override
     public ReadableRegex startGroup() {
         return _addRegex("(");
     }

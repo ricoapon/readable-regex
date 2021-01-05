@@ -141,6 +141,36 @@ class ReadableRegexOrderCheckerTest {
     }
 
     @Test
+    void zeroOrMore_Quantifier() {
+        readableRegexOrderChecker.digit().zeroOrMore();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(QUANTIFIER));
+    }
+
+    @Test
+    void exactlyNTimes_Quantifier() {
+        readableRegexOrderChecker.digit().exactlyNTimes(2);
+        assertThat(dummyOrderChecker.calledMethod, equalTo(QUANTIFIER));
+    }
+
+    @Test
+    void etLeastNTimes_Quantifier() {
+        readableRegexOrderChecker.digit().atLeastNTimes(2);
+        assertThat(dummyOrderChecker.calledMethod, equalTo(QUANTIFIER));
+    }
+
+    @Test
+    void betweenNAndMTimes_Quantifier() {
+        readableRegexOrderChecker.digit().betweenNAndMTimes(2, 4);
+        assertThat(dummyOrderChecker.calledMethod, equalTo(QUANTIFIER));
+    }
+
+    @Test
+    void atMostNTimes_Quantifier() {
+        readableRegexOrderChecker.digit().atMostNTimes(2);
+        assertThat(dummyOrderChecker.calledMethod, equalTo(QUANTIFIER));
+    }
+
+    @Test
     void startGroup_StartGroup() {
         readableRegexOrderChecker.startGroup();
         assertThat(dummyOrderChecker.calledMethod, equalTo(START_GROUP));
