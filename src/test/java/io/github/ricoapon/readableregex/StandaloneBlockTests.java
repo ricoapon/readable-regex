@@ -204,4 +204,33 @@ class StandaloneBlockTests {
             assertThat(pattern, doesntMatchAnythingFrom("xx"));
         }
     }
+
+    @Nested
+    class WordCharacter {
+        @Test
+        void matchCorrectCharacter() {
+            ReadableRegexPattern pattern = regex().wordCharacter().nonWordCharacter().build();
+
+            assertThat(pattern, matchesExactly("a."));
+            assertThat(pattern, doesntMatchAnythingFrom("ab"));
+            assertThat(pattern, doesntMatchAnythingFrom(".a"));
+        }
+    }
+
+    @Nested
+    class WordBoundary {
+        @Test
+        void wordBoundaryMatchesCorrectly() {
+            ReadableRegexPattern pattern = regex().literal("abc").wordBoundary().literal(" ").build();
+
+            assertThat(pattern, matchesExactly("abc "));
+        }
+
+        @Test
+        void nonWordBoundaryMatchesCorrectly() {
+            ReadableRegexPattern pattern = regex().literal("a").nonWordBoundary().literal("b").build();
+
+            assertThat(pattern, matchesExactly("ab"));
+        }
+    }
 }

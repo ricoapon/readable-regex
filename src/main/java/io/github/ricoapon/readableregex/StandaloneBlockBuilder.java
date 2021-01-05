@@ -86,4 +86,28 @@ public interface StandaloneBlockBuilder {
      * @return This builder.
      */
     ReadableRegex anyCharacterExcept(String characters);
+
+    /**
+     * Adds a word character. This is the same as {@code \w}.
+     * @return This builder.
+     */
+    ReadableRegex wordCharacter();
+
+    /**
+     * Adds a non word character. This is the same as {@code \W}.
+     * @return This builder.
+     */
+    ReadableRegex nonWordCharacter();
+
+    /**
+     * Adds a word boundary. This is the same as {@code \b}.
+     * @return This builder.
+     */
+    ReadableRegex wordBoundary();
+
+    /**
+     * Adds a non word boundary. This is the same as {@code \B}.
+     * @return This builder.
+     */
+    ReadableRegex nonWordBoundary();
 }
