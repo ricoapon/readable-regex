@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
   `anyCharacterOf(String characters)` and `anyCharacterExcept(String characters)`.
 - Added methods for word characters and boundaries: `wordCharacter()`, `nonWordCharacter()`, `wordBoundary()` and `nonWordBoundary()`.
   Also, added the method `word()` which searches for words.
+- All greedy quantifiers are now available.
 
 ### Changed
 - Spotbugs annotations is removed as dependency.
