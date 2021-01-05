@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 public class PatternFlagTests {
     @Test
     void enabledFlagsAreReturned() {
-        ReadableRegexPattern pattern = regex().regexFromString(".*").buildWithFlags(PatternFlag.CASE_INSENSITIVE, PatternFlag.DOT_ALL);
+        ReadableRegexPattern pattern = regex().buildWithFlags(PatternFlag.CASE_INSENSITIVE, PatternFlag.DOT_ALL);
 
         assertThat(pattern.enabledFlags(), containsInAnyOrder(PatternFlag.CASE_INSENSITIVE, PatternFlag.DOT_ALL));
     }
@@ -33,10 +33,10 @@ public class PatternFlagTests {
     @Test
     void dotAllWorks() {
         // No flag means .* does not match new line symbols.
-        ReadableRegexPattern pattern = regex().regexFromString(".*").build();
+        ReadableRegexPattern pattern = regex().anything().build();
         assertThat(pattern, doesntMatchExactly("a\na"));
 
-        pattern = regex().regexFromString(".*").buildWithFlags(PatternFlag.DOT_ALL);
+        pattern = regex().anything().buildWithFlags(PatternFlag.DOT_ALL);
         assertThat(pattern, matchesExactly("a\na"));
     }
 

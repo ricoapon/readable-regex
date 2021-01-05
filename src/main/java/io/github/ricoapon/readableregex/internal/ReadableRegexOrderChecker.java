@@ -111,6 +111,12 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     }
 
     @Override
+    public ReadableRegex anyCharacter() {
+        methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
+        return super.anyCharacter();
+    }
+
+    @Override
     public ReadableRegex oneOrMore() {
         methodOrderChecker.checkCallingMethod(QUANTIFIER);
         return super.oneOrMore();
@@ -120,6 +126,42 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     public ReadableRegex optional() {
         methodOrderChecker.checkCallingMethod(QUANTIFIER);
         return super.optional();
+    }
+
+    @Override
+    public ReadableRegex zeroOrMore() {
+        methodOrderChecker.checkCallingMethod(QUANTIFIER);
+        return super.zeroOrMore();
+    }
+
+    @Override
+    public ReadableRegex exactlyNTimes(int n) {
+        methodOrderChecker.checkCallingMethod(QUANTIFIER);
+        return super.exactlyNTimes(n);
+    }
+
+    @Override
+    public ReadableRegex atLeastNTimes(int n) {
+        methodOrderChecker.checkCallingMethod(QUANTIFIER);
+        return super.atLeastNTimes(n);
+    }
+
+    @Override
+    public ReadableRegex betweenNAndMTimes(int n, int m) {
+        methodOrderChecker.checkCallingMethod(QUANTIFIER);
+        return super.betweenNAndMTimes(n, m);
+    }
+
+    @Override
+    public ReadableRegex reluctant() {
+        methodOrderChecker.checkCallingMethod(RELUCTANT_OR_POSSESSIVE);
+        return super.reluctant();
+    }
+
+    @Override
+    public ReadableRegex possessive() {
+        methodOrderChecker.checkCallingMethod(RELUCTANT_OR_POSSESSIVE);
+        return super.possessive();
     }
 
     @Override

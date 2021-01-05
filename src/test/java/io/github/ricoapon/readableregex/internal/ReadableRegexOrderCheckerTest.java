@@ -129,6 +129,12 @@ class ReadableRegexOrderCheckerTest {
     }
 
     @Test
+    void anyCharacter_StandaloneBlock() {
+        readableRegexOrderChecker.anyCharacter();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));
+    }
+
+    @Test
     void oneOrMore_Quantifier() {
         readableRegexOrderChecker.digit().oneOrMore();
         assertThat(dummyOrderChecker.calledMethod, equalTo(QUANTIFIER));
@@ -138,6 +144,48 @@ class ReadableRegexOrderCheckerTest {
     void optional_Quantifier() {
         readableRegexOrderChecker.digit().optional();
         assertThat(dummyOrderChecker.calledMethod, equalTo(QUANTIFIER));
+    }
+
+    @Test
+    void zeroOrMore_Quantifier() {
+        readableRegexOrderChecker.digit().zeroOrMore();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(QUANTIFIER));
+    }
+
+    @Test
+    void exactlyNTimes_Quantifier() {
+        readableRegexOrderChecker.digit().exactlyNTimes(2);
+        assertThat(dummyOrderChecker.calledMethod, equalTo(QUANTIFIER));
+    }
+
+    @Test
+    void etLeastNTimes_Quantifier() {
+        readableRegexOrderChecker.digit().atLeastNTimes(2);
+        assertThat(dummyOrderChecker.calledMethod, equalTo(QUANTIFIER));
+    }
+
+    @Test
+    void betweenNAndMTimes_Quantifier() {
+        readableRegexOrderChecker.digit().betweenNAndMTimes(2, 4);
+        assertThat(dummyOrderChecker.calledMethod, equalTo(QUANTIFIER));
+    }
+
+    @Test
+    void atMostNTimes_Quantifier() {
+        readableRegexOrderChecker.digit().atMostNTimes(2);
+        assertThat(dummyOrderChecker.calledMethod, equalTo(QUANTIFIER));
+    }
+
+    @Test
+    void reluctant_ReluctantOrPossessive() {
+        readableRegexOrderChecker.digit().atMostNTimes(2).reluctant();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(RELUCTANT_OR_POSSESSIVE));
+    }
+
+    @Test
+    void possessive_ReluctantOrPossessive() {
+        readableRegexOrderChecker.digit().atMostNTimes(2).possessive();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(RELUCTANT_OR_POSSESSIVE));
     }
 
     @Test

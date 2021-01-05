@@ -233,4 +233,14 @@ class StandaloneBlockTests {
             assertThat(pattern, matchesExactly("ab"));
         }
     }
+
+    /**
+     * No tests are needed for the method {@link StandaloneBlockBuilder#anyCharacter()}, because this is already covered by other tests:
+     * <ul>
+     *     <li>{@link PatternFlagTests#dotAllWorks()}</li>
+     *     <li>{@link SyntacticSugarTests#anythingWorks()}</li>
+     * </ul>
+     */
+    @Nested
+    class AnyCharacter { }
 }
