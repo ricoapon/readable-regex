@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * {@link Pattern} objects, which creates {@link Matcher} objects. For additional functionality, the wrapper
  * {@link ReadableRegexPattern} can be created instead of {@link Pattern}.
  */
-public interface ReadableRegex extends StandaloneBlockBuilder, QuantifierBuilder, FinishBuilder, GroupBuilder {
+public interface ReadableRegex extends SyntacticSugarBuilder, StandaloneBlockBuilder, QuantifierBuilder, FinishBuilder, GroupBuilder {
     /**
      * @return Instance of the builder.
      */

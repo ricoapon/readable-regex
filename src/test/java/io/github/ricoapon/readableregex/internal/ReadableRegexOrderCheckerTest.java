@@ -105,6 +105,30 @@ class ReadableRegexOrderCheckerTest {
     }
 
     @Test
+    void wordCharacter_StandaloneBlock() {
+        readableRegexOrderChecker.wordCharacter();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));
+    }
+
+    @Test
+    void nonWordCharacter_StandaloneBlock() {
+        readableRegexOrderChecker.nonWordCharacter();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));
+    }
+
+    @Test
+    void wordBoundary_StandaloneBlock() {
+        readableRegexOrderChecker.wordBoundary();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));
+    }
+
+    @Test
+    void nonWordBoundary_StandaloneBlock() {
+        readableRegexOrderChecker.nonWordBoundary();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));
+    }
+
+    @Test
     void oneOrMore_Quantifier() {
         readableRegexOrderChecker.digit().oneOrMore();
         assertThat(dummyOrderChecker.calledMethod, equalTo(QUANTIFIER));

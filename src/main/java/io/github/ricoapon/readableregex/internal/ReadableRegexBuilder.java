@@ -136,6 +136,26 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     }
 
     @Override
+    public ReadableRegex wordCharacter() {
+        return _addRegex("\\w");
+    }
+
+    @Override
+    public ReadableRegex nonWordCharacter() {
+        return _addRegex("\\W");
+    }
+
+    @Override
+    public ReadableRegex wordBoundary() {
+        return _addRegex("\\b");
+    }
+
+    @Override
+    public ReadableRegex nonWordBoundary() {
+        return _addRegex("\\B");
+    }
+
+    @Override
     public ReadableRegex oneOrMore() {
         return _addRegex("+");
     }
