@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 - Added methods for ranges (corresponds to `[]` and `[^]`): `range(char... boundaries)`, `notInRange(char... boundaries)`,
   `anyCharacterOf(String characters)` and `anyCharacterExcept(String characters)`.
 - Added methods for word characters and boundaries: `wordCharacter()`, `nonWordCharacter()`, `wordBoundary()` and `nonWordBoundary()`.
+  Also, added the method `word()` which searches for words.
 
 ### Changed
 - Spotbugs annotations is removed as dependency.
