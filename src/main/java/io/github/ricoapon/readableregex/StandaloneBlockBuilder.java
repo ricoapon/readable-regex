@@ -50,4 +50,40 @@ public interface StandaloneBlockBuilder {
      * @return This builder.
      */
     ReadableRegex oneOf(ReadableRegex... regexBuilders);
+
+    /**
+     * Adds a specified range. This is the same as {@code [a-z]}.
+     * <p>
+     * Example: {@code range('a', 'f', '0', '9')} comes down to {@code [a-f0-9]}.
+     * @param boundaries All the boundaries. You must supply an even amount of arguments.
+     * @return This builder.
+     */
+    ReadableRegex range(char... boundaries);
+
+    /**
+     * Adds a negated specified range. This is the same as {@code [^a-z]}.
+     * <p>
+     * Example: {@code notInRange('a', 'f', '0', '9')} comes down to {@code [^a-f0-9]}.
+     * @param boundaries All the boundaries. You must supply an even amount of arguments.
+     * @return This builder.
+     */
+    ReadableRegex notInRange(char... boundaries);
+
+    /**
+     * Adds a range with the specified characters. This is the same as {@code [...]}.
+     * <p>
+     * Example: {@code anyCharacterOf("abc")} comes down to {@code [abc]}.
+     * @param characters The characters to match.
+     * @return This builder.
+     */
+    ReadableRegex anyCharacterOf(String characters);
+
+    /**
+     * Adds a negated range with the specified characters. This is the same as {@code [^...]}.
+     * <p>
+     * Example: {@code anyCharacterExcept("abc")} comes down to {@code [^abc]}.
+     * @param characters The characters to match.
+     * @return This builder.
+     */
+    ReadableRegex anyCharacterExcept(String characters);
 }

@@ -161,4 +161,47 @@ class StandaloneBlockTests {
             assertThat(pattern, doesntMatchAnythingFrom(""));
         }
     }
+
+    @Nested
+    class RangeAndNotInRange {
+        @Test
+        void throwIaeWhenZeroOrOddNumberOfArgumentsIsSupplied() {
+            assertThrows(IllegalArgumentException.class, () -> regex().range('a'));
+            assertThrows(IllegalArgumentException.class, () -> regex().range());
+            assertThrows(IllegalArgumentException.class, () -> regex().notInRange('a'));
+            assertThrows(IllegalArgumentException.class, () -> regex().notInRange());
+        }
+
+        @Test
+        void canBeUsedWithMultipleArguments() {
+            ReadableRegexPattern pattern = regex().range('a', 'e', 'x', 'z').notInRange('a', 'z', 'A', 'Z', '0', '9').build();
+
+            assertThat(pattern, matchesExactly("b|"));
+            assertThat(pattern, matchesExactly("y~"));
+            assertThat(pattern, doesntMatchAnythingFrom("f|"));
+            assertThat(pattern, doesntMatchAnythingFrom("yZ"));
+        }
+    }
+
+    @Nested
+    class AnyCharacterOfAndExcept {
+        @Test
+        void throwNpeWhenArgumentIsNullOrZeroLengthString() {
+            assertThrows(NullPointerException.class, () -> regex().anyCharacterOf(null));
+            assertThrows(IllegalArgumentException.class, () -> regex().anyCharacterOf(""));
+            assertThrows(NullPointerException.class, () -> regex().anyCharacterExcept(null));
+            assertThrows(IllegalArgumentException.class, () -> regex().anyCharacterExcept(""));
+        }
+
+        @Test
+        void characterRangesAreMatched() {
+            ReadableRegexPattern pattern = regex().anyCharacterOf("aeiou")
+                    .anyCharacterExcept("abc")
+                    .build();
+
+            assertThat(pattern, matchesExactly("ix"));
+            assertThat(pattern, doesntMatchAnythingFrom("ia"));
+            assertThat(pattern, doesntMatchAnythingFrom("xx"));
+        }
+    }
 }
