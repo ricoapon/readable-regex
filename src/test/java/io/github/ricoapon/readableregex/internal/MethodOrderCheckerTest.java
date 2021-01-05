@@ -58,4 +58,20 @@ class MethodOrderCheckerTest {
         methodOrderChecker.checkCallingMethod(END_GROUP);
         methodOrderChecker.checkCallingMethod(QUANTIFIER);
     }
+
+    @Test
+    void reluctantOrPossessiveIsOnlyPossibleAfterQuantifier() {
+        methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
+        assertThrows(IncorrectConstructionException.class, () -> methodOrderChecker.checkCallingMethod(RELUCTANT_OR_POSSESSIVE));
+
+        methodOrderChecker.checkCallingMethod(START_GROUP);
+        assertThrows(IncorrectConstructionException.class, () -> methodOrderChecker.checkCallingMethod(RELUCTANT_OR_POSSESSIVE));
+
+        methodOrderChecker.checkCallingMethod(END_GROUP);
+        assertThrows(IncorrectConstructionException.class, () -> methodOrderChecker.checkCallingMethod(RELUCTANT_OR_POSSESSIVE));
+
+        methodOrderChecker.checkCallingMethod(QUANTIFIER);
+        methodOrderChecker.checkCallingMethod(RELUCTANT_OR_POSSESSIVE);
+        assertThrows(IncorrectConstructionException.class, () -> methodOrderChecker.checkCallingMethod(RELUCTANT_OR_POSSESSIVE));
+    }
 }

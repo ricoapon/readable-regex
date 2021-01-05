@@ -18,6 +18,8 @@ public class MethodOrderChecker {
         STANDALONE_BLOCK,
         /** Methods from the interface {@link QuantifierBuilder}. */
         QUANTIFIER,
+        /** Methods {@link QuantifierBuilder#reluctant()} and {@link QuantifierBuilder#possessive()}. */
+        RELUCTANT_OR_POSSESSIVE,
         /** Methods from the interface {@link FinishBuilder}. */
         FINISH,
         /** Starting a group with a method from the interface {@link GroupBuilder}. */
@@ -28,6 +30,9 @@ public class MethodOrderChecker {
 
     /** Indicates if a quantifier is allowed as the next method. Start with {@code false}, because you cannot start with a quantifier. */
     private boolean isQuantifierPossibleAfterThisMethod = false;
+
+    /** Indicates if the previous method was {@link Method#QUANTIFIER}. */
+    private boolean wasPreviousMethodAQuantifier = false;
 
     /** Counts how many groups are started and are still left open. These must be closed before finishing. */
     private int nrOfGroupsStarted = 0;
@@ -41,6 +46,8 @@ public class MethodOrderChecker {
             standaloneBlock();
         } else if (method == Method.QUANTIFIER) {
             quantifier();
+        } else if (method == Method.RELUCTANT_OR_POSSESSIVE) {
+            reluctantOrPossessive();
         } else if (method == Method.FINISH) {
             finish();
         } else if (method == Method.START_GROUP) {
@@ -50,6 +57,11 @@ public class MethodOrderChecker {
         }
     }
 
+    private void standaloneBlock() {
+        isQuantifierPossibleAfterThisMethod = true;
+        wasPreviousMethodAQuantifier = false;
+    }
+
     private void quantifier() {
         if (!isQuantifierPossibleAfterThisMethod) {
             throw new IncorrectConstructionException("You cannot add a quantifier after a quantifier. Remove one of the incorrect quantifiers. " +
@@ -57,10 +69,17 @@ public class MethodOrderChecker {
         }
 
         isQuantifierPossibleAfterThisMethod = false;
+        wasPreviousMethodAQuantifier = true;
     }
 
-    private void standaloneBlock() {
-        isQuantifierPossibleAfterThisMethod = true;
+    private void reluctantOrPossessive() {
+        if (!wasPreviousMethodAQuantifier) {
+            throw new IncorrectConstructionException("You can only use the reluctant or possessive method after a quantifier. " +
+                    "Remove the method call reluctant() or possessive(), or place it after a quantifier.");
+        }
+
+        isQuantifierPossibleAfterThisMethod = false;
+        wasPreviousMethodAQuantifier = false;
     }
 
     private void finish() {
@@ -72,6 +91,7 @@ public class MethodOrderChecker {
     private void startGroup() {
         nrOfGroupsStarted++;
         isQuantifierPossibleAfterThisMethod = false;
+        wasPreviousMethodAQuantifier = false;
     }
 
     private void endGroup() {
@@ -81,5 +101,6 @@ public class MethodOrderChecker {
         }
         nrOfGroupsStarted--;
         isQuantifierPossibleAfterThisMethod = true;
+        wasPreviousMethodAQuantifier = false;
     }
 }
