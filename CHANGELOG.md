@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 ## [Unreleased]
 ### Added
 - Added method for or constructions (corresponds to `|`). Example: `regex().oneOf(regex().literal("a"), regex().digit()).build()`.
+- Added methods for ranges (corresponds to `[]` and `[^]`). The following four methods are shown in this example:
+  `regex().range('a', 'z').notInRange('a', 'f', '0', '9').anyCharacterOf("abc").anyCharacterExcept("def")`
 
 ### Changed
 - Spotbugs annotations is removed as dependency.
