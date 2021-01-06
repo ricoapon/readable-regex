@@ -33,9 +33,9 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     }
 
     @Override
-    public ReadableRegex add(ReadableRegex regexBuilder) {
+    public ReadableRegex add(ReadableRegexPattern pattern) {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
-        return super.add(regexBuilder);
+        return super.add(pattern);
     }
 
     @Override

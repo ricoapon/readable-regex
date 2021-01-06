@@ -54,6 +54,9 @@ class ReadableRegexOrderCheckerTest {
     void add_StandaloneBlock() {
         readableRegexOrderChecker.add(regex());
         assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));
+
+        readableRegexOrderChecker.add(regex().build());
+        assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));
     }
 
     @Test
