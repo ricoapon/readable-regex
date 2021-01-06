@@ -2,26 +2,181 @@
 
 With this library, you can create regular expressions in a readable way!
 
-# Readability over performance
+## Table of contents
+1. [User guide](#user-guide)
+1. [About the library](#about-the-library)
+1. [Contributing](#contributing)
+1. [Local development](#local-development)
+
+## User guide
+Note: [Hamcrest](http://hamcrest.org/) is used for all the examples to show the expected outcome. If you want the examples
+to compile in your own project, you should include this library.
+
+### Examples
+Let's try a basic URL matching pattern:
+```
+ReadableRegexPattern pattern =
+        regex() // Always start with the regex method to start the builder.
+        .literal("http") // Literals are escaped automatically, no need to do this yourself.
+        .literal("s").optional() // You can follow up with optional to make the "s" optional.
+        .literal("://")
+        .anyCharacterExcept(" ").zeroOrMore() // This comes down to [^ ]*.
+        .build(); // Create the pattern with the final method.
+
+// The matchesText will return a boolean whether we have an *exact* match or not!
+assertThat(pattern.matchesTextExactly("https://www.github.com"), equalTo(true));
+
+// toString() method will return the underlying pattern. Not really readable though, that is why we have this library!
+assertThat(pattern.toString(), equalTo("(?:\\Qhttp\\E)(?:\\Qs\\E)?(?:\\Q://\\E)[^ ]*"));
+```
+
+With the library, you can create the JDK Matcher object when matching a text. Using this object, you can do the usual
+things like getting the value of groups.
+```
+ReadableRegexPattern pattern = regex()
+        .startGroup() // You can use this method to start capturing the expression inside a group.
+        .word()
+        .endGroup() // This ends the last group.
+        .whitespace()
+        .startGroup("secondWord") // You can also give names to your group.
+        .word()
+        .endGroup()
+        .build();
+
+Matcher matcher = pattern.matches("abc def");
+assertThat(matcher.matches(), equalTo(true));
+
+// Groups can always be found based on the order they are used.
+assertThat(matcher.group(1), equalTo("abc"));
+assertThat(matcher.group(2), equalTo("def"));
+
+// If you have given the group a name, you can also find it based on the name.
+assertThat(matcher.group("secondWord"), equalTo("def"));
+```
+
+The useful thing about this library is that you can include pattern inside other patterns!
+```
+// It does not matter if you have already built the pattern, you can include it anyway.
+ReadableRegex digits = regex().startGroup().digit().oneOrMore().endGroup().whitespace();
+ReadableRegexPattern word = regex().startGroup().word().endGroup().whitespace().build();
+
+ReadableRegexPattern pattern = regex()
+        .add(digits)
+        .add(digits)
+        .add(word)
+        .add(digits)
+        .literal("END")
+        .build();
+
+Matcher matcher = pattern.matches("12\t11\thello\t0000\tEND");
+assertThat(matcher.matches(), equalTo(true));
+// Note that captures are always a String!
+assertThat(matcher.group(1), equalTo("12"));
+assertThat(matcher.group(2), equalTo("11"));
+assertThat(matcher.group(3), equalTo("hello"));
+assertThat(matcher.group(4), equalTo("0000"));
+```
+
+Some random stuff you can do:
+```
+ReadableRegexPattern pattern = regex()
+        .oneOf(regex().literal("abc"), regex().digit()) // The oneOf method represents "or".
+        .whitespace()
+        // If we want to add a quantifier over a larger expression, we can encapsulate it with the add method,
+        // which encloses the expression in an unnamed group.
+        .add(regex().literal("a").digit()).exactlyNTimes(3)
+        .whitespace()
+        // Alternatively, you can use the startUnnamedGroup() for this to avoid nested structures.
+        .startUnnamedGroup().literal("b").digit().endGroup().atMostNTimes(2)
+        .build();
+
+assertThat(pattern.matchesTextExactly("abc a1a2a3 b2"), equalTo(true));
+assertThat(pattern.matchesTextExactly("1 a3a6a9 "), equalTo(true));
+```
+
+### Quantifiers
+All the quantifiers are greedy by default. If you want to make them reluctant or possessive, you can use the methods
+`reluctant()` and `possessive()` after the quantifier.
+
+If you want to know the differences between these types of quantifiers, read about it in
+[this post](https://stackoverflow.com/questions/5319840/greedy-vs-reluctant-vs-possessive-quantifiers).
+
+```
+ReadableRegexPattern greedyPattern = regex().anything().literal("foo").build();
+ReadableRegexPattern reluctantPattern = regex().anything().reluctant().literal("foo").build();
+ReadableRegexPattern possessivePattern = regex().anything().possessive().literal("foo").build();
+
+String text = "xfooxxxxxxfoo";
+assertThat(greedyPattern.matchesText(text), equalTo(true));
+
+Matcher matcher = reluctantPattern.matches(text);
+assertThat(matcher.find(), equalTo(true));
+assertThat(matcher.group(), equalTo("xfoo"));
+assertThat(matcher.find(), equalTo(true));
+assertThat(matcher.group(), equalTo("xxxxxxfoo"));
+
+matcher = possessivePattern.matches(text);
+assertThat(matcher.find(), equalTo(false));
+```
+
+### Working around the limits of the library
+Not everything will be supported by the library. Sometimes you may want something very specific. There are a few methods
+to help you with that.
+
+The following example creates the regular expression `[a-z&&[^p]]`, which matches all lower-case letters except `p`.
+```
+ReadableRegexPattern pattern1 = regex()
+        .regexFromString("[a-z&&[^p]]") // With this method, you can add any kind of expression.
+        .build();
+
+// Or you could use the overloaded variant of the regex method, which is the same:
+ReadableRegexPattern pattern2 = regex("[a-z&&[^p]]").build();
+
+assertThat(pattern1.matchesTextExactly("p"), equalTo(false));
+assertThat(pattern1.matchesTextExactly("c"), equalTo(true));
+assertThat(pattern2.matchesTextExactly("p"), equalTo(false));
+assertThat(pattern2.matchesTextExactly("c"), equalTo(true));
+```
+
+Note that the ReadableRegexPattern class is basically a wrapper of a JDK Pattern object. So if you need specific methods,
+you can use the underlying object:
+```
+ReadableRegexPattern pattern = regex().literal(".").build(); // Don't forget that literal escapes any meta character like dot!
+
+Pattern jdkPattern = pattern.getUnderlyingPattern();
+assertThat(jdkPattern.split("a.b.c"), equalTo(new String[]{"a", "b", "c"}));
+```
+
+### Javadoc
+If you are looking for in-depth information about all the available methods, take a look at the Javadoc.
+You can find the latest version [here](https://javadoc.io/doc/io.github.ricoapon/readable-regex/latest/index.html).
+
+## About the library
+### Readability over performance
 This library is focussed fully on readability and correctness. Regular expressions can be tricky with performance.
 There is a lot of information online on how to make your regular expressions perform. Changing the builder to get
 good performing regular expressions may not be readable. If you are reliant on good performing expressions, it may not
 be the best choice to use this library.
 
-# Regular expression engine
+### Regular expression engine
 This library uses the engine implemented in the JDK. All the details and specifics of the engine can be found in the JavaDoc
 of the class [Pattern](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html).
 
-# Replacement of JavaVerbalExpressions
-[JavaVerbalExpressions](https://github.com/VerbalExpressions/JavaVerbalExpressions) is another library created for Java to construct regular expressions using a Builder pattern.
-I liked this library, but there were a few caveats:
+### Replacement of JavaVerbalExpressions
+[JavaVerbalExpressions](https://github.com/VerbalExpressions/JavaVerbalExpressions) is another library created for Java
+to construct regular expressions using a Builder pattern. I liked this library, but there were a few caveats:
 * It is not maintained anymore.
 * It misses some functionality (for example, lookahead).
 * It is not written with Java in mind (the idea is ported to all languages).
 
 This library is created to be a better version of JavaVerbalExpressions.
 
-# Local development
+## Contributing
+If you have any suggestions, submit an issue right here in the GitHub project! Any bugs, features or random thoughts
+are appreciated :)
+
+## Local development
+### Checks
 All additional plugins to check the code base should run when calling the following gradle command:
 ```
 gradle checks
@@ -39,7 +194,7 @@ gradle printTestPercentages
 ````
 The reports are available in HTML form and are located in `build/reports`.
 
-## Publishing new releases
+### Publishing new releases
 Every release should correspond to a tag in git. This tag should be manually added.
 Uploading new releases to Maven Central can be done using the following command:
 ````
