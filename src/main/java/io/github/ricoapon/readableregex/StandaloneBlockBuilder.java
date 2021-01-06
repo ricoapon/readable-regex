@@ -18,12 +18,19 @@ public interface StandaloneBlockBuilder {
     ReadableRegex regexFromString(String regex);
 
     /**
+     * See {@link #add(ReadableRegexPattern)}.
+     */
+    default ReadableRegex add(ReadableRegex regexBuilder) {
+        return add(regexBuilder.build());
+    }
+
+    /**
      * Appends the regular expression created using another builder instance to this builder. The regular expression
-     * is surrounded in a non-capturing group {@code (?: ... )}.
-     * @param regexBuilder The other builder instance.
+     * is surrounded in a non-capturing group {@code (?:...)}.
+     * @param pattern The pattern.
      * @return This builder.
      */
-    ReadableRegex add(ReadableRegex regexBuilder);
+    ReadableRegex add(ReadableRegexPattern pattern);
 
     /**
      * Appends a literal expression. All metacharacters are escaped.

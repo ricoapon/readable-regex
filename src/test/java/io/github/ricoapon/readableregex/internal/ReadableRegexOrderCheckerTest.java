@@ -54,6 +54,9 @@ class ReadableRegexOrderCheckerTest {
     void add_StandaloneBlock() {
         readableRegexOrderChecker.add(regex());
         assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));
+
+        readableRegexOrderChecker.add(regex().build());
+        assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));
     }
 
     @Test
@@ -194,6 +197,12 @@ class ReadableRegexOrderCheckerTest {
         assertThat(dummyOrderChecker.calledMethod, equalTo(START_GROUP));
 
         readableRegexOrderChecker.startGroup("a");
+        assertThat(dummyOrderChecker.calledMethod, equalTo(START_GROUP));
+    }
+
+    @Test
+    void startUnnamedGroup_StartGroup() {
+        readableRegexOrderChecker.startUnnamedGroup();
         assertThat(dummyOrderChecker.calledMethod, equalTo(START_GROUP));
     }
 

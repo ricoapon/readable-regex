@@ -35,14 +35,22 @@ class StandaloneBlockTests {
 
     @Nested
     class Add {
+        @SuppressWarnings("ConstantConditions")
         @Test
         void nullAsArgumentThrowsNpe() {
-            assertThrows(NullPointerException.class, () -> regex().add(null));
+            assertThrows(NullPointerException.class, () -> regex().add((ReadableRegex) null));
+            assertThrows(NullPointerException.class, () -> regex().add((ReadableRegexPattern) null));
         }
 
         @Test
         void otherBuildersAreAddedAsStandaloneBlock() {
             ReadableRegexPattern pattern = regex().digit().add(regex().whitespace()).oneOrMore().digit().build();
+
+            assertThat(pattern, matchesExactly("1   2"));
+            assertThat(pattern, doesntMatchExactly("1 1 2"));
+
+            // Same test, but now applying "build()".
+            pattern = regex().digit().add(regex().whitespace().build()).oneOrMore().digit().build();
 
             assertThat(pattern, matchesExactly("1   2"));
             assertThat(pattern, doesntMatchExactly("1 1 2"));

@@ -39,9 +39,9 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     }
 
     @Override
-    public ReadableRegex add(ReadableRegex regexBuilder) {
-        Objects.requireNonNull(regexBuilder);
-        String regexToInclude = regexBuilder.build().toString();
+    public ReadableRegex add(ReadableRegexPattern pattern) {
+        Objects.requireNonNull(pattern);
+        String regexToInclude = pattern.toString();
 
         // Wrap in an unnamed group, to make sure that quantifiers work on the entire block.
         return _addRegex("(?:" + regexToInclude + ")");
@@ -228,6 +228,11 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
         }
 
         return _addRegex("(?<" + groupName + ">");
+    }
+
+    @Override
+    public ReadableRegex startUnnamedGroup() {
+        return _addRegex("(?:");
     }
 
     @Override

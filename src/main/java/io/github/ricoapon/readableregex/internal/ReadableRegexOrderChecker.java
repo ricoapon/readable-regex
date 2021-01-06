@@ -33,9 +33,9 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     }
 
     @Override
-    public ReadableRegex add(ReadableRegex regexBuilder) {
+    public ReadableRegex add(ReadableRegexPattern pattern) {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
-        return super.add(regexBuilder);
+        return super.add(pattern);
     }
 
     @Override
@@ -174,6 +174,12 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     public ReadableRegex startGroup(String groupName) {
         methodOrderChecker.checkCallingMethod(START_GROUP);
         return super.startGroup(groupName);
+    }
+
+    @Override
+    public ReadableRegex startUnnamedGroup() {
+        methodOrderChecker.checkCallingMethod(START_GROUP);
+        return super.startUnnamedGroup();
     }
 
     @Override

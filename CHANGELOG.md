@@ -14,6 +14,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 - Added methods using dot (`.`): `anyCharacter()` and `anything()`.
 - It is now possible to make existing quantifiers reluctant or possessive by appending the method `reluctant()` or `possessive()`
   after the quantifier.
+- Added shortcut method for matching text: `pattern.matchesTextExactly(String text)`.
+- Makes it possible to start unnamed groups: `startUnnamedGroup()`.
 
 ### Changed
 - Spotbugs annotations is removed as dependency.
