@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ## [Unreleased]
 ### Added
+
+## [0.2.0]
+### Added
 - Added method for or constructions (corresponds to `|`). Example: `regex().oneOf(regex().literal("a"), regex().digit()).build()`.
 - Added methods for ranges (corresponds to `[]` and `[^]`): `range(char... boundaries)`, `notInRange(char... boundaries)`,
   `anyCharacterOf(String characters)` and `anyCharacterExcept(String characters)`.
@@ -24,5 +27,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 ### Added
 - First setup with minimal features.
 
-[Unreleased]: https://github.com/ricoapon/readable-regex/compare/v0.1...HEAD
+[Unreleased]: https://github.com/ricoapon/readable-regex/compare/v0.2...HEAD
+[0.2.0]: https://github.com/ricoapon/readable-regex/releases/tag/v0.2
 [0.1]: https://github.com/ricoapon/readable-regex/releases/tag/v0.1
