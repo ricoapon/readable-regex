@@ -231,6 +231,11 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     }
 
     @Override
+    public ReadableRegex startUnnamedGroup() {
+        return _addRegex("(?:");
+    }
+
+    @Override
     public ReadableRegex startPositiveLookbehind() {
         return _addRegex("(?<=");
     }

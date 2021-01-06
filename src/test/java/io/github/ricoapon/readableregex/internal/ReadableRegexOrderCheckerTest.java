@@ -201,6 +201,12 @@ class ReadableRegexOrderCheckerTest {
     }
 
     @Test
+    void startUnnamedGroup_StartGroup() {
+        readableRegexOrderChecker.startUnnamedGroup();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(START_GROUP));
+    }
+
+    @Test
     void startLook_StartGroup() {
         readableRegexOrderChecker.startPositiveLookbehind();
         assertThat(dummyOrderChecker.calledMethod, equalTo(START_GROUP));

@@ -19,6 +19,13 @@ public interface GroupBuilder {
     ReadableRegex startGroup(String groupName);
 
     /**
+     * Starts a non-capturing group. This is the same as {@code (?:}. You must call {@link #endGroup()} somewhere after
+     * this method.
+     * @return This builder.
+     */
+    ReadableRegex startUnnamedGroup();
+
+    /**
      * Starts a non-capturing group for positive lookbehind. This is the same as {@code (?<=}. You must call {@link #endGroup()}
      * somewhere after this method.
      * @return This builder.

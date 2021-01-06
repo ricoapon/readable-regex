@@ -177,6 +177,12 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     }
 
     @Override
+    public ReadableRegex startUnnamedGroup() {
+        methodOrderChecker.checkCallingMethod(START_GROUP);
+        return super.startUnnamedGroup();
+    }
+
+    @Override
     public ReadableRegex startPositiveLookbehind() {
         methodOrderChecker.checkCallingMethod(START_GROUP);
         return super.startPositiveLookbehind();

@@ -64,6 +64,16 @@ class GroupTests {
     }
 
     @Test
+    void unnamedGroupsDontCapture() {
+        ReadableRegexPattern pattern = regex().startUnnamedGroup().digit().endGroup()
+                .group(regex().digit()).build();
+
+        Matcher matcher = pattern.matches("12");
+        assertThat(matcher.matches(), equalTo(true));
+        assertThat(matcher.group(1), equalTo("2"));
+    }
+
+    @Test
     void lookbehindsWork() {
         // Test using start/end syntax.
         ReadableRegexPattern pattern = regex().startPositiveLookbehind().digit().endGroup().whitespace().build();
