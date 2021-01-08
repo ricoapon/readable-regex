@@ -1,7 +1,7 @@
 package io.github.ricoapon.readableregex;
 
 /**
- * Builder interface with all the methods that adds quantifiers to standalone blocks.
+ * Builder interface with all the methods that add quantifiers to standalone blocks.
  */
 public interface QuantifierBuilder {
     /**

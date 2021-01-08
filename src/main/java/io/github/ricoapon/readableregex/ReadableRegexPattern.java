@@ -5,7 +5,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Wrapper of {@link Pattern} for additional useful methods.
+ * Wrapper of {@link Pattern} with some extra useful methods.
+ * <p>
+ * If you want to use methods from {@link Pattern} that are missing in this interface, you can use {@link #getUnderlyingPattern()}
+ * to get the {@link Pattern} object.
  */
 public interface ReadableRegexPattern {
     /**

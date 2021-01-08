@@ -8,7 +8,7 @@ package io.github.ricoapon.readableregex;
  */
 public interface StandaloneBlockBuilder {
     /**
-     * Appends the regex. The value is not changed or sanitized in any way.
+     * Appends the regular expression. The value is not changed or sanitized in any way.
      * <p>
      * This should only be used as a last resort when other methods cannot satisfy the expression you are looking for.
      * To avoid issues with other methods, make sure to encapsulate your regex with an unnamed group.

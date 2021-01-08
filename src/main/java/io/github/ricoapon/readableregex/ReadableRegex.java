@@ -3,18 +3,14 @@ package io.github.ricoapon.readableregex;
 import io.github.ricoapon.readableregex.internal.MethodOrderChecker;
 import io.github.ricoapon.readableregex.internal.ReadableRegexOrderChecker;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
- * Class to help construct readable regular expressions. The regular expressions are constructed using the Builder pattern.
+ * Interface which extends all the other interfaces for constructing readable regular expressions using the builder pattern.
  * <p>
- * The construction stays close to the way Java handles regular expression. Using this builder, you can create
- * {@link Pattern} objects, which creates {@link Matcher} objects. For additional functionality, the wrapper
- * {@link ReadableRegexPattern} can be created instead of {@link Pattern}.
+ * Using this builder, you can create {@link ReadableRegexPattern} objects, which can be used to match the pattern against text.
  */
 public interface ReadableRegex extends SyntacticSugarBuilder, StandaloneBlockBuilder, QuantifierBuilder, FinishBuilder, GroupBuilder {
     /**
+     * This method is the starting point for all the builder methods.
      * @return Instance of the builder.
      */
     static ReadableRegex regex() {
@@ -22,7 +18,9 @@ public interface ReadableRegex extends SyntacticSugarBuilder, StandaloneBlockBui
     }
 
     /**
-     * Syntactic sugar for {@code regex().regexFromString(regex)}.
+     * Starts the builder initialized with a regular expression.
+     * <p>
+     * Syntactic sugar for "{@link #regex()}.{@link #regexFromString(String)}".
      * @param regex The regular expression.
      * @return Instance of the builder initialized with the given regular expression.
      */
