@@ -6,11 +6,19 @@ import static io.github.ricoapon.readableregex.ReadableRegex.regex;
 import static io.github.ricoapon.readableregex.matchers.PatternMatchMatcher.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.empty;
 
 /**
  * Tests related to enabling specific pattern flags.
  */
 public class PatternFlagTests {
+    @Test
+    void byDefaultNoFlagsAreEnabled() {
+        ReadableRegexPattern pattern = regex().build();
+
+        assertThat(pattern.enabledFlags(), empty());
+    }
+
     @Test
     void enabledFlagsAreReturned() {
         ReadableRegexPattern pattern = regex().buildWithFlags(PatternFlag.CASE_INSENSITIVE, PatternFlag.DOT_ALL);

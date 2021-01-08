@@ -125,4 +125,34 @@ public interface StandaloneBlockBuilder {
      * @return This builder.
      */
     ReadableRegex anyCharacter();
+
+    /**
+     * Adds a start of line anchor. This is the same as {@code ^}.
+     * <p>
+     * Note that this only works if the flag {@link PatternFlag#MULTILINE} is enabled. This is done automatically when
+     * using this method. If you want to match the start of the input instead, please use {@link #startOfInput()}.
+     * @return This builder.
+     */
+    ReadableRegex startOfLine();
+
+    /**
+     * Adds a start of input anchor. This is the same as {@code \A}.
+     * @return This builder.
+     */
+    ReadableRegex startOfInput();
+
+    /**
+     * Adds an end of line anchor. This is the same as {@code $}.
+     * <p>
+     * Note that this only works if the flag {@link PatternFlag#MULTILINE} is enabled. This is done automatically when
+     * using this method. If you want to match the end of the input instead, please use {@link #endOfInput()}.
+     * @return This builder.
+     */
+    ReadableRegex endOfLine();
+
+    /**
+     * Adds end of input anchor. This is the same as {@code \z}.
+     * @return This builder.
+     */
+    ReadableRegex endOfInput();
 }

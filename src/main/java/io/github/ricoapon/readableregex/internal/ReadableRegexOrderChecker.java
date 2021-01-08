@@ -117,6 +117,30 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     }
 
     @Override
+    public ReadableRegex startOfLine() {
+        methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
+        return super.startOfLine();
+    }
+
+    @Override
+    public ReadableRegex startOfInput() {
+        methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
+        return super.startOfInput();
+    }
+
+    @Override
+    public ReadableRegex endOfLine() {
+        methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
+        return super.endOfLine();
+    }
+
+    @Override
+    public ReadableRegex endOfInput() {
+        methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
+        return super.endOfInput();
+    }
+
+    @Override
     public ReadableRegex oneOrMore() {
         methodOrderChecker.checkCallingMethod(QUANTIFIER);
         return super.oneOrMore();

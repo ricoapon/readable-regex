@@ -138,6 +138,30 @@ class ReadableRegexOrderCheckerTest {
     }
 
     @Test
+    void startOfLine_StandaloneBlock() {
+        readableRegexOrderChecker.startOfLine();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));
+    }
+
+    @Test
+    void startOfInput_StandaloneBlock() {
+        readableRegexOrderChecker.startOfInput();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));
+    }
+
+    @Test
+    void endOfLine_StandaloneBlock() {
+        readableRegexOrderChecker.endOfLine();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));
+    }
+
+    @Test
+    void endOfInput_StandaloneBlock() {
+        readableRegexOrderChecker.endOfInput();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));
+    }
+
+    @Test
     void oneOrMore_Quantifier() {
         readableRegexOrderChecker.digit().oneOrMore();
         assertThat(dummyOrderChecker.calledMethod, equalTo(QUANTIFIER));

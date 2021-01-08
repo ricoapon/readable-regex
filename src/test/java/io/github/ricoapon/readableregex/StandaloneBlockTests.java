@@ -6,10 +6,9 @@ import org.junit.jupiter.api.Test;
 
 import static io.github.ricoapon.readableregex.Constants.*;
 import static io.github.ricoapon.readableregex.ReadableRegex.regex;
-import static io.github.ricoapon.readableregex.matchers.PatternMatchMatcher.doesntMatchAnythingFrom;
-import static io.github.ricoapon.readableregex.matchers.PatternMatchMatcher.doesntMatchExactly;
-import static io.github.ricoapon.readableregex.matchers.PatternMatchMatcher.matchesExactly;
+import static io.github.ricoapon.readableregex.matchers.PatternMatchMatcher.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -26,10 +25,12 @@ class StandaloneBlockTests {
         }
 
         @Test
-        void quantifierIsPossibleAfter() {
-            ReadableRegexPattern pattern = regex().digit().oneOrMore().regexFromString("\\s+").oneOrMore().digit().build();
+        void inputIsNotSurroundedWithUnnamedGroup() {
+            ReadableRegexPattern pattern = regex().regexFromString("ab").oneOrMore().build();
 
-            assertThat(pattern, matchesExactly("111   2"));
+            assertThat(pattern, matchesExactly("abbbb"));
+            assertThat(pattern, doesntMatchExactly("aaabbb"));
+            assertThat(pattern, doesntMatchAnythingFrom("a"));
         }
     }
 
@@ -43,17 +44,17 @@ class StandaloneBlockTests {
         }
 
         @Test
-        void otherBuildersAreAddedAsStandaloneBlock() {
-            ReadableRegexPattern pattern = regex().digit().add(regex().whitespace()).oneOrMore().digit().build();
+        void inputIsCapturedInUnnamedGroup() {
+            ReadableRegexPattern pattern = regex().add(regex().literal("a").digit()).oneOrMore().build();
 
-            assertThat(pattern, matchesExactly("1   2"));
-            assertThat(pattern, doesntMatchExactly("1 1 2"));
+            assertThat(pattern, matchesExactly("a1a2a3"));
+            assertThat(pattern, doesntMatchExactly("a111"));
 
             // Same test, but now applying "build()".
-            pattern = regex().digit().add(regex().whitespace().build()).oneOrMore().digit().build();
+            pattern = regex().add(regex().literal("a").digit().build()).oneOrMore().build();
 
-            assertThat(pattern, matchesExactly("1   2"));
-            assertThat(pattern, doesntMatchExactly("1 1 2"));
+            assertThat(pattern, matchesExactly("a1a2a3"));
+            assertThat(pattern, doesntMatchExactly("a111"));
         }
     }
 
@@ -70,14 +71,6 @@ class StandaloneBlockTests {
             assertThat(pattern, doesntMatchAnythingFrom(WORD_CHARACTERS));
             assertThat(pattern, doesntMatchAnythingFrom(NON_LETTERS));
             assertThat(pattern, doesntMatchAnythingFrom(WHITESPACES));
-        }
-
-        @Test
-        void digitsAreStandaloneBlocks() {
-            ReadableRegexPattern pattern = regex().literal("a").digit().oneOrMore().build();
-
-            assertThat(pattern, matchesExactly("a" + DIGITS));
-            assertThat(pattern, doesntMatchExactly("a1a1"));
         }
     }
 
@@ -131,14 +124,6 @@ class StandaloneBlockTests {
             assertThat(pattern, doesntMatchAnythingFrom(WORD_CHARACTERS));
             assertThat(pattern, doesntMatchAnythingFrom(NON_LETTERS));
             assertThat(pattern, doesntMatchAnythingFrom(DIGITS));
-        }
-
-        @Test
-        void whitespacesAreStandaloneBlocks() {
-            ReadableRegexPattern pattern = regex().literal("a").whitespace().oneOrMore().build();
-
-            assertThat(pattern, matchesExactly("a" + WHITESPACES));
-            assertThat(pattern, doesntMatchExactly("a a "));
         }
     }
 
@@ -250,5 +235,70 @@ class StandaloneBlockTests {
      * </ul>
      */
     @Nested
-    class AnyCharacter { }
+    class AnyCharacter {
+    }
+
+    @Nested
+    class StartOfLine {
+        @Test
+        void quantifierAfterWorks() {
+            ReadableRegexPattern pattern = regex().startOfLine().exactlyNTimes(1).literal("a").build();
+
+            assertThat(pattern, matchesExactly("a"));
+            assertThat(pattern, matchesSomethingFrom("\na"));
+            assertThat(pattern, doesntMatchAnythingFrom("ba"));
+        }
+
+        @Test
+        void methodEnablesMultilineFlag() {
+            ReadableRegexPattern pattern = regex().startOfLine().build();
+            ReadableRegexPattern pattern2 = regex().startOfLine().buildWithFlags(PatternFlag.MULTILINE);
+
+            assertThat(pattern.enabledFlags(), contains(PatternFlag.MULTILINE));
+            assertThat(pattern2.enabledFlags(), contains(PatternFlag.MULTILINE));
+        }
+    }
+
+    @Nested
+    class StartOfInput {
+        @Test
+        void worksCorrectlyWithStartOfLine() {
+            ReadableRegexPattern pattern = regex().startOfInput().regexFromString("\n").startOfLine().literal("a").build();
+
+            assertThat(pattern, matchesExactly("\na"));
+            assertThat(pattern, doesntMatchAnythingFrom("\n\na"));
+        }
+    }
+
+    @Nested
+    class EndOfLine {
+        @Test
+        void quantifierAfterWorks() {
+            ReadableRegexPattern pattern = regex().literal("a").endOfLine().exactlyNTimes(1).build();
+
+            assertThat(pattern, matchesExactly("a"));
+            assertThat(pattern, matchesSomethingFrom("a\n"));
+            assertThat(pattern, doesntMatchAnythingFrom("ab"));
+        }
+
+        @Test
+        void methodEnablesMultilineFlag() {
+            ReadableRegexPattern pattern = regex().endOfLine().build();
+            ReadableRegexPattern pattern2 = regex().endOfLine().buildWithFlags(PatternFlag.MULTILINE);
+
+            assertThat(pattern.enabledFlags(), contains(PatternFlag.MULTILINE));
+            assertThat(pattern2.enabledFlags(), contains(PatternFlag.MULTILINE));
+        }
+    }
+
+    @Nested
+    class EndOfInput {
+        @Test
+        void worksCorrectlyWithEndOfLine() {
+            ReadableRegexPattern pattern = regex().literal("a").endOfLine().regexFromString("\n").endOfInput().build();
+
+            assertThat(pattern, matchesExactly("a\n"));
+            assertThat(pattern, doesntMatchAnythingFrom("a\n\n"));
+        }
+    }
 }

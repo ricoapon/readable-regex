@@ -13,11 +13,20 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     /** The internal regular expression. This field should only be modified using the {@link #_addRegex(String)} method. */
     private final StringBuilder regexBuilder = new StringBuilder();
 
+    /** Indicates whether the flag {@link PatternFlag#MULTILINE} should be enabled when building the pattern object. */
+    private boolean enableMultilineFlag = false;
+
     @SuppressWarnings("MagicConstant")
     @Override
     public ReadableRegexPattern buildWithFlags(PatternFlag... patternFlags) {
         int flags = Arrays.stream(patternFlags).map(PatternFlag::getJdkPatternFlagCode)
                 .reduce(0, (integer, integer2) -> integer | integer2);
+
+        // If we should enable multiline, make sure it is part of the flags variable.
+        if (enableMultilineFlag && (flags & PatternFlag.MULTILINE.getJdkPatternFlagCode()) == 0) {
+            flags = flags | PatternFlag.MULTILINE.getJdkPatternFlagCode();
+        }
+
         Pattern pattern = Pattern.compile(regexBuilder.toString(), flags);
         return new ReadableRegexPatternImpl(pattern);
     }
@@ -158,6 +167,30 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     @Override
     public ReadableRegex anyCharacter() {
         return _addRegex(".");
+    }
+
+    @Override
+    public ReadableRegex startOfLine() {
+        enableMultilineFlag = true;
+        // Surround with an unnamed group, to make sure that it can be followed up with quantifiers.
+        return _addRegex("(?:^)");
+    }
+
+    @Override
+    public ReadableRegex startOfInput() {
+        return _addRegex("\\A");
+    }
+
+    @Override
+    public ReadableRegex endOfLine() {
+        enableMultilineFlag = true;
+        // Surround with an unnamed group, to make sure that it can be followed up with quantifiers.
+        return _addRegex("(?:$)");
+    }
+
+    @Override
+    public ReadableRegex endOfInput() {
+        return _addRegex("\\z");
     }
 
     @Override
