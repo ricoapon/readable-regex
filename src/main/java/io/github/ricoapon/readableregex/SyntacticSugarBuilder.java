@@ -1,9 +1,15 @@
 package io.github.ricoapon.readableregex;
 
+import static io.github.ricoapon.readableregex.ReadableRegex.regex;
+
 /**
  * Builder interface with methods to enhance user experience using shortcut methods.
  */
 public interface SyntacticSugarBuilder extends StandaloneBlockBuilder, QuantifierBuilder, GroupBuilder {
+    /*
+    START of methods related to standalone blocks.
+     */
+
     /**
      * Matches a word. This is the same as {@code \w+}
      * <p>
@@ -24,6 +30,18 @@ public interface SyntacticSugarBuilder extends StandaloneBlockBuilder, Quantifie
     default ReadableRegex anything() {
         return anyCharacter().zeroOrMore();
     }
+
+    /**
+     * Adds a universal line break. This is the same as {@code \r\n|\n}.
+     * @return This builder.
+     */
+    default ReadableRegex lineBreak() {
+        return oneOf(regex("\\r\\n?"), regex("\\n"));
+    }
+
+    /*
+    START of methods related to groups.
+     */
 
     /**
      * Adds a regular expression inside a group.

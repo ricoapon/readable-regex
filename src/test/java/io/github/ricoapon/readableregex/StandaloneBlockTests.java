@@ -111,9 +111,9 @@ class StandaloneBlockTests {
     }
 
     @Nested
-    class Whitespaces {
+    class Whitespace {
         @Test
-        void whitespacesOnlyMatchWhitespaces() {
+        void whitespaceOnlyMatchesWhitespaces() {
             ReadableRegexPattern pattern = regex().whitespace().build();
 
             // Matches exactly every character inside WHITESPACES.
@@ -124,6 +124,17 @@ class StandaloneBlockTests {
             assertThat(pattern, doesntMatchAnythingFrom(WORD_CHARACTERS));
             assertThat(pattern, doesntMatchAnythingFrom(NON_LETTERS));
             assertThat(pattern, doesntMatchAnythingFrom(DIGITS));
+        }
+    }
+
+    @Nested
+    class Tab {
+        @Test
+        void tabOnlyMatchesTab() {
+            ReadableRegexPattern pattern = regex().tab().build();
+
+            assertThat(pattern, matchesExactly("\t"));
+            assertThat(pattern, doesntMatchAnythingFrom(WHITESPACES.replaceAll("\t", "")));
         }
     }
 
