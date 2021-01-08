@@ -19,6 +19,8 @@ public interface StandaloneBlockBuilder {
 
     /**
      * See {@link #add(ReadableRegexPattern)}.
+     * @param regexBuilder The regular expression.
+     * @return This builder.
      */
     default ReadableRegex add(ReadableRegex regexBuilder) {
         return add(regexBuilder.build());

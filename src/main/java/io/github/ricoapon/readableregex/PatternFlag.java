@@ -23,6 +23,9 @@ public enum PatternFlag {
         this.jdkPatternFlagCode = jdkPatternFlagCode;
     }
 
+    /**
+     * @return The integer of the flag used by the JDK class {@link Pattern}.
+     */
     public int getJdkPatternFlagCode() {
         return jdkPatternFlagCode;
     }

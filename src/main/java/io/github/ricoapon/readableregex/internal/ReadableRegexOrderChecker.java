@@ -14,6 +14,10 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     /** Object for maintaining the status of calling methods. */
     private final MethodOrderChecker methodOrderChecker;
 
+    /**
+     * Constructor.
+     * @param methodOrderChecker Object for checking that methods are called in the right order.
+     */
     public ReadableRegexOrderChecker(MethodOrderChecker methodOrderChecker) {
         this.methodOrderChecker = methodOrderChecker;
     }
