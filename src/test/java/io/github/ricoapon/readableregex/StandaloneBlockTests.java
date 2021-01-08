@@ -25,10 +25,12 @@ class StandaloneBlockTests {
         }
 
         @Test
-        void quantifierIsPossibleAfter() {
-            ReadableRegexPattern pattern = regex().digit().oneOrMore().regexFromString("\\s+").oneOrMore().digit().build();
+        void inputIsNotSurroundedWithUnnamedGroup() {
+            ReadableRegexPattern pattern = regex().regexFromString("ab").oneOrMore().build();
 
-            assertThat(pattern, matchesExactly("111   2"));
+            assertThat(pattern, matchesExactly("abbbb"));
+            assertThat(pattern, doesntMatchExactly("aaabbb"));
+            assertThat(pattern, doesntMatchAnythingFrom("a"));
         }
     }
 
@@ -42,17 +44,17 @@ class StandaloneBlockTests {
         }
 
         @Test
-        void otherBuildersAreAddedAsStandaloneBlock() {
-            ReadableRegexPattern pattern = regex().digit().add(regex().whitespace()).oneOrMore().digit().build();
+        void inputIsCapturedInUnnamedGroup() {
+            ReadableRegexPattern pattern = regex().add(regex().literal("a").digit()).oneOrMore().build();
 
-            assertThat(pattern, matchesExactly("1   2"));
-            assertThat(pattern, doesntMatchExactly("1 1 2"));
+            assertThat(pattern, matchesExactly("a1a2a3"));
+            assertThat(pattern, doesntMatchExactly("a111"));
 
             // Same test, but now applying "build()".
-            pattern = regex().digit().add(regex().whitespace().build()).oneOrMore().digit().build();
+            pattern = regex().add(regex().literal("a").digit().build()).oneOrMore().build();
 
-            assertThat(pattern, matchesExactly("1   2"));
-            assertThat(pattern, doesntMatchExactly("1 1 2"));
+            assertThat(pattern, matchesExactly("a1a2a3"));
+            assertThat(pattern, doesntMatchExactly("a111"));
         }
     }
 
@@ -69,14 +71,6 @@ class StandaloneBlockTests {
             assertThat(pattern, doesntMatchAnythingFrom(WORD_CHARACTERS));
             assertThat(pattern, doesntMatchAnythingFrom(NON_LETTERS));
             assertThat(pattern, doesntMatchAnythingFrom(WHITESPACES));
-        }
-
-        @Test
-        void digitsAreStandaloneBlocks() {
-            ReadableRegexPattern pattern = regex().literal("a").digit().oneOrMore().build();
-
-            assertThat(pattern, matchesExactly("a" + DIGITS));
-            assertThat(pattern, doesntMatchExactly("a1a1"));
         }
     }
 
@@ -130,14 +124,6 @@ class StandaloneBlockTests {
             assertThat(pattern, doesntMatchAnythingFrom(WORD_CHARACTERS));
             assertThat(pattern, doesntMatchAnythingFrom(NON_LETTERS));
             assertThat(pattern, doesntMatchAnythingFrom(DIGITS));
-        }
-
-        @Test
-        void whitespacesAreStandaloneBlocks() {
-            ReadableRegexPattern pattern = regex().literal("a").whitespace().oneOrMore().build();
-
-            assertThat(pattern, matchesExactly("a" + WHITESPACES));
-            assertThat(pattern, doesntMatchExactly("a a "));
         }
     }
 
@@ -276,15 +262,6 @@ class StandaloneBlockTests {
     @Nested
     class StartOfInput {
         @Test
-        void quantifierAfterWorks() {
-            ReadableRegexPattern pattern = regex().startOfInput().exactlyNTimes(1).literal("a").build();
-
-            assertThat(pattern, matchesExactly("a"));
-            assertThat(pattern, doesntMatchAnythingFrom("\na"));
-            assertThat(pattern, doesntMatchAnythingFrom("ba"));
-        }
-
-        @Test
         void worksCorrectlyWithStartOfLine() {
             ReadableRegexPattern pattern = regex().startOfInput().regexFromString("\n").startOfLine().literal("a").build();
 
@@ -316,15 +293,6 @@ class StandaloneBlockTests {
 
     @Nested
     class EndOfInput {
-        @Test
-        void quantifierAfterWorks() {
-            ReadableRegexPattern pattern = regex().literal("a").endOfInput().exactlyNTimes(1).build();
-
-            assertThat(pattern, matchesExactly("a"));
-            assertThat(pattern, doesntMatchAnythingFrom("a\n"));
-            assertThat(pattern, doesntMatchAnythingFrom("ab"));
-        }
-
         @Test
         void worksCorrectlyWithEndOfLine() {
             ReadableRegexPattern pattern = regex().literal("a").endOfLine().regexFromString("\n").endOfInput().build();
