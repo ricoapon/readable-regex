@@ -8,8 +8,7 @@ import io.github.ricoapon.readableregex.ReadableRegex;
 import io.github.ricoapon.readableregex.StandaloneBlockBuilder;
 
 /**
- * Class for maintaining the status of a building a regular expression and checking whether executing methods of
- * {@link ReadableRegex} is valid.
+ * Class for maintaining the status of a building a regular expression and checking whether the execution order is valid.
  */
 public class MethodOrderChecker {
     /** The types of methods that can be executed by {@link ReadableRegex}. */

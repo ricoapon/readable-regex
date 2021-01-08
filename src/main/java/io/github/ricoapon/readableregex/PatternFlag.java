@@ -7,13 +7,13 @@ import java.util.regex.Pattern;
  * Flags can be enabled using the method {@link FinishBuilder#buildWithFlags(PatternFlag...)}.
  */
 public enum PatternFlag {
-    /** See {@link Pattern#CASE_INSENSITIVE}. */
+    /** Enables case-insensitive matching. See {@link Pattern#CASE_INSENSITIVE} for more details. */
     CASE_INSENSITIVE(Pattern.CASE_INSENSITIVE),
 
-    /** See {@link Pattern#MULTILINE}. */
+    /** Enables multiline mode. See {@link Pattern#MULTILINE} for more details. */
     MULTILINE(Pattern.MULTILINE),
 
-    /** See {@link Pattern#DOTALL}. */
+    /** Enables dotall mode. See {@link Pattern#DOTALL} for more details. */
     DOT_ALL(Pattern.DOTALL);
 
     /** The integer that is used for setting the flag on {@link java.util.regex.Pattern}. */
@@ -23,6 +23,9 @@ public enum PatternFlag {
         this.jdkPatternFlagCode = jdkPatternFlagCode;
     }
 
+    /**
+     * @return The integer of the flag used by the JDK class {@link Pattern}.
+     */
     public int getJdkPatternFlagCode() {
         return jdkPatternFlagCode;
     }

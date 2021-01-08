@@ -9,6 +9,9 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation that builds the regular expressions.
+ */
 public abstract class ReadableRegexBuilder implements ReadableRegex {
     /** The internal regular expression. This field should only be modified using the {@link #_addRegex(String)} method. */
     private final StringBuilder regexBuilder = new StringBuilder();
@@ -81,9 +84,7 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
                 .map(ReadableRegexPattern::toString)
                 .collect(Collectors.joining("|"));
 
-        _addRegex("(?:");
-        _addRegex(middlePart);
-        return _addRegex(")");
+        return _addRegex("(?:" + middlePart + ")");
     }
 
     @Override
@@ -291,15 +292,5 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     @Override
     public ReadableRegex endGroup() {
         return _addRegex(")");
-    }
-
-    @Override
-    public ReadableRegex group(ReadableRegex regexBuilder) {
-        return startGroup().add(regexBuilder).endGroup();
-    }
-
-    @Override
-    public ReadableRegex group(String groupName, ReadableRegex regexBuilder) {
-        return startGroup(groupName).add(regexBuilder).endGroup();
     }
 }

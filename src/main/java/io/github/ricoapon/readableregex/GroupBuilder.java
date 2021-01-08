@@ -11,7 +11,7 @@ public interface GroupBuilder {
     ReadableRegex startGroup();
 
     /**
-     * Starts a new capturing group for a given name. This is the same as {@code (<name>}. You must call {@link #endGroup()}
+     * Starts a new capturing group with a given name. This is the same as {@code (<name>}. You must call {@link #endGroup()}
      * somewhere after this method.
      * @param groupName The name of the group.
      * @return This builder.
@@ -54,60 +54,8 @@ public interface GroupBuilder {
     ReadableRegex startNegativeLookahead();
 
     /**
-     * Ends the last group that started, this includes lookbehind. This is the same as {@code )}. This method cannot be
-     * used before starting a group.
+     * Ends the last group that started. This is the same as {@code )}. This method cannot be used before starting a group.
      * @return This builder.
      */
     ReadableRegex endGroup();
-
-    /**
-     * Syntactic sugar for {@code .startGroup().add(regexBuilder).endGroup()}.
-     * @param regexBuilder The regular expression.
-     * @return This builder.
-     */
-    ReadableRegex group(ReadableRegex regexBuilder);
-
-    /**
-     * Syntactic sugar for {@code .startGroup(groupName).add(regexBuilder).endGroup()}.
-     * @param groupName    The name of the group.
-     * @param regexBuilder The regular expression.
-     * @return This builder.
-     */
-    ReadableRegex group(String groupName, ReadableRegex regexBuilder);
-
-    /**
-     * Syntactic sugar for {@code .startPositiveLookbehind().add(regexBuilder).endGroup()}.
-     * @param regexBuilder The regular expression.
-     * @return This builder.
-     */
-    default ReadableRegex positiveLookbehind(ReadableRegex regexBuilder) {
-        return startPositiveLookbehind().add(regexBuilder).endGroup();
-    }
-
-    /**
-     * Syntactic sugar for {@code .startNegativeLookbehind().add(regexBuilder).endGroup()}.
-     * @param regexBuilder The regular expression.
-     * @return This builder.
-     */
-    default ReadableRegex negativeLookbehind(ReadableRegex regexBuilder) {
-        return startNegativeLookbehind().add(regexBuilder).endGroup();
-    }
-
-    /**
-     * Syntactic sugar for {@code .startPositiveLookahead().add(regexBuilder).endGroup()}.
-     * @param regexBuilder The regular expression.
-     * @return This builder.
-     */
-    default ReadableRegex positiveLookahead(ReadableRegex regexBuilder) {
-        return startPositiveLookahead().add(regexBuilder).endGroup();
-    }
-
-    /**
-     * Syntactic sugar for {@code .startNegativeLookahead().add(regexBuilder).endGroup()}.
-     * @param regexBuilder The regular expression.
-     * @return This builder.
-     */
-    default ReadableRegex negativeLookahead(ReadableRegex regexBuilder) {
-        return startNegativeLookahead().add(regexBuilder).endGroup();
-    }
 }

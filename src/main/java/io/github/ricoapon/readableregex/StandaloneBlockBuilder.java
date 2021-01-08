@@ -3,12 +3,12 @@ package io.github.ricoapon.readableregex;
 /**
  * Builder interface with all the methods that create standalone blocks in regular expressions. A standalone block
  * is something can be followed by a quantifier and is matched in its entirety. So for example: {@code \s} or
- * {@code (?:\Qa.c\E)}. Incorrect is {@code ab}, since adding the optional quantifier {@code ?} for example, would make
- * the regex {@code ab?} which is different from {@code (?:ab)?}).
+ * {@code (?:\Qa.c\E)}. But {@code ab} is not a standalone block, since adding the optional quantifier {@code ?}, for example, would make
+ * the expression {@code ab?}. This is different from {@code (ab)?}).
  */
 public interface StandaloneBlockBuilder {
     /**
-     * Appends the regex. The value is not changed or sanitized in any way.
+     * Appends the regular expression. The value is not changed or sanitized in any way.
      * <p>
      * This should only be used as a last resort when other methods cannot satisfy the expression you are looking for.
      * To avoid issues with other methods, make sure to encapsulate your regex with an unnamed group.
@@ -19,6 +19,8 @@ public interface StandaloneBlockBuilder {
 
     /**
      * See {@link #add(ReadableRegexPattern)}.
+     * @param regexBuilder The regular expression.
+     * @return This builder.
      */
     default ReadableRegex add(ReadableRegex regexBuilder) {
         return add(regexBuilder.build());
@@ -52,7 +54,7 @@ public interface StandaloneBlockBuilder {
     ReadableRegex whitespace();
 
     /**
-     * Adds either or group. This is the same as {@code (?:X|Y)}, where {@code X} and {@code Y} are given regular expressions.
+     * Adds either or block. This is the same as {@code (?:X|Y)}, where {@code X} and {@code Y} are given regular expressions.
      * @param regexBuilders Regular expressions for which one needs to match.
      * @return This builder.
      */

@@ -6,9 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.regex.Matcher;
 
 import static io.github.ricoapon.readableregex.ReadableRegex.regex;
-import static io.github.ricoapon.readableregex.matchers.PatternMatchMatcher.doesntMatchAnythingFrom;
-import static io.github.ricoapon.readableregex.matchers.PatternMatchMatcher.doesntMatchExactly;
-import static io.github.ricoapon.readableregex.matchers.PatternMatchMatcher.matchesExactly;
+import static io.github.ricoapon.readableregex.matchers.PatternMatchMatcher.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -42,5 +40,37 @@ public class SyntacticSugarTests {
         assertThat(pattern, matchesExactly(Constants.WORD_CHARACTERS));
         assertThat(pattern, matchesExactly(Constants.DIGITS));
         assertThat(pattern, matchesExactly(Constants.NON_LETTERS));
+    }
+
+    @Test
+    void groupWorks() {
+        ReadableRegexPattern pattern = regex().digit().group("firstGroupName", regex().digit().group(regex().digit())).build();
+        Matcher matcher = pattern.matches("123");
+
+        assertThat(matcher.matches(), equalTo(true));
+        assertThat(matcher.group("firstGroupName"), equalTo("23"));
+        assertThat(matcher.group(2), equalTo("3"));
+    }
+
+    @Test
+    void lookbehindWorks() {
+        ReadableRegexPattern pattern = regex().positiveLookbehind(regex().digit()).whitespace().build();
+        assertThat(pattern, matchesSomethingFrom("1 "));
+        assertThat(pattern, doesntMatchAnythingFrom(" "));
+
+        pattern = regex().negativeLookbehind(regex().digit()).whitespace().build();
+        assertThat(pattern, doesntMatchAnythingFrom("1 "));
+        assertThat(pattern, matchesSomethingFrom(" "));
+    }
+
+    @Test
+    void lookaheadWorks() {
+        ReadableRegexPattern pattern = regex().whitespace().positiveLookahead(regex().digit()).build();
+        assertThat(pattern, matchesSomethingFrom(" 1"));
+        assertThat(pattern, doesntMatchAnythingFrom(" "));
+
+        pattern = regex().whitespace().negativeLookahead(regex().digit()).build();
+        assertThat(pattern, doesntMatchAnythingFrom(" 1"));
+        assertThat(pattern, matchesSomethingFrom(" "));
     }
 }

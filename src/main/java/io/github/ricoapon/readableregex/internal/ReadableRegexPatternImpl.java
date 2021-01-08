@@ -9,6 +9,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of {@link ReadableRegexPattern}.
+ */
 public class ReadableRegexPatternImpl implements ReadableRegexPattern {
     private final Pattern pattern;
 

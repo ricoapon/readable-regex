@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 ### Added
 - Added methods for start/end of line/input: `startOfLine()`, `startOfInput()`, `endOfLine()` and `endOfInput()`.
 
+### Changed
+- Moved syntactic sugar methods from the interface GroupBuilder into SyntacticSugarBuilder.
+- Improved the Javadoc as a whole: added missing comments and rewritten comments to make it more clear.
+
 ## [0.2.0]
 ### Added
 - Added method for or constructions (corresponds to `|`). Example: `regex().oneOf(regex().literal("a"), regex().digit()).build()`.

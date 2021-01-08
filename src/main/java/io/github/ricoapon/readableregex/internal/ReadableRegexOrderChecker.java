@@ -14,6 +14,10 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     /** Object for maintaining the status of calling methods. */
     private final MethodOrderChecker methodOrderChecker;
 
+    /**
+     * Constructor.
+     * @param methodOrderChecker Object for checking that methods are called in the right order.
+     */
     public ReadableRegexOrderChecker(MethodOrderChecker methodOrderChecker) {
         this.methodOrderChecker = methodOrderChecker;
     }
@@ -234,17 +238,5 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     public ReadableRegex endGroup() {
         methodOrderChecker.checkCallingMethod(END_GROUP);
         return super.endGroup();
-    }
-
-    @Override
-    public ReadableRegex group(ReadableRegex regexBuilder) {
-        // Implementation calls other methods. The order is checked in those methods.
-        return super.group(regexBuilder);
-    }
-
-    @Override
-    public ReadableRegex group(String groupName, ReadableRegex regexBuilder) {
-        // Implementation calls other methods. The order is checked in those methods.
-        return super.group(groupName, regexBuilder);
     }
 }
