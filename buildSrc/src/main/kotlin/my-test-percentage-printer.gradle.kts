@@ -18,11 +18,30 @@ tasks.check {
     finalizedBy("printTestPercentages")
 }
 
+
 fun printTestPercentages() {
+    var areAllTests100Percent = true;
+
     var resultString = "Coverage Summary:\n"
-    readTestPercentageFromJacocoReport().forEach { resultString += createLine(it) }
-    readTestPercentagesFromPitestReport().forEach { resultString += createLine(it) }
+    readTestPercentageFromJacocoReport().forEach {
+        resultString += createLine(it)
+        if (it.value.first != it.value.second) {
+            areAllTests100Percent = false
+        }
+    }
+    readTestPercentagesFromPitestReport().forEach {
+        resultString += createLine(it)
+        if (it.value.first != it.value.second) {
+            areAllTests100Percent = false;
+        }
+    }
+
     print(resultString)
+
+    // Fail the run.
+    if (!areAllTests100Percent) {
+        throw GradleException("The test coverage is not 100%!")
+    }
 }
 
 fun createLine(result: Map.Entry<String, Pair<Int, Int>>): String =
