@@ -11,7 +11,7 @@ public interface GroupBuilder {
     ReadableRegex startGroup();
 
     /**
-     * Starts a new capturing group for a given name. This is the same as {@code (<name>}. You must call {@link #endGroup()}
+     * Starts a new capturing group with a given name. This is the same as {@code (<name>}. You must call {@link #endGroup()}
      * somewhere after this method.
      * @param groupName The name of the group.
      * @return This builder.
@@ -54,8 +54,7 @@ public interface GroupBuilder {
     ReadableRegex startNegativeLookahead();
 
     /**
-     * Ends the last group that started, this includes lookbehind. This is the same as {@code )}. This method cannot be
-     * used before starting a group.
+     * Ends the last group that started. This is the same as {@code )}. This method cannot be used before starting a group.
      * @return This builder.
      */
     ReadableRegex endGroup();
