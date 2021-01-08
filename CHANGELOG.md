@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 ## [Unreleased]
 ### Added
 - Added methods for start/end of line/input: `startOfLine()`, `startOfInput()`, `endOfLine()` and `endOfInput()`.
+- Added methods for a tab and line break: `tab()` and `lineBreak()`.
 
 ### Changed
 - Moved syntactic sugar methods from the interface GroupBuilder into SyntacticSugarBuilder.
