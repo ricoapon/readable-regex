@@ -44,6 +44,16 @@ class SyntacticSugarTests {
             assertThat(pattern, matchesExactly(Constants.DIGITS));
             assertThat(pattern, matchesExactly(Constants.NON_LETTERS));
         }
+
+        @Test
+        void lineBreakWorks() {
+            ReadableRegexPattern pattern = regex().lineBreak().build();
+
+            assertThat(pattern, matchesExactly("\n"));
+            assertThat(pattern, matchesExactly("\r\n"));
+            assertThat(pattern, matchesExactly("\r"));
+            assertThat(pattern, doesntMatchAnythingFrom(" "));
+        }
     }
 
     @Nested

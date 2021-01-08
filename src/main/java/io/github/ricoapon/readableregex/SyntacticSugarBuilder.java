@@ -31,6 +31,14 @@ public interface SyntacticSugarBuilder extends StandaloneBlockBuilder, Quantifie
         return anyCharacter().zeroOrMore();
     }
 
+    /**
+     * Adds a universal line break. This is the same as {@code \r\n|\n}.
+     * @return This builder.
+     */
+    default ReadableRegex lineBreak() {
+        return oneOf(regex("\\r\\n?"), regex("\\n"));
+    }
+
     /*
     START of methods related to groups.
      */
