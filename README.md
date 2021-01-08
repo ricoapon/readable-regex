@@ -3,10 +3,34 @@
 With this library, you can create regular expressions in a readable way!
 
 ## Table of contents
-1. [User guide](#user-guide)
 1. [About the library](#about-the-library)
+1. [User guide](#user-guide)
 1. [Contributing](#contributing)
 1. [Local development](#local-development)
+
+## About the library
+This library uses the builder pattern to create regular expressions. Using methods with understandable names to create
+your expression, should be more readable and therefore easier to maintain!
+
+### Regular expression engine
+This library uses the engine implemented in the JDK. All the details and specifics of the engine can be found in the
+JavaDoc of the class [Pattern](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html).
+
+### Replacement of JavaVerbalExpressions
+[JavaVerbalExpressions](https://github.com/VerbalExpressions/JavaVerbalExpressions) is another library created for Java
+to construct regular expressions using a Builder pattern. I liked this library, but there were a few caveats:
+* It seems that it is not maintained anymore.
+* It misses some functionality (for example, lookahead).
+* It is not written with Java in mind (the idea is ported to all languages).
+
+This library is created to be a better version of JavaVerbalExpressions.
+
+### Readability over performance
+This library is focussed fully on readability and correctness. Very often performance of regular expressions is not
+important. However, in some cases (especially with large input or with catastrophic backtracking) it can be very
+troublesome. There is a lot of information online on how to make your regular expressions as fast as possible. However,
+changing the builder to get good performing regular expressions may not be readable. If you are reliant on good
+performing expressions, this library may not be the best choice.
 
 ## User guide
 Note: [Hamcrest](http://hamcrest.org/) is used for all the examples to show the expected outcome. If you want the examples
@@ -150,26 +174,6 @@ assertThat(jdkPattern.split("a.b.c"), equalTo(new String[]{"a", "b", "c"}));
 ### Javadoc
 If you are looking for in-depth information about all the available methods, take a look at the Javadoc.
 You can find the latest version [here](https://javadoc.io/doc/io.github.ricoapon/readable-regex/latest/index.html).
-
-## About the library
-### Readability over performance
-This library is focussed fully on readability and correctness. Regular expressions can be tricky with performance.
-There is a lot of information online on how to make your regular expressions perform. Changing the builder to get
-good performing regular expressions may not be readable. If you are reliant on good performing expressions, it may not
-be the best choice to use this library.
-
-### Regular expression engine
-This library uses the engine implemented in the JDK. All the details and specifics of the engine can be found in the JavaDoc
-of the class [Pattern](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html).
-
-### Replacement of JavaVerbalExpressions
-[JavaVerbalExpressions](https://github.com/VerbalExpressions/JavaVerbalExpressions) is another library created for Java
-to construct regular expressions using a Builder pattern. I liked this library, but there were a few caveats:
-* It is not maintained anymore.
-* It misses some functionality (for example, lookahead).
-* It is not written with Java in mind (the idea is ported to all languages).
-
-This library is created to be a better version of JavaVerbalExpressions.
 
 ## Contributing
 If you have any suggestions, submit an issue right here in the GitHub project! Any bugs, features or random thoughts
