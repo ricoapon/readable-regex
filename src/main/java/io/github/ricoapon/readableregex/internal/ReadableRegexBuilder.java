@@ -84,9 +84,7 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
                 .map(ReadableRegexPattern::toString)
                 .collect(Collectors.joining("|"));
 
-        _addRegex("(?:");
-        _addRegex(middlePart);
-        return _addRegex(")");
+        return _addRegex("(?:" + middlePart + ")");
     }
 
     @Override
