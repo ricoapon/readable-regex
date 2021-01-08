@@ -78,6 +78,11 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     }
 
     @Override
+    public ReadableRegex tab() {
+        return _addRegex("\\t");
+    }
+
+    @Override
     public ReadableRegex oneOf(ReadableRegex... regexBuilders) {
         String middlePart = Arrays.stream(regexBuilders)
                 .map(ReadableRegex::build)

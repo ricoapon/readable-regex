@@ -78,6 +78,12 @@ class ReadableRegexOrderCheckerTest {
     }
 
     @Test
+    void tab_StandaloneBlock() {
+        readableRegexOrderChecker.tab();
+        assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));
+    }
+
+    @Test
     void oneOf_StandaloneBlock() {
         readableRegexOrderChecker.oneOf();
         assertThat(dummyOrderChecker.calledMethod, equalTo(STANDALONE_BLOCK));

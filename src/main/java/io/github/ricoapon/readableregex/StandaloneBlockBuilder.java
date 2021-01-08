@@ -54,6 +54,12 @@ public interface StandaloneBlockBuilder {
     ReadableRegex whitespace();
 
     /**
+     * Adds a tab. This is the same as {@code \t}.
+     * @return This builder.
+     */
+    ReadableRegex tab();
+
+    /**
      * Adds either or block. This is the same as {@code (?:X|Y)}, where {@code X} and {@code Y} are given regular expressions.
      * @param regexBuilders Regular expressions for which one needs to match.
      * @return This builder.
