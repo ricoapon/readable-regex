@@ -26,14 +26,6 @@ class GroupTests {
         assertThat(matcher.matches(), equalTo(true));
         assertThat(matcher.group(1), equalTo("23"));
         assertThat(matcher.group(2), equalTo("3"));
-
-        // Test using group(regexBuilder) syntax.
-        pattern = regex().digit().group(regex().digit().group(regex().digit())).build();
-        matcher = pattern.matches("123");
-
-        assertThat(matcher.matches(), equalTo(true));
-        assertThat(matcher.group(1), equalTo("23"));
-        assertThat(matcher.group(2), equalTo("3"));
     }
 
     @Test
@@ -43,14 +35,6 @@ class GroupTests {
         String secondGroupName = "second";
         ReadableRegexPattern pattern = regex().digit().startGroup(firstGroupName).digit().startGroup(secondGroupName).digit().endGroup().endGroup().build();
         Matcher matcher = pattern.matches("123");
-
-        assertThat(matcher.matches(), equalTo(true));
-        assertThat(matcher.group(firstGroupName), equalTo("23"));
-        assertThat(matcher.group(secondGroupName), equalTo("3"));
-
-        // Test using group(regexBuilder) syntax.
-        pattern = regex().digit().group(firstGroupName, regex().digit().group(secondGroupName, regex().digit())).build();
-        matcher = pattern.matches("123");
 
         assertThat(matcher.matches(), equalTo(true));
         assertThat(matcher.group(firstGroupName), equalTo("23"));
@@ -80,18 +64,8 @@ class GroupTests {
         assertThat(pattern, matchesSomethingFrom("1 "));
         assertThat(pattern, doesntMatchAnythingFrom(" "));
 
-        // Test using positiveLookbehind(regexBuilder) syntax.
-        pattern = regex().positiveLookbehind(regex().digit()).whitespace().build();
-        assertThat(pattern, matchesSomethingFrom("1 "));
-        assertThat(pattern, doesntMatchAnythingFrom(" "));
-
         // Test using start/end syntax.
         pattern = regex().startNegativeLookbehind().digit().endGroup().whitespace().build();
-        assertThat(pattern, doesntMatchAnythingFrom("1 "));
-        assertThat(pattern, matchesSomethingFrom(" "));
-
-        // Test using negativeLookbehind(regexBuilder) syntax.
-        pattern = regex().negativeLookbehind(regex().digit()).whitespace().build();
         assertThat(pattern, doesntMatchAnythingFrom("1 "));
         assertThat(pattern, matchesSomethingFrom(" "));
     }
@@ -103,18 +77,8 @@ class GroupTests {
         assertThat(pattern, matchesSomethingFrom(" 1"));
         assertThat(pattern, doesntMatchAnythingFrom(" "));
 
-        // Test using positiveLookahead(regexBuilder) syntax.
-        pattern = regex().whitespace().positiveLookahead(regex().digit()).build();
-        assertThat(pattern, matchesSomethingFrom(" 1"));
-        assertThat(pattern, doesntMatchAnythingFrom(" "));
-
         // Test using start/end syntax.
         pattern = regex().whitespace().startNegativeLookahead().digit().endGroup().build();
-        assertThat(pattern, doesntMatchAnythingFrom(" 1"));
-        assertThat(pattern, matchesSomethingFrom(" "));
-
-        // Test using negativeLookahead(regexBuilder) syntax.
-        pattern = regex().whitespace().negativeLookahead(regex().digit()).build();
         assertThat(pattern, doesntMatchAnythingFrom(" 1"));
         assertThat(pattern, matchesSomethingFrom(" "));
     }

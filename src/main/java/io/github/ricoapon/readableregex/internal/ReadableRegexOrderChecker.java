@@ -239,16 +239,4 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
         methodOrderChecker.checkCallingMethod(END_GROUP);
         return super.endGroup();
     }
-
-    @Override
-    public ReadableRegex group(ReadableRegex regexBuilder) {
-        // Implementation calls other methods. The order is checked in those methods.
-        return super.group(regexBuilder);
-    }
-
-    @Override
-    public ReadableRegex group(String groupName, ReadableRegex regexBuilder) {
-        // Implementation calls other methods. The order is checked in those methods.
-        return super.group(groupName, regexBuilder);
-    }
 }

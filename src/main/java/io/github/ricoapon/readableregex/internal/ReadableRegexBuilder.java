@@ -293,14 +293,4 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     public ReadableRegex endGroup() {
         return _addRegex(")");
     }
-
-    @Override
-    public ReadableRegex group(ReadableRegex regexBuilder) {
-        return startGroup().add(regexBuilder).endGroup();
-    }
-
-    @Override
-    public ReadableRegex group(String groupName, ReadableRegex regexBuilder) {
-        return startGroup(groupName).add(regexBuilder).endGroup();
-    }
 }
