@@ -18,7 +18,6 @@ tasks.check {
     finalizedBy("printTestPercentages")
 }
 
-
 fun printTestPercentages() {
     var areAllTests100Percent = true;
 
@@ -38,7 +37,6 @@ fun printTestPercentages() {
 
     print(resultString)
 
-    // Fail the run.
     if (!areAllTests100Percent) {
         throw GradleException("The test coverage is not 100%!")
     }
