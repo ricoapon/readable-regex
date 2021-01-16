@@ -3,38 +3,38 @@ package io.github.ricoapon.readableregex;
 /**
  * Builder interface with all the methods that add quantifiers to standalone blocks.
  */
-public interface QuantifierBuilder {
+public interface QuantifierBuilder<T extends ReadableRegex<T>> {
     /**
      * Makes the previous block repeat one or more times (greedy). This is the same as adding {@code +}.
      * @return This builder.
      */
-    ReadableRegex oneOrMore();
+    T oneOrMore();
 
     /**
      * Makes the previous block optional (greedy). This is the same as adding {@code ?}.
      * @return This builder.
      */
-    ReadableRegex optional();
+    T optional();
 
     /**
      * Makes the previous block repeat zero or more times (greedy). This is the same as adding {@code *}.
      * @return This builder.
      */
-    ReadableRegex zeroOrMore();
+    T zeroOrMore();
 
     /**
      * Makes the previous block repeat exactly n times (greedy). This is the same as adding {@code {n}}.
      * @param n The number of times the block should repeat.
      * @return This builder.
      */
-    ReadableRegex exactlyNTimes(int n);
+    T exactlyNTimes(int n);
 
     /**
      * Makes the previous block repeat at least n times (greedy). This is the same as adding {@code {n,}}.
      * @param n The minimum number of times the block should repeat.
      * @return This builder.
      */
-    ReadableRegex atLeastNTimes(int n);
+    T atLeastNTimes(int n);
 
     /**
      * Makes the previous block repeat between n and m times (greedy). This is the same as adding {@code {n, m}}.
@@ -42,14 +42,14 @@ public interface QuantifierBuilder {
      * @param m The maximum number of times the block should repeat.
      * @return This builder.
      */
-    ReadableRegex betweenNAndMTimes(int n, int m);
+    T betweenNAndMTimes(int n, int m);
 
     /**
      * Makes the previous block repeat at most n times (greedy). This is the same as adding {@code {0, n}}.
      * @param n The maximum number of times the block should repeat.
      * @return This builder.
      */
-    default ReadableRegex atMostNTimes(int n) {
+    default T atMostNTimes(int n) {
         return betweenNAndMTimes(0, n);
     }
 
@@ -57,11 +57,11 @@ public interface QuantifierBuilder {
      * Makes the previous quantifier reluctant. This is the same as adding {@code ?}.
      * @return This builder.
      */
-    ReadableRegex reluctant();
+    T reluctant();
 
     /**
      * Makes the previous quantifier possessive. This is the same as adding {@code +}.
      * @return This builder.
      */
-    ReadableRegex possessive();
+    T possessive();
 }

@@ -5,7 +5,7 @@ import static io.github.ricoapon.readableregex.ReadableRegex.regex;
 /**
  * Builder interface with methods to enhance user experience using shortcut methods.
  */
-public interface SyntacticSugarBuilder extends StandaloneBlockBuilder, QuantifierBuilder, GroupBuilder {
+public interface SyntacticSugarBuilder<T extends ReadableRegex<T>> extends StandaloneBlockBuilder<T>, QuantifierBuilder<T>, GroupBuilder<T> {
     /*
     START of methods related to standalone blocks.
      */
@@ -16,7 +16,7 @@ public interface SyntacticSugarBuilder extends StandaloneBlockBuilder, Quantifie
      * Syntactic sugar for "{@link #wordCharacter()}.{@link #oneOrMore()}".
      * @return This builder.
      */
-    default ReadableRegex word() {
+    default T word() {
         return wordCharacter().oneOrMore();
     }
 
@@ -27,7 +27,7 @@ public interface SyntacticSugarBuilder extends StandaloneBlockBuilder, Quantifie
      * Syntactic sugar for "{@link #anyCharacter()}.{@link #zeroOrMore()}".
      * @return This builder.
      */
-    default ReadableRegex anything() {
+    default T anything() {
         return anyCharacter().zeroOrMore();
     }
 
@@ -35,7 +35,7 @@ public interface SyntacticSugarBuilder extends StandaloneBlockBuilder, Quantifie
      * Adds a universal line break. This is the same as {@code \r\n|\n}.
      * @return This builder.
      */
-    default ReadableRegex lineBreak() {
+    default T lineBreak() {
         return oneOf(regex("\\r\\n?"), regex("\\n"));
     }
 
@@ -51,7 +51,7 @@ public interface SyntacticSugarBuilder extends StandaloneBlockBuilder, Quantifie
      * @param regexBuilder The regular expression.
      * @return This builder.
      */
-    default ReadableRegex group(ReadableRegex regexBuilder) {
+    default T group(ReadableRegex<?> regexBuilder) {
         return startGroup().add(regexBuilder).endGroup();
     }
 
@@ -63,7 +63,7 @@ public interface SyntacticSugarBuilder extends StandaloneBlockBuilder, Quantifie
      * @param regexBuilder The regular expression.
      * @return This builder.
      */
-    default ReadableRegex group(String groupName, ReadableRegex regexBuilder) {
+    default T group(String groupName, ReadableRegex<?> regexBuilder) {
         return startGroup(groupName).add(regexBuilder).endGroup();
     }
 
@@ -74,7 +74,7 @@ public interface SyntacticSugarBuilder extends StandaloneBlockBuilder, Quantifie
      * @param regexBuilder The regular expression.
      * @return This builder.
      */
-    default ReadableRegex positiveLookbehind(ReadableRegex regexBuilder) {
+    default T positiveLookbehind(ReadableRegex<?> regexBuilder) {
         return startPositiveLookbehind().add(regexBuilder).endGroup();
     }
 
@@ -85,7 +85,7 @@ public interface SyntacticSugarBuilder extends StandaloneBlockBuilder, Quantifie
      * @param regexBuilder The regular expression.
      * @return This builder.
      */
-    default ReadableRegex negativeLookbehind(ReadableRegex regexBuilder) {
+    default T negativeLookbehind(ReadableRegex<?> regexBuilder) {
         return startNegativeLookbehind().add(regexBuilder).endGroup();
     }
 
@@ -96,7 +96,7 @@ public interface SyntacticSugarBuilder extends StandaloneBlockBuilder, Quantifie
      * @param regexBuilder The regular expression.
      * @return This builder.
      */
-    default ReadableRegex positiveLookahead(ReadableRegex regexBuilder) {
+    default T positiveLookahead(ReadableRegex<?> regexBuilder) {
         return startPositiveLookahead().add(regexBuilder).endGroup();
     }
 
@@ -107,7 +107,7 @@ public interface SyntacticSugarBuilder extends StandaloneBlockBuilder, Quantifie
      * @param regexBuilder The regular expression.
      * @return This builder.
      */
-    default ReadableRegex negativeLookahead(ReadableRegex regexBuilder) {
+    default T negativeLookahead(ReadableRegex<?> regexBuilder) {
         return startNegativeLookahead().add(regexBuilder).endGroup();
     }
 }

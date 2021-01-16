@@ -8,13 +8,13 @@ import io.github.ricoapon.readableregex.internal.ReadableRegexOrderChecker;
  * <p>
  * Using this builder, you can create {@link ReadableRegexPattern} objects, which can be used to match the pattern against text.
  */
-public interface ReadableRegex extends SyntacticSugarBuilder, StandaloneBlockBuilder, QuantifierBuilder, FinishBuilder, GroupBuilder {
+public interface ReadableRegex<T extends ReadableRegex<T>> extends SyntacticSugarBuilder<T>, StandaloneBlockBuilder<T>, QuantifierBuilder<T>, FinishBuilder, GroupBuilder<T> {
     /**
      * This method is the starting point for all the builder methods.
      * @return Instance of the builder.
      */
-    static ReadableRegex regex() {
-        return new ReadableRegexOrderChecker(new MethodOrderChecker());
+    static ReadableRegex<?> regex() {
+        return new ReadableRegexOrderChecker<>(new MethodOrderChecker());
     }
 
     /**
@@ -24,7 +24,7 @@ public interface ReadableRegex extends SyntacticSugarBuilder, StandaloneBlockBui
      * @param regex The regular expression.
      * @return Instance of the builder initialized with the given regular expression.
      */
-    static ReadableRegex regex(String regex) {
+    static ReadableRegex<?> regex(String regex) {
         return regex().regexFromString(regex);
     }
 }

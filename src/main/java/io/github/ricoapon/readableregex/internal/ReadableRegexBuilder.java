@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * Implementation that builds the regular expressions.
  */
-public abstract class ReadableRegexBuilder implements ReadableRegex {
+public abstract class ReadableRegexBuilder<T extends ReadableRegex<T>> implements ReadableRegex<T> {
     /** The internal regular expression. This field should only be modified using the {@link #_addRegex(String)} method. */
     private final StringBuilder regexBuilder = new StringBuilder();
 
@@ -35,23 +35,31 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     }
 
     /**
+     * @return {@code this} casted to {@code T}.
+     */
+    private T thisT() {
+        //noinspection unchecked
+        return (T) this;
+    }
+
+    /**
      * Adds the regular expression to {@link #regexBuilder}.
      * @param regex The regular expression.
      * @return This builder.
      */
-    private ReadableRegex _addRegex(String regex) {
+    private T _addRegex(String regex) {
         Objects.requireNonNull(regex);
         regexBuilder.append(regex);
-        return this;
+        return thisT();
     }
 
     @Override
-    public ReadableRegex regexFromString(String regex) {
+    public T regexFromString(String regex) {
         return _addRegex(regex);
     }
 
     @Override
-    public ReadableRegex add(ReadableRegexPattern pattern) {
+    public T add(ReadableRegexPattern pattern) {
         Objects.requireNonNull(pattern);
         String regexToInclude = pattern.toString();
 
@@ -60,7 +68,7 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     }
 
     @Override
-    public ReadableRegex literal(String literalValue) {
+    public T literal(String literalValue) {
         Objects.requireNonNull(literalValue);
         // Surround input with \Q\E to make sure that all the meta characters are escaped.
         // Wrap in an unnamed group, to make sure that quantifiers work on the entire block.
@@ -68,22 +76,22 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     }
 
     @Override
-    public ReadableRegex digit() {
+    public T digit() {
         return _addRegex("\\d");
     }
 
     @Override
-    public ReadableRegex whitespace() {
+    public T whitespace() {
         return _addRegex("\\s");
     }
 
     @Override
-    public ReadableRegex tab() {
+    public T tab() {
         return _addRegex("\\t");
     }
 
     @Override
-    public ReadableRegex oneOf(ReadableRegex... regexBuilders) {
+    public T oneOf(ReadableRegex<?>... regexBuilders) {
         String middlePart = Arrays.stream(regexBuilders)
                 .map(ReadableRegex::build)
                 .map(ReadableRegexPattern::toString)
@@ -93,7 +101,7 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     }
 
     @Override
-    public ReadableRegex range(char... boundaries) {
+    public T range(char... boundaries) {
         if (boundaries.length % 2 != 0) {
             throw new IllegalArgumentException("You have to supply an even amount of boundaries.");
         } else if (boundaries.length == 0) {
@@ -112,7 +120,7 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     }
 
     @Override
-    public ReadableRegex notInRange(char... boundaries) {
+    public T notInRange(char... boundaries) {
         if (boundaries.length % 2 != 0) {
             throw new IllegalArgumentException("You have to supply an even amount of boundaries.");
         } else if (boundaries.length == 0) {
@@ -131,7 +139,7 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     }
 
     @Override
-    public ReadableRegex anyCharacterOf(String characters) {
+    public T anyCharacterOf(String characters) {
         Objects.requireNonNull(characters);
         if (characters.length() == 0) {
             throw new IllegalArgumentException("An empty range is pointless. Please supply boundaries!");
@@ -141,7 +149,7 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     }
 
     @Override
-    public ReadableRegex anyCharacterExcept(String characters) {
+    public T anyCharacterExcept(String characters) {
         Objects.requireNonNull(characters);
         if (characters.length() == 0) {
             throw new IllegalArgumentException("An empty range is pointless. Please supply boundaries!");
@@ -151,70 +159,70 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     }
 
     @Override
-    public ReadableRegex wordCharacter() {
+    public T wordCharacter() {
         return _addRegex("\\w");
     }
 
     @Override
-    public ReadableRegex nonWordCharacter() {
+    public T nonWordCharacter() {
         return _addRegex("\\W");
     }
 
     @Override
-    public ReadableRegex wordBoundary() {
+    public T wordBoundary() {
         return _addRegex("\\b");
     }
 
     @Override
-    public ReadableRegex nonWordBoundary() {
+    public T nonWordBoundary() {
         return _addRegex("\\B");
     }
 
     @Override
-    public ReadableRegex anyCharacter() {
+    public T anyCharacter() {
         return _addRegex(".");
     }
 
     @Override
-    public ReadableRegex startOfLine() {
+    public T startOfLine() {
         enableMultilineFlag = true;
         // Surround with an unnamed group, to make sure that it can be followed up with quantifiers.
         return _addRegex("(?:^)");
     }
 
     @Override
-    public ReadableRegex startOfInput() {
+    public T startOfInput() {
         return _addRegex("\\A");
     }
 
     @Override
-    public ReadableRegex endOfLine() {
+    public T endOfLine() {
         enableMultilineFlag = true;
         // Surround with an unnamed group, to make sure that it can be followed up with quantifiers.
         return _addRegex("(?:$)");
     }
 
     @Override
-    public ReadableRegex endOfInput() {
+    public T endOfInput() {
         return _addRegex("\\z");
     }
 
     @Override
-    public ReadableRegex oneOrMore() {
+    public T oneOrMore() {
         return _addRegex("+");
     }
 
     @Override
-    public ReadableRegex optional() {
+    public T optional() {
         return _addRegex("?");
     }
 
     @Override
-    public ReadableRegex zeroOrMore() {
+    public T zeroOrMore() {
         return _addRegex("*");
     }
 
-    private ReadableRegex _countRange(int n, Integer m) {
+    private T _countRange(int n, Integer m) {
         if (n < 0 || m <= 0) {
             throw new IllegalArgumentException("The number of times the block should repeat must be larger than zero.");
         } else if (n > m) {
@@ -229,37 +237,37 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     }
 
     @Override
-    public ReadableRegex exactlyNTimes(int n) {
+    public T exactlyNTimes(int n) {
         return _countRange(n, n);
     }
 
     @Override
-    public ReadableRegex atLeastNTimes(int n) {
+    public T atLeastNTimes(int n) {
         return _countRange(n, Integer.MAX_VALUE);
     }
 
     @Override
-    public ReadableRegex betweenNAndMTimes(int n, int m) {
+    public T betweenNAndMTimes(int n, int m) {
         return _countRange(n, m);
     }
 
     @Override
-    public ReadableRegex reluctant() {
+    public T reluctant() {
         return _addRegex("?");
     }
 
     @Override
-    public ReadableRegex possessive() {
+    public T possessive() {
         return _addRegex("+");
     }
 
     @Override
-    public ReadableRegex startGroup() {
+    public T startGroup() {
         return _addRegex("(");
     }
 
     @Override
-    public ReadableRegex startGroup(String groupName) {
+    public T startGroup(String groupName) {
         Objects.requireNonNull(groupName);
         if (!Pattern.matches("[a-zA-Z][a-zA-Z0-9]*", groupName)) {
             throw new IllegalArgumentException("The group name '" + groupName + "' is not valid: it should start with a letter " +
@@ -270,32 +278,32 @@ public abstract class ReadableRegexBuilder implements ReadableRegex {
     }
 
     @Override
-    public ReadableRegex startUnnamedGroup() {
+    public T startUnnamedGroup() {
         return _addRegex("(?:");
     }
 
     @Override
-    public ReadableRegex startPositiveLookbehind() {
+    public T startPositiveLookbehind() {
         return _addRegex("(?<=");
     }
 
     @Override
-    public ReadableRegex startNegativeLookbehind() {
+    public T startNegativeLookbehind() {
         return _addRegex("(?<!");
     }
 
     @Override
-    public ReadableRegex startPositiveLookahead() {
+    public T startPositiveLookahead() {
         return _addRegex("(?=");
     }
 
     @Override
-    public ReadableRegex startNegativeLookahead() {
+    public T startNegativeLookahead() {
         return _addRegex("(?!");
     }
 
     @Override
-    public ReadableRegex endGroup() {
+    public T endGroup() {
         return _addRegex(")");
     }
 }

@@ -10,7 +10,7 @@ import static io.github.ricoapon.readableregex.internal.MethodOrderChecker.Metho
  * Subclass of {@link ReadableRegexBuilder} to check whether methods are called in the right order using an instance
  * of {@link MethodOrderChecker}.
  */
-public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
+public class ReadableRegexOrderChecker<T extends ReadableRegex<T>> extends ReadableRegexBuilder<T> {
     /** Object for maintaining the status of calling methods. */
     private final MethodOrderChecker methodOrderChecker;
 
@@ -29,7 +29,7 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     }
 
     @Override
-    public ReadableRegex regexFromString(String regex) {
+    public T regexFromString(String regex) {
         // We are not actually sure that the regex is a standalone block. If we don't do this however, it is never possible
         // to add a quantifier after this block. I leave the user responsible for the outcome.
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
@@ -37,211 +37,211 @@ public class ReadableRegexOrderChecker extends ReadableRegexBuilder {
     }
 
     @Override
-    public ReadableRegex add(ReadableRegexPattern pattern) {
+    public T add(ReadableRegexPattern pattern) {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
         return super.add(pattern);
     }
 
     @Override
-    public ReadableRegex literal(String literalValue) {
+    public T literal(String literalValue) {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
         return super.literal(literalValue);
     }
 
     @Override
-    public ReadableRegex digit() {
+    public T digit() {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
         return super.digit();
     }
 
     @Override
-    public ReadableRegex whitespace() {
+    public T whitespace() {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
         return super.whitespace();
     }
 
     @Override
-    public ReadableRegex tab() {
+    public T tab() {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
         return super.tab();
     }
 
     @Override
-    public ReadableRegex oneOf(ReadableRegex... regexBuilders) {
+    public T oneOf(ReadableRegex<?>... regexBuilders) {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
         return super.oneOf(regexBuilders);
     }
 
     @Override
-    public ReadableRegex range(char... boundaries) {
+    public T range(char... boundaries) {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
         return super.range(boundaries);
     }
 
     @Override
-    public ReadableRegex notInRange(char... boundaries) {
+    public T notInRange(char... boundaries) {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
         return super.notInRange(boundaries);
     }
 
     @Override
-    public ReadableRegex anyCharacterOf(String characters) {
+    public T anyCharacterOf(String characters) {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
         return super.anyCharacterOf(characters);
     }
 
     @Override
-    public ReadableRegex anyCharacterExcept(String characters) {
+    public T anyCharacterExcept(String characters) {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
         return super.anyCharacterExcept(characters);
     }
 
     @Override
-    public ReadableRegex wordCharacter() {
+    public T wordCharacter() {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
         return super.wordCharacter();
     }
 
     @Override
-    public ReadableRegex nonWordCharacter() {
+    public T nonWordCharacter() {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
         return super.nonWordCharacter();
     }
 
     @Override
-    public ReadableRegex wordBoundary() {
+    public T wordBoundary() {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
         return super.wordBoundary();
     }
 
     @Override
-    public ReadableRegex nonWordBoundary() {
+    public T nonWordBoundary() {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
         return super.nonWordBoundary();
     }
 
     @Override
-    public ReadableRegex anyCharacter() {
+    public T anyCharacter() {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
         return super.anyCharacter();
     }
 
     @Override
-    public ReadableRegex startOfLine() {
+    public T startOfLine() {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
         return super.startOfLine();
     }
 
     @Override
-    public ReadableRegex startOfInput() {
+    public T startOfInput() {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
         return super.startOfInput();
     }
 
     @Override
-    public ReadableRegex endOfLine() {
+    public T endOfLine() {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
         return super.endOfLine();
     }
 
     @Override
-    public ReadableRegex endOfInput() {
+    public T endOfInput() {
         methodOrderChecker.checkCallingMethod(STANDALONE_BLOCK);
         return super.endOfInput();
     }
 
     @Override
-    public ReadableRegex oneOrMore() {
+    public T oneOrMore() {
         methodOrderChecker.checkCallingMethod(QUANTIFIER);
         return super.oneOrMore();
     }
 
     @Override
-    public ReadableRegex optional() {
+    public T optional() {
         methodOrderChecker.checkCallingMethod(QUANTIFIER);
         return super.optional();
     }
 
     @Override
-    public ReadableRegex zeroOrMore() {
+    public T zeroOrMore() {
         methodOrderChecker.checkCallingMethod(QUANTIFIER);
         return super.zeroOrMore();
     }
 
     @Override
-    public ReadableRegex exactlyNTimes(int n) {
+    public T exactlyNTimes(int n) {
         methodOrderChecker.checkCallingMethod(QUANTIFIER);
         return super.exactlyNTimes(n);
     }
 
     @Override
-    public ReadableRegex atLeastNTimes(int n) {
+    public T atLeastNTimes(int n) {
         methodOrderChecker.checkCallingMethod(QUANTIFIER);
         return super.atLeastNTimes(n);
     }
 
     @Override
-    public ReadableRegex betweenNAndMTimes(int n, int m) {
+    public T betweenNAndMTimes(int n, int m) {
         methodOrderChecker.checkCallingMethod(QUANTIFIER);
         return super.betweenNAndMTimes(n, m);
     }
 
     @Override
-    public ReadableRegex reluctant() {
+    public T reluctant() {
         methodOrderChecker.checkCallingMethod(RELUCTANT_OR_POSSESSIVE);
         return super.reluctant();
     }
 
     @Override
-    public ReadableRegex possessive() {
+    public T possessive() {
         methodOrderChecker.checkCallingMethod(RELUCTANT_OR_POSSESSIVE);
         return super.possessive();
     }
 
     @Override
-    public ReadableRegex startGroup() {
+    public T startGroup() {
         methodOrderChecker.checkCallingMethod(START_GROUP);
         return super.startGroup();
     }
 
     @Override
-    public ReadableRegex startGroup(String groupName) {
+    public T startGroup(String groupName) {
         methodOrderChecker.checkCallingMethod(START_GROUP);
         return super.startGroup(groupName);
     }
 
     @Override
-    public ReadableRegex startUnnamedGroup() {
+    public T startUnnamedGroup() {
         methodOrderChecker.checkCallingMethod(START_GROUP);
         return super.startUnnamedGroup();
     }
 
     @Override
-    public ReadableRegex startPositiveLookbehind() {
+    public T startPositiveLookbehind() {
         methodOrderChecker.checkCallingMethod(START_GROUP);
         return super.startPositiveLookbehind();
     }
 
     @Override
-    public ReadableRegex startNegativeLookbehind() {
+    public T startNegativeLookbehind() {
         methodOrderChecker.checkCallingMethod(START_GROUP);
         return super.startNegativeLookbehind();
     }
 
     @Override
-    public ReadableRegex startPositiveLookahead() {
+    public T startPositiveLookahead() {
         methodOrderChecker.checkCallingMethod(START_GROUP);
         return super.startPositiveLookahead();
     }
 
     @Override
-    public ReadableRegex startNegativeLookahead() {
+    public T startNegativeLookahead() {
         methodOrderChecker.checkCallingMethod(START_GROUP);
         return super.startNegativeLookahead();
     }
 
     @Override
-    public ReadableRegex endGroup() {
+    public T endGroup() {
         methodOrderChecker.checkCallingMethod(END_GROUP);
         return super.endGroup();
     }
