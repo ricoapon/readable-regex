@@ -6,7 +6,7 @@ package io.github.ricoapon.readableregex;
  * {@code (?:\Qa.c\E)}. But {@code ab} is not a standalone block, since adding the optional quantifier {@code ?}, for example, would make
  * the expression {@code ab?}. This is different from {@code (ab)?}).
  */
-public interface StandaloneBlockBuilder {
+public interface StandaloneBlockBuilder<T extends ReadableRegex<T>> {
     /**
      * Appends the regular expression. The value is not changed or sanitized in any way.
      * <p>
@@ -15,14 +15,14 @@ public interface StandaloneBlockBuilder {
      * @param regex The regular expression.
      * @return This builder.
      */
-    ReadableRegex regexFromString(String regex);
+    T regexFromString(String regex);
 
     /**
      * See {@link #add(ReadableRegexPattern)}.
      * @param regexBuilder The regular expression.
      * @return This builder.
      */
-    default ReadableRegex add(ReadableRegex regexBuilder) {
+    default T add(ReadableRegex<?> regexBuilder) {
         return add(regexBuilder.build());
     }
 
@@ -32,39 +32,39 @@ public interface StandaloneBlockBuilder {
      * @param pattern The pattern.
      * @return This builder.
      */
-    ReadableRegex add(ReadableRegexPattern pattern);
+    T add(ReadableRegexPattern pattern);
 
     /**
      * Appends a literal expression. All metacharacters are escaped.
      * @param literalValue The value to add.
      * @return This builder.
      */
-    ReadableRegex literal(String literalValue);
+    T literal(String literalValue);
 
     /**
      * Adds a digit. This is the same as {@code [0-9]}.
      * @return This builder.
      */
-    ReadableRegex digit();
+    T digit();
 
     /**
      * Adds a whitespace. This is the same as {@code \s}.
      * @return This builder.
      */
-    ReadableRegex whitespace();
+    T whitespace();
 
     /**
      * Adds a tab. This is the same as {@code \t}.
      * @return This builder.
      */
-    ReadableRegex tab();
+    T tab();
 
     /**
      * Adds either or block. This is the same as {@code (?:X|Y)}, where {@code X} and {@code Y} are given regular expressions.
      * @param regexBuilders Regular expressions for which one needs to match.
      * @return This builder.
      */
-    ReadableRegex oneOf(ReadableRegex... regexBuilders);
+    T oneOf(ReadableRegex<?>... regexBuilders);
 
     /**
      * Adds a specified range. This is the same as {@code [a-z]}.
@@ -73,7 +73,7 @@ public interface StandaloneBlockBuilder {
      * @param boundaries All the boundaries. You must supply an even amount of arguments.
      * @return This builder.
      */
-    ReadableRegex range(char... boundaries);
+    T range(char... boundaries);
 
     /**
      * Adds a negated specified range. This is the same as {@code [^a-z]}.
@@ -82,7 +82,7 @@ public interface StandaloneBlockBuilder {
      * @param boundaries All the boundaries. You must supply an even amount of arguments.
      * @return This builder.
      */
-    ReadableRegex notInRange(char... boundaries);
+    T notInRange(char... boundaries);
 
     /**
      * Adds a range with the specified characters. This is the same as {@code [...]}.
@@ -91,7 +91,7 @@ public interface StandaloneBlockBuilder {
      * @param characters The characters to match.
      * @return This builder.
      */
-    ReadableRegex anyCharacterOf(String characters);
+    T anyCharacterOf(String characters);
 
     /**
      * Adds a negated range with the specified characters. This is the same as {@code [^...]}.
@@ -100,31 +100,31 @@ public interface StandaloneBlockBuilder {
      * @param characters The characters to match.
      * @return This builder.
      */
-    ReadableRegex anyCharacterExcept(String characters);
+    T anyCharacterExcept(String characters);
 
     /**
      * Adds a word character. This is the same as {@code \w}.
      * @return This builder.
      */
-    ReadableRegex wordCharacter();
+    T wordCharacter();
 
     /**
      * Adds a non word character. This is the same as {@code \W}.
      * @return This builder.
      */
-    ReadableRegex nonWordCharacter();
+    T nonWordCharacter();
 
     /**
      * Adds a word boundary. This is the same as {@code \b}.
      * @return This builder.
      */
-    ReadableRegex wordBoundary();
+    T wordBoundary();
 
     /**
      * Adds a non word boundary. This is the same as {@code \B}.
      * @return This builder.
      */
-    ReadableRegex nonWordBoundary();
+    T nonWordBoundary();
 
     /**
      * Adds any character. This is the same as {@code .}.
@@ -132,7 +132,7 @@ public interface StandaloneBlockBuilder {
      * Note that you have to enable {@link PatternFlag#DOT_ALL} to match line terminators.
      * @return This builder.
      */
-    ReadableRegex anyCharacter();
+    T anyCharacter();
 
     /**
      * Adds a start of line anchor. This is the same as {@code ^}.
@@ -141,13 +141,13 @@ public interface StandaloneBlockBuilder {
      * using this method. If you want to match the start of the input instead, please use {@link #startOfInput()}.
      * @return This builder.
      */
-    ReadableRegex startOfLine();
+    T startOfLine();
 
     /**
      * Adds a start of input anchor. This is the same as {@code \A}.
      * @return This builder.
      */
-    ReadableRegex startOfInput();
+    T startOfInput();
 
     /**
      * Adds an end of line anchor. This is the same as {@code $}.
@@ -156,11 +156,11 @@ public interface StandaloneBlockBuilder {
      * using this method. If you want to match the end of the input instead, please use {@link #endOfInput()}.
      * @return This builder.
      */
-    ReadableRegex endOfLine();
+    T endOfLine();
 
     /**
      * Adds end of input anchor. This is the same as {@code \z}.
      * @return This builder.
      */
-    ReadableRegex endOfInput();
+    T endOfInput();
 }

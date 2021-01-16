@@ -10,7 +10,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 class ReadableRegexOrderCheckerTest {
-
     /** Dummy implementation of {@link MethodOrderChecker} to check {@link MethodOrderChecker#checkCallingMethod(Method)}. */
     private static class DummyOrderChecker extends MethodOrderChecker {
         public Method calledMethod;
@@ -21,7 +20,7 @@ class ReadableRegexOrderCheckerTest {
         }
     }
 
-    private ReadableRegexOrderChecker readableRegexOrderChecker;
+    private ReadableRegexOrderChecker<?> readableRegexOrderChecker;
     private DummyOrderChecker dummyOrderChecker;
 
     @BeforeEach
@@ -29,7 +28,7 @@ class ReadableRegexOrderCheckerTest {
         dummyOrderChecker = new DummyOrderChecker();
 
         // Call digit, so that quantifiers can be called directly after. Does not matter for others.
-        readableRegexOrderChecker = new ReadableRegexOrderChecker(dummyOrderChecker);
+        readableRegexOrderChecker = new ReadableRegexOrderChecker<>(dummyOrderChecker);
     }
 
     @Test
