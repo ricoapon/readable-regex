@@ -70,7 +70,7 @@ class ReadmeTests {
         @Test
         void example3() {
             // It does not matter if you have already built the pattern, you can include it anyway.
-            ReadableRegex digits = regex().startGroup().digit().oneOrMore().endGroup().whitespace();
+            ReadableRegex<?> digits = regex().startGroup().digit().oneOrMore().endGroup().whitespace();
             ReadableRegexPattern word = regex().startGroup().word().endGroup().whitespace().build();
 
             ReadableRegexPattern pattern = regex()

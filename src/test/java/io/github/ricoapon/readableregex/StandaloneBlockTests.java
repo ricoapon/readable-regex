@@ -39,7 +39,7 @@ class StandaloneBlockTests {
         @SuppressWarnings("ConstantConditions")
         @Test
         void nullAsArgumentThrowsNpe() {
-            assertThrows(NullPointerException.class, () -> regex().add((ReadableRegex) null));
+            assertThrows(NullPointerException.class, () -> regex().add((ReadableRegex<?>) null));
             assertThrows(NullPointerException.class, () -> regex().add((ReadableRegexPattern) null));
         }
 
@@ -242,7 +242,7 @@ class StandaloneBlockTests {
      * No tests are needed for the method {@link StandaloneBlockBuilder#anyCharacter()}, because this is already covered by other tests:
      * <ul>
      *     <li>{@link PatternFlagTests#dotAllWorks()}</li>
-     *     <li>{@link SyntacticSugarTests#anythingWorks()}</li>
+     *     <li>{@link SyntacticSugarTests.StandaloneBlock#anythingWorks()}</li>
      * </ul>
      */
     @Nested
