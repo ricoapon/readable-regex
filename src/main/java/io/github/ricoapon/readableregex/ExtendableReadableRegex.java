@@ -5,8 +5,9 @@ import io.github.ricoapon.readableregex.internal.ReadableRegexOrderChecker;
 
 /**
  * This class can be extended to create your own builder. Example code:
- * <pre>{@code // You have to extend from ExtendableReadableRegex, where you fill in your own class as generic type.
- * public class MyExtension extends ExtendableReadableRegex<TestExtension> {
+ * <pre>
+ * // You have to extend from ExtendableReadableRegex, where you fill in your own class as generic type.
+ * public class MyExtension extends ExtendableReadableRegex&lt;TestExtension&gt; {
  *
  *     // It is highly advised to create your own static method "regex()". This way you can easily instantiate
  *     // your class and in your existing code you only have to change your import statement.
@@ -24,17 +25,19 @@ import io.github.ricoapon.readableregex.internal.ReadableRegexOrderChecker;
  *
  *     // You can also override existing methods! To make sure that the code doesn't break, please always end
  *     // with calling the super method.
- *     @Override
+ *     {@literal @}Override
  *     public ReadableRegexPattern buildWithFlags(PatternFlag... patternFlags) {
  *         return super.buildWithFlags(PatternFlag.DOT_ALL);
  *     }
- * }}</pre>
+ * }</pre>
  *
  * This can now be used as follows:
- * <pre>{@code ReadableRegexPattern pattern = TestExtension.regex().digitWhitespaceDigit().build();
+ * <pre>
+ * ReadableRegexPattern pattern = TestExtension.regex().digitWhitespaceDigit().build();
  *
  * assertThat(pattern.matchesTextExactly("1 3"), equalTo(true));
- * assertThat(pattern.enabledFlags(), contains(PatternFlag.DOT_ALL)); }</pre>
+ * assertThat(pattern.enabledFlags(), contains(PatternFlag.DOT_ALL));
+ * </pre>
  * @param <T> The new type that is used as builder.
  */
 public class ExtendableReadableRegex<T extends ReadableRegex<T>> extends ReadableRegexOrderChecker<T> {
