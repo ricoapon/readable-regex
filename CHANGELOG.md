@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.4.0]
 ### Added
 - It is now possible to extend the builder. You can add new methods or overwrite existing methods. See the README for a code example.<br/>
   Note that all usages of `ReadableRegex` should be replaced with `ReadableRegex< ? >`, since the class now has a generic type.
@@ -39,7 +41,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 ### Added
 - First setup with minimal features.
 
-[Unreleased]: https://github.com/ricoapon/readable-regex/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/ricoapon/readable-regex/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/ricoapon/readable-regex/releases/tag/v0.4.0
 [0.3.0]: https://github.com/ricoapon/readable-regex/releases/tag/v0.3.0
 [0.2.0]: https://github.com/ricoapon/readable-regex/releases/tag/v0.2.0
 [0.1]: https://github.com/ricoapon/readable-regex/releases/tag/v0.1
