@@ -5,10 +5,12 @@ import io.github.ricoapon.readableregex.matchers.PatternMatchMatcher;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import javax.inject.Inject;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static io.github.ricoapon.readableregex.ReadableRegex.regex;
+import static io.github.ricoapon.readableregex.RegexObjectInstantiation.instantiateObject;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
@@ -199,6 +201,34 @@ class ReadmeTests {
 
             assertThat(pattern.matchesTextExactly("1 3"), equalTo(true));
             assertThat(pattern.enabledFlags(), contains(PatternFlag.DOT_ALL));
+        }
+    }
+
+    public static class MyPojo {
+        public final String name;
+        public final int id;
+
+        @Inject // If you have only one constructor, you can leave this out.
+        public MyPojo(String name, int id) {
+            this.name = name;
+            this.id = id;
+        }
+    }
+
+    @Nested
+    class InstantiatingObjects {
+        @Test
+        void example() {
+            String data = "name: example, id: 15";
+            ReadableRegexPattern pattern = regex()
+                    .literal("name: ").group("name", regex().word())
+                    .literal(", id: ").group("id", regex().digit().oneOrMore()).build();
+
+            MyPojo myPojo = instantiateObject(pattern, data, MyPojo.class);
+
+            assertThat(myPojo.name, equalTo("example"));
+            // Types are automatically converted!
+            assertThat(myPojo.id, equalTo(15));
         }
     }
 }

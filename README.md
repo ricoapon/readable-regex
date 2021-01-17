@@ -212,6 +212,34 @@ assertThat(pattern.matchesTextExactly("1 3"), equalTo(true));
 assertThat(pattern.enabledFlags(), contains(PatternFlag.DOT_ALL));
 ```
 
+### Instantiating objects
+The library supports instantiating objects using patterns to retrieve the data from a string. Suppose we have a small class:
+```
+public static class MyPojo {
+    public final String name;
+    public final int id;
+
+    @Inject // If you have only one constructor, you can leave this out.
+    public MyPojo(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+}
+```
+Then we can create a new instance dynamically as follows:
+```
+String data = "name: example, id: 15";
+ReadableRegexPattern pattern = regex()
+        .literal("name: ").group("name", regex().word())
+        .literal(", id: ").group("id", regex().digit().oneOrMore()).build();
+
+MyPojo myPojo = instantiateObject(pattern, data, MyPojo.class);
+
+assertThat(myPojo.name, equalTo("example"));
+// Types are automatically converted!
+assertThat(myPojo.id, equalTo(15));
+```
+
 ### Javadoc
 If you are looking for in-depth information about all the available methods, take a look at the Javadoc.
 You can find the latest version [here](https://javadoc.io/doc/io.github.ricoapon/readable-regex/latest/index.html).
