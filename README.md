@@ -5,6 +5,12 @@ With this library, you can create regular expressions in a readable way!
 ## Table of contents
 1. [About the library](#about-the-library)
 1. [User guide](#user-guide)
+    1. [Examples](#examples)
+    1. [Quantifiers](#quantifiers)
+    1. [Working around the limits of the library](#working-around-the-limits-of-the-library)
+    1. [Extending the builder](#extending-the-builder)
+    1. [Instantiating objects](#instantiating-objects)
+    1. [Javadoc](#javadoc)
 1. [Contributing](#contributing)
 1. [Local development](#local-development)
 
@@ -210,6 +216,34 @@ ReadableRegexPattern pattern = TestExtension.regex().digitWhitespaceDigit().buil
 
 assertThat(pattern.matchesTextExactly("1 3"), equalTo(true));
 assertThat(pattern.enabledFlags(), contains(PatternFlag.DOT_ALL));
+```
+
+### Instantiating objects
+The library supports instantiating objects using patterns to retrieve the data from a string. Suppose we have a small class:
+```
+public static class MyPojo {
+    public final String name;
+    public final int id;
+
+    @Inject // If you have only one constructor, you can leave this out.
+    public MyPojo(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+}
+```
+Then we can create a new instance dynamically as follows:
+```
+String data = "name: example, id: 15";
+ReadableRegexPattern pattern = regex()
+        .literal("name: ").group("name", regex().word())
+        .literal(", id: ").group("id", regex().digit().oneOrMore()).build();
+
+MyPojo myPojo = instantiateObject(pattern, data, MyPojo.class);
+
+assertThat(myPojo.name, equalTo("example"));
+// Types are automatically converted!
+assertThat(myPojo.id, equalTo(15));
 ```
 
 ### Javadoc
