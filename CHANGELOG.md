@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 ### Added
 - Groups that have been added are now recorded in the builder. The following two methods are added to retrieve this information:
   `ReadableRegexPattern#groups()` and `ReadableRegexPattern#nrOfGroups()`.
+- It is now possible to instantiate objects using data and a pattern. The library automatically matches the group name
+  to the variable used in the constructor. See `RegexObjectInstantiation` for more information.
 
 ## [0.4.0]
 ### Added
