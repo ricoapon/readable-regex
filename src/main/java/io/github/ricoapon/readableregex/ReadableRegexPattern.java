@@ -1,5 +1,6 @@
 package io.github.ricoapon.readableregex;
 
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,6 +31,23 @@ public interface ReadableRegexPattern {
      * @return All the {@link PatternFlag}s that are enabled on this pattern.
      */
     Set<PatternFlag> enabledFlags();
+
+    /**
+     * Returns a list with all the recorded groups. Note that only the groups that have been added using the methods
+     * {@link GroupBuilder#startGroup(String)} or {@link SyntacticSugarBuilder#group(String, ReadableRegex)} are recorded.
+     * If you have added your own group in any other way (for example: {@code regexFromString("(.*)"}), then the result
+     * of this method will not be correct.
+     *
+     * @return List of all group names. If the name is null, it is an unnamed group.
+     */
+    List<String> groups();
+
+    /**
+     * @return The number of groups used in this pattern.
+     */
+    default int nrOfGroups() {
+        return groups().size();
+    }
 
     /**
      * @return The wrapped {@link Pattern} object.
