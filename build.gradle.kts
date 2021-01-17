@@ -28,6 +28,9 @@ repositories {
 }
 
 dependencies {
+    api("javax.inject:javax.inject:1")
+    implementation("com.thoughtworks.paranamer:paranamer:2.8");
+
     testImplementation("org.hamcrest:hamcrest:2.2")
 
     val junitVersion = "5.6.2"
