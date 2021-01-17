@@ -74,6 +74,10 @@ assertThat(matcher.matches(), equalTo(true));
 assertThat(matcher.group(1), equalTo("abc"));
 assertThat(matcher.group(2), equalTo("def"));
 
+// If you need details about the groups afterwards, this is not possible using the JDK Pattern.
+// However, using this library, this is now possible:
+assertThat(pattern.groups(), contains(null, "secondWord"));
+
 // If you have given the group a name, you can also find it based on the name.
 assertThat(matcher.group("secondWord"), equalTo("def"));
 ```
