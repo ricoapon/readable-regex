@@ -4,7 +4,9 @@ import io.github.ricoapon.readableregex.PatternFlag;
 import io.github.ricoapon.readableregex.ReadableRegex;
 import io.github.ricoapon.readableregex.ReadableRegexPattern;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -19,6 +21,9 @@ public abstract class ReadableRegexBuilder<T extends ReadableRegex<T>> implement
     /** Indicates whether the flag {@link PatternFlag#MULTILINE} should be enabled when building the pattern object. */
     private boolean enableMultilineFlag = false;
 
+    /** List of group names in order. If the name is {@code null}, it means it is an unnamed group. */
+    private final List<String> groups = new ArrayList<>();
+
     @SuppressWarnings("MagicConstant")
     @Override
     public ReadableRegexPattern buildWithFlags(PatternFlag... patternFlags) {
@@ -31,7 +36,7 @@ public abstract class ReadableRegexBuilder<T extends ReadableRegex<T>> implement
         }
 
         Pattern pattern = Pattern.compile(regexBuilder.toString(), flags);
-        return new ReadableRegexPatternImpl(pattern);
+        return new ReadableRegexPatternImpl(pattern, groups);
     }
 
     /**
@@ -263,6 +268,7 @@ public abstract class ReadableRegexBuilder<T extends ReadableRegex<T>> implement
 
     @Override
     public T startGroup() {
+        groups.add(null);
         return _addRegex("(");
     }
 
@@ -274,6 +280,7 @@ public abstract class ReadableRegexBuilder<T extends ReadableRegex<T>> implement
                     "and only contain letters and digits.");
         }
 
+        groups.add(groupName);
         return _addRegex("(?<" + groupName + ">");
     }
 
